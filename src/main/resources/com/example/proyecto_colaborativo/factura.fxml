@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar layoutX="20.0" layoutY="14.0" prefHeight="25.0" prefWidth="391.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+            <Menu mnemonicParsing="false" text="Historial">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Registro">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+         </menus>
+      </MenuBar>
+      <Label fx:id="fecha" layoutX="20.0" layoutY="56.0" text="Fecha" />
+      <Text layoutX="312.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cod Comprob." />
+      <SplitMenuButton fx:id="tipoFactura" layoutX="81.0" layoutY="52.0" mnemonicParsing="false" onAction="#facturaTipo" text="Factura Electronica">
+         <items>
+            <MenuItem mnemonicParsing="false" text="A" />
+            <MenuItem mnemonicParsing="false" text="B" />
+            <MenuItem mnemonicParsing="false" text="C" />
+         </items>
+      </SplitMenuButton>
+      <Label fx:id="codCae" layoutX="370.0" layoutY="65.0" text="cod" />
+      <Text layoutX="300.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CAE:" />
+      <Text layoutX="295.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vence:" />
+      <Label fx:id="fechaVencimiento" layoutX="366.0" layoutY="82.0" text="fecha" />
+      <Text layoutX="20.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingresar Articulo:" />
+      <SplitMenuButton fx:id="codigo" layoutX="20.0" layoutY="124.0" mnemonicParsing="false" onAction="#elegirCodigo" text="Codigo">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Codigo Barras" />
+            <MenuItem mnemonicParsing="false" text="Codigo Numerico" />
+         </items>
+      </SplitMenuButton>
+      <Label fx:id="ingresarCodigo" layoutX="110.0" layoutY="128.0" prefHeight="17.0" prefWidth="90.0" text="Ingresar codigo" />
+      <TextField fx:id="unidades" layoutX="81.0" layoutY="156.0" onAction="#cantidadUnidades" prefHeight="25.0" prefWidth="24.0" />
+      <Text fx:id="unidades" layoutX="25.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unidades:" />
+      <Button fx:id="agregarProd" layoutX="118.0" layoutY="156.0" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="25.0" prefWidth="95.0" text="Agregar Prod." />
+      <TableView fx:id="tabla" layoutX="21.0" layoutY="200.0" prefHeight="121.0" prefWidth="376.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="Codigo" />
+            <TableColumn prefWidth="75.0" text="Detalle" />
+            <TableColumn prefWidth="75.0" text="Cant." />
+            <TableColumn prefWidth="75.0" text="Precio" />
+            <TableColumn prefWidth="75.0" text="Subtotal" />
+         </columns>
+      </TableView>
+      <Text layoutX="27.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Text>
+      <TextField fx:id="dni" layoutX="143.0" layoutY="393.0" onAction="#ingresarDNI" prefHeight="25.0" prefWidth="95.0" />
+      <Text fx:id="dni" layoutX="27.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI/CUIL:" wrappingWidth="63.0" />
+      <Text fx:id="nombreApellido" layoutX="25.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre/Apellido:" />
+      <TextField fx:id="nombre" layoutX="143.0" layoutY="423.0" onAction="#ingresarNombre" prefHeight="25.0" prefWidth="95.0" />
+      <Button fx:id="eliminarProducto" layoutX="221.0" layoutY="156.0" mnemonicParsing="false" onAction="#eliminarProducto" text="Eliminar Prod." />
+      <Button fx:id="buscarCliente" layoutX="248.0" layoutY="395.0" mnemonicParsing="false" onAction="#buscarCliente" prefHeight="19.0" prefWidth="78.0" text="Buscar Cliente">
+         <font>
+            <Font size="10.0" />
+         </font></Button>
+      <Button fx:id="eliminarCliente" layoutX="285.0" layoutY="425.0" mnemonicParsing="false" onAction="#eliminarCliente" prefHeight="17.0" prefWidth="90.0" text="Eliminar Cliente">
+         <font>
+            <Font size="10.0" />
+         </font></Button>
+      <Text fx:id="condicionVenta" layoutX="24.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Condicion de venta:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Text>
+      <RadioButton fx:id="selecEfectivo" layoutX="27.0" layoutY="485.0" mnemonicParsing="false" onAction="#selecEfectivo" text="Efectivo" />
+      <RadioButton fx:id="selecTarjeta" layoutX="99.0" layoutY="485.0" mnemonicParsing="false" onAction="#selecTarjeta" text="Tarjeta" />
+      <Button fx:id="agregarCliente" layoutX="335.0" layoutY="395.0" mnemonicParsing="false" onAction="#agregarCliente" prefHeight="21.0" prefWidth="90.0" text="Agregar Cliente">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="ingresarPago" layoutX="182.0" layoutY="481.0" mnemonicParsing="false" onAction="#ingresarPago" prefHeight="25.0" prefWidth="105.0" text="Ingresar Pago">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Text layoutX="309.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:" />
+      <Label fx:id="totalFinal" layoutX="346.0" layoutY="333.0" text="Total Final">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
