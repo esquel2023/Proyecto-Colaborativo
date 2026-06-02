@@ -1,67 +1,35 @@
 package com.example.proyecto_colaborativo;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Producto {
 
-    String NombreProducto;
-    String Descripcion;
-    Integer Precio;
-    Integer Cantidad;
-    Integer IdCodigo;
-    String CodigoBarras;
+    private final StringProperty nombre;
+    private final StringProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
+    private final DoubleProperty precio;
+    private final StringProperty codigoTabla;
 
-    public Producto(String nombreProducto, String descripcion, Integer precio, Integer cantidad, Integer idCodigo, String codigoBarras) {
-        NombreProducto = nombreProducto;
-        Descripcion = descripcion;
-        Precio = precio;
-        Cantidad = cantidad;
-        IdCodigo = idCodigo;
-        CodigoBarras = codigoBarras;
-    }
-    //Nombre Producto
-    public String getNombreProducto() {
-        return NombreProducto;
-    }
-    public void setNombreProducto(String nombreProducto) {
-        NombreProducto = nombreProducto;
+    // Constructor
+    public Producto(String nombre, String cantidad, double precio, String codigoTabla) {
+        this.nombre = new SimpleStringProperty(nombre);
+        this.cantidad = new SimpleStringProperty(cantidad);
+        this.precio = new SimpleDoubleProperty(precio);
+        this.codigoTabla = new SimpleStringProperty(codigoTabla);
     }
 
-    //Descripcion
-    public String getDescripcion() {
-        return Descripcion;
-    }
-    public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
-    }
+    // Getters de Propiedades (Requeridos por TableView)
+    public StringProperty nombreProperty() { return nombre; }
+    public StringProperty cantidadProperty() { return cantidad; }
+    public DoubleProperty precioProperty() { return precio; }
+    public StringProperty codigoTablaProperty() { return codigoTabla; }
 
-    //Precio
-    public Integer getPrecio() {
-        return Precio;
-    }
-    public void setPrecio(Integer precio) {
-        Precio = precio;
-    }
-
-    //Cantidad
-    public Integer getCantidad() {
-        return Cantidad;
-    }
-    public void setCantidad(Integer cantidad) {
-        Cantidad = cantidad;
-    }
-
-    //Codigo Producto
-    public Integer getIdCodigo() {
-        return IdCodigo;
-    }
-    public void setIdCodigo(Integer idCodigo) {
-        IdCodigo = idCodigo;
-    }
-
-    //Codigo de Barra
-    public String getCodigoBarras() {
-        return CodigoBarras;
-    }
-    public void setCodigoBarras(String codigoBarras) {
-        CodigoBarras = codigoBarras;
-    }
+    // Getters ordinarios
+    public String getNombre() { return nombre.get(); }
+    public String getCantidad() { return cantidad.get(); }
+    public double getPrecio() { return precio.get(); }
+    public String getCodigoTabla() { return codigoTabla.get(); }
 }
+
