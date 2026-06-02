@@ -8,5 +8,6 @@ module com.example.proyecto_colaborativo {
     requires org.kordamp.bootstrapfx.core;
 
     opens com.example.proyecto_colaborativo to javafx.fxml;
+    opens com.example.proyecto_colaborativo.Controlador to javafx.fxml;
     exports com.example.proyecto_colaborativo;
 }
