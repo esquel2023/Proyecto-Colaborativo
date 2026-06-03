@@ -40,7 +40,6 @@ public class Caja {
             String timestamp = LocalDateTime.now().toString();
             movimientos.add("[" + timestamp + "]" + mensaje);
         }
-
         // Mostrar reporte o arqueo de caja
     public void imprimirArqueo () {
             System.out.println("-ARQUEO DE CAJA-");
