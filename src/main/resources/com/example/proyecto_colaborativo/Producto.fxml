@@ -30,7 +30,7 @@
         </menus>
       </MenuBar>
       <Button layoutX="365.0" layoutY="203.0" mnemonicParsing="false" text="🔍" />
-      <Button fx:id="botonAgregar" layoutX="20.0" layoutY="79.0" mnemonicParsing="false" text="Agregar" />
+      <Button fx:id="botonAgregar" layoutX="20.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickAgregar" text="Agregar" />
       <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickModificar" text="Modificar" />
       <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" text="Eliminar" />
       <TextField fx:id="codigo" layoutX="21.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Codigo" />
