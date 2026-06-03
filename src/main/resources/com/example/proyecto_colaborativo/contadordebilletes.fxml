@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.controladorContador">
    <children>
       <Label fx:id="cantidadBilletes" layoutX="21.0" layoutY="42.0" prefHeight="17.0" prefWidth="82.0" text="Cant. billetes" />
       <Label fx:id="totalBilletes" layoutX="21.0" layoutY="64.0" text="Total Billetes" />
