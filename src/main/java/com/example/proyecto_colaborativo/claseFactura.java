@@ -9,9 +9,10 @@ public class claseFactura {
     private String cliente;
     private String fechaEmison;
     private String numeroDeFactura;
+    private String DNI;
 
     public claseFactura(String numeroDeFactura, String cliente, String fechaEmision,
-                        String producto, double cantidad, double precioUnitario, String metodoDePago) {
+                        String producto, double cantidad, double precioUnitario, String metodoDePago ,String DNI) {
         this.producto = producto;
         this.precioUnitario = precioUnitario;
         this.cantidad = cantidad;
@@ -19,6 +20,7 @@ public class claseFactura {
         this.numeroDeFactura = numeroDeFactura;
         this.cliente = cliente;
         this.fechaEmison = fechaEmision;
+        this.DNI = DNI;
 
         if (cantidad <= 0) {
             this.cantidad = 1.0; // Valor por defecto seguro si ingresan un dato inválido
@@ -73,4 +75,7 @@ public void setFechaEmison(String fechaEmison) { this.fechaEmison = fechaEmison;
 
 public String getNumeroDeFactura() { return numeroDeFactura; }
 public void setNumeroDeFactura(String numeroDeFactura) { this.numeroDeFactura = numeroDeFactura; }
+
+    public String getDNI() { return DNI; }
+    public void setDNI(String DNI) { this.DNI = DNI; }
 }
