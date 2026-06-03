@@ -4,13 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
+import java.io.IOException;
+import java.util.Optional;
+
 public class controladorCliente {
+    @FXML public TableView<claseFactura> tablaClientes1;
+    @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
+    @FXML public TableColumn<claseFactura, String> dniTabla1;
     clienteClase Cliente;
 
     @FXML private Button lupa;
@@ -31,23 +35,43 @@ public class controladorCliente {
     @FXML private TableColumn<clienteClase, String> dniTabla;
     @FXML private TableColumn<clienteClase, String> telefonoTabla;
 
-    // Lista especial de JavaFX para que los cambios se vean reflejados en la tabla automáticamente
     private final ObservableList<Object> listaClientesObs = FXCollections.observableArrayList();
-
+    private final ObservableList<claseFactura> listaFacturasObs = FXCollections.observableArrayList();
     @FXML
     public void initialize() {
-        // Vincula las columnas de la tabla con los getters heredados de eliseoClase
+
         nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
         dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
         telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
-        // Asigna la lista a la tabla
+
         tablaClientes.setItems(listaClientesObs);
+        nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
+
+        // 2. Asignar la lista observable a la segunda tabla
+        tablaClientes1.setItems(listaFacturasObs);
+
+        // 3. El Listener de selección para la tabla de clientes original
+        // Cuando toques un cliente, se ejecutará este bloque de código automáticamente
+        tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                // Convertimos el Object seleccionado al tipo clienteClase
+                clienteClase clienteSeleccionado = (clienteClase) newSelection;
+
+                // Filtramos las facturas usando el método de abajo
+                cargarFacturasDelCliente(clienteSeleccionado);
+            } else {
+                // Si deseleccionan al cliente, limpiamos la tabla de facturas
+                listaFacturasObs.clear();
+            }
+        });
+
     }
 
     @FXML
-    void botonAgregar(ActionEvent event) {
-        // 1. Capturar datos de los TextField
+    void botonAgregar(ActionEvent event) throws IOException {
+
         String txtNombre = nombreApellido.getText();
         String txtDni = dni.getText();
         String txtTelefono = telefono.getText();
@@ -55,25 +79,55 @@ public class controladorCliente {
         String txtDireccion = direccion.getText();
         String txtCuil = cuil.getText();
 
-        // Validar campos obligatorios
-        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            return; // Detiene la ejecución si están vacíos
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
+                txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            return;
         }
 
-        // 2. Instanciar tu objeto Cliente
-        clienteClase nuevoCliente = new clienteClase(txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil);
+
+        String mensaje = String.format(
+                "¿Confirmas los datos del cliente?\n\n" +
+                        "Nombre: %s\n" +
+                        "DNI: %s\n" +
+                        "Teléfono: %s\n" +
+                        "Email: %s\n" +
+                        "Dirección: %s\n" +
+                        "CUIL: %s",
+                txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil
+        );
 
 
-        // 3. Agregar a la lista (actualiza la interfaz al instante)
-        listaClientesObs.add(nuevoCliente);
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmación de Cliente");
+        alerta.setHeaderText("Revisa los datos antes de guardar");
+        alerta.setContentText(mensaje);
 
-        // 4. Limpiar los campos
-        limpiarCampos();
+
+        ButtonType botonConfirmar = new ButtonType("Confirmar");
+        ButtonType botonModificar = new ButtonType("Modificar / Cancelar");
+        alerta.getButtonTypes().setAll(botonConfirmar, botonModificar);
+
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+
+
+        if (resultado.isPresent() && resultado.get() == botonConfirmar) {
+
+
+            clienteClase nuevoCliente = new clienteClase(txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil);
+            listaClientesObs.add(nuevoCliente);
+
+            limpiarCampos();
+            System.out.println("Cliente agregado con éxito.");
+
+        } else {
+
+            System.out.println("El usuario decidió corregir los datos.");
+        }
     }
 
     @FXML
     void botonModificar(ActionEvent event) {
-        // Obtiene el cliente seleccionado en la tabla
         clienteClase clienteSeleccionado = (clienteClase) tablaClientes.getSelectionModel().getSelectedItem();
 
         if (clienteSeleccionado != null) {
@@ -85,13 +139,13 @@ public class controladorCliente {
             clienteSeleccionado.setDireccionEntidad(direccion.getText());
             clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
 
-            tablaClientes.refresh(); // Refresca los cambios visuales en la tabla
+            tablaClientes.refresh();
             limpiarCampos();
         }
     }
 
     @FXML
-    void botonElimina(ActionEvent event) { // Nombre exacto del onAction en tu FXML
+    void botonElimina(ActionEvent event) {
         Object clienteSeleccionado = tablaClientes.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado != null) {
             listaClientesObs.remove(clienteSeleccionado);
@@ -102,7 +156,7 @@ public class controladorCliente {
     @FXML
     void botonLupa(ActionEvent event) {
         String buscar = buscadorClientes.getText().toLowerCase();
-        // Lógica de filtrado en la tabla (se puede expandir)
+
     }
 
     private void limpiarCampos() {
@@ -112,6 +166,22 @@ public class controladorCliente {
         email.clear();
         direccion.clear();
         cuil.clear();
+    }
+    private void cargarFacturasDelCliente(clienteClase cliente) {
+        listaFacturasObs.clear();
+
+
+        String dniBuscado = cliente.getDniEntidad();
+
+
+        List<claseFactura> listaGeneralFacturas = contenedorDeDatos.getListaGeneralFacturas();
+
+        for (claseFactura factura : listaGeneralFacturas) {
+            if (factura.getDniCliente().equals(dniBuscado)) {
+
+                listaFacturasObs.add(factura);
+            }
+        }
     }
 }
 
