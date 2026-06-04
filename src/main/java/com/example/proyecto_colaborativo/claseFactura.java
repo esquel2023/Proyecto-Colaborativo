@@ -23,7 +23,7 @@ public class claseFactura {
         this.DNI = DNI;
 
         if (cantidad <= 0) {
-            this.cantidad = 1.0; // Valor por defecto seguro si ingresan un dato inválido
+            this.cantidad = 1.0;
         } else {
             this.cantidad = cantidad;
         }
@@ -49,7 +49,7 @@ public class claseFactura {
         }
         this.precioUnitario = precioUnitario;
         calcularPrecioFinal();
-    }   // El getter de precio final siempre devolverá el valor actualizado
+    }
 
     public double getPrecioFinal() {
         return precioFinal;
