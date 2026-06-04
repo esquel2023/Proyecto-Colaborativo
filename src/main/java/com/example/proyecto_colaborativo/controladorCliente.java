@@ -7,15 +7,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class controladorCliente {
     @FXML public TableView<claseFactura> tablaClientes1;
-    @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
+    @FXML public TableColumn<claseFactura, String> nombreTabla1;
     @FXML public TableColumn<claseFactura, String> dniTabla1;
-    clienteClase Cliente;
 
     @FXML private Button lupa;
     @FXML private Button botonAgregar;
@@ -37,41 +36,43 @@ public class controladorCliente {
 
     private final ObservableList<Object> listaClientesObs = FXCollections.observableArrayList();
     private final ObservableList<claseFactura> listaFacturasObs = FXCollections.observableArrayList();
+    private clienteClase clienteSeleccionado;
+
     @FXML
     public void initialize() {
+        tablaClientes.setPlaceholder(new Label("No hay clientes cargados"));
+        tablaClientes1.setPlaceholder(new Label("Este cliente no tiene facturas"));
 
         nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
         dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
         telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
-
         tablaClientes.setItems(listaClientesObs);
         nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
 
-        // 2. Asignar la lista observable a la segunda tabla
         tablaClientes1.setItems(listaFacturasObs);
 
-        // 3. El Listener de selección para la tabla de clientes original
-        // Cuando toques un cliente, se ejecutará este bloque de código automáticamente
         tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                // Convertimos el Object seleccionado al tipo clienteClase
-                clienteClase clienteSeleccionado = (clienteClase) newSelection;
+                this.clienteSeleccionado = (clienteClase) newSelection;
 
-                // Filtramos las facturas usando el método de abajo
-              //  cargarFacturasDelCliente(clienteSeleccionado);
+                nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
+                dni.setText(clienteSeleccionado.getDniEntidad());
+                telefono.setText(clienteSeleccionado.getTelefonoEntidad());
+                email.setText(clienteSeleccionado.getEmailEntidad());
+                direccion.setText(clienteSeleccionado.getDireccionEntidad());
+                cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
+
+                cargarFacturasDelCliente(clienteSeleccionado);
             } else {
-                // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
             }
         });
-
     }
 
     @FXML
     void botonAgregar(ActionEvent event) throws IOException {
-
         String txtNombre = nombreApellido.getText();
         String txtDni = dni.getText();
         String txtTelefono = telefono.getText();
@@ -84,7 +85,6 @@ public class controladorCliente {
             return;
         }
 
-
         String mensaje = String.format(
                 "¿Confirmas los datos del cliente?\n\n" +
                         "Nombre: %s\n" +
@@ -96,52 +96,62 @@ public class controladorCliente {
                 txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil
         );
 
-
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Confirmación de Cliente");
         alerta.setHeaderText("Revisa los datos antes de guardar");
         alerta.setContentText(mensaje);
 
-
         ButtonType botonConfirmar = new ButtonType("Confirmar");
         ButtonType botonModificar = new ButtonType("Modificar / Cancelar");
         alerta.getButtonTypes().setAll(botonConfirmar, botonModificar);
 
-
         Optional<ButtonType> resultado = alerta.showAndWait();
 
-
         if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-
-
             clienteClase nuevoCliente = new clienteClase(txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil);
             listaClientesObs.add(nuevoCliente);
-
             limpiarCampos();
             System.out.println("Cliente agregado con éxito.");
-
         } else {
-
             System.out.println("El usuario decidió corregir los datos.");
         }
     }
 
     @FXML
     void botonModificar(ActionEvent event) {
-        clienteClase clienteSeleccionado = (clienteClase) tablaClientes.getSelectionModel().getSelectedItem();
+        Object seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
 
-        if (clienteSeleccionado != null) {
-            // Actualiza los datos del objeto con lo que haya en los TextField
-            clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
-            clienteSeleccionado.setDniEntidad(dni.getText());
-            clienteSeleccionado.setTelefonoEntidad(telefono.getText());
-            clienteSeleccionado.setEmailEntidad(email.getText());
-            clienteSeleccionado.setDireccionEntidad(direccion.getText());
-            clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
-
-            tablaClientes.refresh();
-            limpiarCampos();
+        if (seleccionado == null) {
+            System.out.println("Error: Debes seleccionar un cliente de la tabla.");
+            return;
         }
+
+        clienteClase clienteSeleccionado = (clienteClase) seleccionado;
+
+        String txtNombre = nombreApellido.getText();
+        String txtDni = dni.getText();
+        String txtTelefono = telefono.getText();
+        String txtEmail = email.getText();
+        String txtDireccion = direccion.getText();
+        String txtCuil = cuil.getText();
+
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
+                txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            System.out.println("Error: No puedes dejar campos vacíos.");
+            return;
+        }
+
+        clienteSeleccionado.setNombreEntidad(txtNombre);
+        clienteSeleccionado.setDniEntidad(txtDni);
+        clienteSeleccionado.setTelefonoEntidad(txtTelefono);
+        clienteSeleccionado.setEmailEntidad(txtEmail);
+        clienteSeleccionado.setDireccionEntidad(txtDireccion);
+        clienteSeleccionado.setCuitcuilEntidad(txtCuil);
+
+        tablaClientes.refresh();
+        tablaClientes.getSelectionModel().clearSelection();
+        limpiarCampos();
+        System.out.println("¡Cliente modificado con éxito!");
     }
 
     @FXML
@@ -156,7 +166,6 @@ public class controladorCliente {
     @FXML
     void botonLupa(ActionEvent event) {
         String buscar = buscadorClientes.getText().toLowerCase();
-
     }
 
     private void limpiarCampos() {
@@ -170,21 +179,5 @@ public class controladorCliente {
 
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
-
-
-        String dniBuscado = cliente.getDniEntidad();
-
-
-        List<claseFactura> listaGeneralFacturas = contenedorDeDatos.getListaGeneralFacturas();
-
-        for (claseFactura factura : listaGeneralFacturas) {
-            if (factura.getDniCliente().equals(dniBuscado)) {
-
-                listaFacturasObs.add(factura);
-            }
-        }
     }
-
-
 }
-
