@@ -15,7 +15,6 @@ public class controladorCliente {
     @FXML public TableView<claseFactura> tablaClientes1;
     @FXML public TableColumn<claseFactura, String> nombreTabla1;
     @FXML public TableColumn<claseFactura, String> dniTabla1;
-    clienteClase Cliente;
 
     @FXML private Button lupa;
     @FXML private Button botonAgregar;
