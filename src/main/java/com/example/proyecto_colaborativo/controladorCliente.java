@@ -59,8 +59,6 @@ public class controladorCliente {
                 // Convertimos el Object seleccionado al tipo clienteClase
                 clienteClase clienteSeleccionado = (clienteClase) newSelection;
 
-                // Filtramos las facturas usando el método de abajo
-                cargarFacturasDelCliente(clienteSeleccionado);
             } else {
                 // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
@@ -166,22 +164,7 @@ public class controladorCliente {
         email.clear();
         direccion.clear();
         cuil.clear();
-    }
-    private void cargarFacturasDelCliente(clienteClase cliente) {
-        listaFacturasObs.clear();
 
-
-        String dniBuscado = cliente.getDniEntidad();
-
-
-        List<claseFactura> listaGeneralFacturas = contenedorDeDatos.getListaGeneralFacturas();
-
-        for (claseFactura factura : listaGeneralFacturas) {
-            if (factura.getDniCliente().equals(dniBuscado)) {
-
-                listaFacturasObs.add(factura);
-            }
-        }
     }
 }
 
