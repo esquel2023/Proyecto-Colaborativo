@@ -1,5 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.BuscadorUtils;
 import com.example.proyecto_colaborativo.Producto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,13 +36,15 @@ public class ControladorProducto {
     private TextField cantidad;
     @FXML
     private TextField precioFinal;
+    @FXML
+    private TextField txtbuscadorProductos;
 
 
     // Lista observable que contendrá los productos reales
     // Lista observable única para toda la clase
     private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
-    @FXML
+    //@FXML
 
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
@@ -62,8 +65,24 @@ public class ControladorProducto {
                 new Producto("Aceite Girasol", 15, 2500.00, "PROD003")
         );
 
+        // ==========================================
+        // LLAMADA A LA CLASE REUTILIZABLE
+        // ==========================================
+
+        BuscadorUtils.configuradorBuscador(
+                txtbuscadorProductos,
+                tablaProductos,
+                listaProductos,
+                (producto,texto)->{
+                    // Acá definís la lógica específica para la clase Producto
+                    return producto.getNombre().toLowerCase().contains(texto) ||
+                            producto.getCodigoTabla().toLowerCase().contains(texto);
+
+                }
+        );
+
         // 4. Cargar los datos en la tabla
-        tablaProductos.setItems(listaProductos);
+      // tablaProductos.setItems(listaProductos);
 
 
         // Escuchar cuando el usuario selecciona una fila de la tabla
@@ -95,17 +114,18 @@ public class ControladorProducto {
 
         try {
             // 2. Tomar los nuevos valores directamente desde los TextField
-            String nuevacantidad = cantidad.getText();
+            Integer nuevacantidad = Integer.valueOf(cantidad.getText());
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
-            Integer nuevacodigo = String.valueOf(codigo.getText());
+            String nuevacodigo = codigo.getText();
             String nuevonombre = nombre.getText();
 
             // 3. Modificar las propiedades del objeto observable
             // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
+            productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
             productoseleccionado.nombreProperty().set(nuevonombre);
-            productoseleccionado.precioProperty().set(nuevoPrecio);
             productoseleccionado.cantidadProperty().set(nuevacantidad);
-            productoseleccionado.codigoTablaProperty().set(nuevacodigo);
+            productoseleccionado.precioProperty().set(nuevoPrecio);
+
 
             // 4. Refrescar la tabla para asegurar que los cambios visuales se apliquen
             tablaProductos.refresh();
@@ -122,29 +142,38 @@ public class ControladorProducto {
 
     }
 
+    @FXML
     private void clickAgregar(ActionEvent event) {
-    try{
-        // 1. Validar que los campos no estén vacíos
-        if (codigo.getText().isEmpty() || nombre.getText().isEmpty() ||
-                cantidad.getText().isEmpty() || precioFinal.getText().isEmpty())
-            {
-            System.out.println("Error: Debes ingresar un valor.");
-            return;
-        }
+        try {
+            // 1. Validar que los campos no estén vacíos
+            if (codigo.getText().isEmpty() || nombre.getText().isEmpty() ||
+                    cantidad.getText().isEmpty() || precioFinal.getText().isEmpty()) {
+                System.out.println("Error: Debes ingresar un valor.");
+                return;
+            }
 
-        // 2. Extraer los datos de las cajas de texto
+            // 2. Extraer los datos de las cajas de texto
             String nuevocodigo = codigo.getText();
             String nuevonombre = nombre.getText();
-            String nuevacantidad = cantidad.getText();
+            Integer nuevacantidad = Integer.parseInt(cantidad.getText());
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
 
-        // 3. Crear la nueva instancia de Producto
-        Producto nuevoProducto = new Producto(nuevocodigo,nuevonombre,nuevacantidad,nuevoPrecio);
+            // 3. Crear la nueva instancia de Producto
+            Producto nuevoProducto = new Producto( nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
 
-        // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
+            // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
+            listaProductos.add(nuevoProducto);
 
+            // 5. Limpiar los componentes de la interfaz
+            limpiarCampos();
+            System.out.println("Error: El precio ingresado no es un número válido.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El precio ingresado no es un número válido.");
+        }
 
     }
+
 
 
 

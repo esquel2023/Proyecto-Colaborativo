@@ -34,7 +34,7 @@
       <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickModificar" text="Modificar" />
       <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" text="Eliminar" />
       <TextField fx:id="codigo" layoutX="21.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Codigo" />
-      <TextField fx:id="buscadorProductos" layoutX="12.0" layoutY="203.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos" />
+      <TextField fx:id="txtbuscadorProductos" layoutX="12.0" layoutY="203.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos" />
       <TextField fx:id="codigoBarras" layoutX="159.0" layoutY="126.0" prefHeight="25.0" prefWidth="247.0" promptText="Codigo de barras" />
       <TextField fx:id="precioFinal" layoutX="291.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="Precio final" />
       <TableView fx:id="tablaProductos" layoutX="12.0" layoutY="240.0" prefHeight="162.0" prefWidth="391.0">
