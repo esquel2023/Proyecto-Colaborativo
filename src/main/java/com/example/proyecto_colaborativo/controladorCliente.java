@@ -60,7 +60,7 @@ public class controladorCliente {
                 clienteClase clienteSeleccionado = (clienteClase) newSelection;
 
                 // Filtramos las facturas usando el método de abajo
-              //  cargarFacturasDelCliente(clienteSeleccionado);
+                cargarFacturasDelCliente(clienteSeleccionado);
             } else {
                 // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
@@ -167,7 +167,6 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
-
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
 
@@ -184,7 +183,5 @@ public class controladorCliente {
             }
         }
     }
-
-
 }
 

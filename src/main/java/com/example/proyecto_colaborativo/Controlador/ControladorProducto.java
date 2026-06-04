@@ -1,5 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.BuscadorUtils;
 import com.example.proyecto_colaborativo.Producto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +25,7 @@ public class ControladorProducto {
     @FXML
     private TableColumn<Producto, String> colNombre;
     @FXML
-    private TableColumn<Producto, String> colCantidad;
+    private TableColumn<Producto, Integer> colCantidad;
     @FXML
     private TableColumn<Producto, Double> colPrecio;
     @FXML
@@ -35,12 +36,15 @@ public class ControladorProducto {
     private TextField cantidad;
     @FXML
     private TextField precioFinal;
+    @FXML
+    private TextField txtbuscadorProductos;
 
 
     // Lista observable que contendrá los productos reales
-   // private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
+    // Lista observable única para toda la clase
+    private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
-    @FXML
+    //@FXML
 
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
@@ -55,14 +59,30 @@ public class ControladorProducto {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        ObservableList<Producto> listaProductos = FXCollections.observableArrayList(
-                new Producto("Arroz 1kg", "50", 1200.50, "PROD001"),
-                new Producto("Leche Entera", "30", 950.00, "PROD002"),
-                new Producto("Aceite Girasol", "15", 2500.00, "PROD003")
+        listaProductos.addAll(
+                new Producto("Arroz 1kg", 50, 1200.50, "PROD001"),
+                new Producto("Leche Entera", 30, 950.00, "PROD002"),
+                new Producto("Aceite Girasol", 15, 2500.00, "PROD003")
+        );
+
+        // ==========================================
+        // LLAMADA A LA CLASE REUTILIZABLE
+        // ==========================================
+
+        BuscadorUtils.configuradorBuscador(
+                txtbuscadorProductos,
+                tablaProductos,
+                listaProductos,
+                (producto,texto)->{
+                    // Acá definís la lógica específica para la clase Producto
+                    return producto.getNombre().toLowerCase().contains(texto) ||
+                            producto.getCodigoTabla().toLowerCase().contains(texto);
+
+                }
         );
 
         // 4. Cargar los datos en la tabla
-        tablaProductos.setItems(listaProductos);
+      // tablaProductos.setItems(listaProductos);
 
 
         // Escuchar cuando el usuario selecciona una fila de la tabla
@@ -86,36 +106,81 @@ public class ControladorProducto {
     @FXML
     private void clickModificar(ActionEvent event) {
         // 1. Validar que el usuario haya seleccionado una fila previamente
-        if (productoseleccionado != null) {
+        if (productoseleccionado == null) {
             System.out.println("Error: Debes seleccionar un producto de la tabla.");
             return;
+
         }
 
         try {
             // 2. Tomar los nuevos valores directamente desde los TextField
-            String nuevacantidad = cantidad.getText();
+            Integer nuevacantidad = Integer.valueOf(cantidad.getText());
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
             String nuevacodigo = codigo.getText();
             String nuevonombre = nombre.getText();
 
             // 3. Modificar las propiedades del objeto observable
             // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
+            productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
+            productoseleccionado.nombreProperty().set(nuevonombre);
             productoseleccionado.cantidadProperty().set(nuevacantidad);
             productoseleccionado.precioProperty().set(nuevoPrecio);
-            productoseleccionado.nombreProperty().set(nuevonombre);
-            productoseleccionado.cantidadProperty().set(nuevacodigo);
 
-            // 4. Limpiar los campos y la selección de la tabla para el siguiente producto
-            tablaProductos.getSelectionModel().select(productoseleccionado);
+
+            // 4. Refrescar la tabla para asegurar que los cambios visuales se apliquen
+            tablaProductos.refresh();
+
+            // 5. Limpiar los campos y la selección de la tabla para el siguiente producto
+            tablaProductos.getSelectionModel().clearSelection();
             limpiarCampos();
             this.productoseleccionado = null;
             System.out.println("¡Producto modificado con éxito en la tabla!");
 
         } catch (NumberFormatException e) {
         System.out.println("Error: El precio ingresado no es un número válido.");
-    }
+        }
 
     }
+
+    @FXML
+    private void clickAgregar(ActionEvent event) {
+        try {
+            // 1. Validar que los campos no estén vacíos
+            if (codigo.getText().isEmpty() || nombre.getText().isEmpty() ||
+                    cantidad.getText().isEmpty() || precioFinal.getText().isEmpty()) {
+                System.out.println("Error: Debes ingresar un valor.");
+                return;
+            }
+
+            // 2. Extraer los datos de las cajas de texto
+            String nuevocodigo = codigo.getText();
+            String nuevonombre = nombre.getText();
+            Integer nuevacantidad = Integer.parseInt(cantidad.getText());
+            Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+
+            // 3. Crear la nueva instancia de Producto
+            Producto nuevoProducto = new Producto( nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
+
+            // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
+            listaProductos.add(nuevoProducto);
+
+            // 5. Limpiar los componentes de la interfaz
+            limpiarCampos();
+            System.out.println("Error: El precio ingresado no es un número válido.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: El precio ingresado no es un número válido.");
+        }
+
+    }
+
+
+
+
+
+    //----------------------------------------------------------------------------------------
+    //FUNCIONES
+    //----------------------------------------------------------------------------------------
     // Método auxiliar para limpiar las cajas de texto
     private void limpiarCampos() {
         codigo.setText("");
@@ -123,5 +188,6 @@ public class ControladorProducto {
         cantidad.setText("");
         precioFinal.setText("");
     }
+
 
 }
