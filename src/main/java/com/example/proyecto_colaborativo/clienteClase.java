@@ -22,5 +22,9 @@ public class clienteClase extends eliseoClase{
     }
 
 
+    public String getNombre() {
+
+        return "";
+    }
 }
 

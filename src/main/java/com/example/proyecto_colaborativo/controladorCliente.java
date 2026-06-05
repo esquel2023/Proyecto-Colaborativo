@@ -16,7 +16,6 @@ public class controladorCliente {
     @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
     @FXML public TableColumn<claseFactura, String> dniTabla1;
     clienteClase Cliente;
-
     @FXML private Button lupa;
     @FXML private Button botonAgregar;
     @FXML private Button botonModificar;
