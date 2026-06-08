@@ -15,7 +15,8 @@ public class controladorCliente {
     @FXML public TableView<claseFactura> tablaClientes1;
     @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
     @FXML public TableColumn<claseFactura, String> dniTabla1;
-    clienteClase Cliente;
+    entidadClase Cliente = new entidadClase();
+    BuscadorUtils buscadorUtils;
 
     @FXML private Button lupa;
     @FXML private Button botonAgregar;
@@ -30,12 +31,12 @@ public class controladorCliente {
     @FXML private TextField direccion;
     @FXML private TextField email;
 
-    public TableView<Object> tablaClientes;
+    public TableView<clienteClase> tablaClientes;
     @FXML private TableColumn<clienteClase, String> nombreTabla;
     @FXML private TableColumn<clienteClase, String> dniTabla;
     @FXML private TableColumn<clienteClase, String> telefonoTabla;
 
-    private final ObservableList<Object> listaClientesObs = FXCollections.observableArrayList();
+    private final ObservableList<clienteClase> listaClientesObs = FXCollections.observableArrayList();
     private final ObservableList<claseFactura> listaFacturasObs = FXCollections.observableArrayList();
     @FXML
     public void initialize() {
@@ -59,13 +60,33 @@ public class controladorCliente {
                 // Convertimos el Object seleccionado al tipo clienteClase
                 clienteClase clienteSeleccionado = (clienteClase) newSelection;
 
-                // Filtramos las facturas usando el método de abajo
-                cargarFacturasDelCliente(clienteSeleccionado);
+
             } else {
                 // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
             }
         });
+        BuscadorUtils.configuradorBuscador(
+                buscadorClientes,   // 1. El TextField donde el usuario escribe
+                tablaClientes,      // 2. La TableView de clientes
+                listaClientesObs,   // 3. La lista ObservableList original
+                (cliente, texto) -> { // 4. El criterio de búsqueda (BiPredicate)
+
+                    // Convertimos el texto a minúsculas para que no importen las mayúsculas
+                    String textoMinuscula = texto.toLowerCase();
+
+                    // Filtramos por Nombre
+                    boolean coincideNombre = cliente.getNombreEntidad() != null
+                            && cliente.getNombreEntidad().toLowerCase().contains(textoMinuscula);
+
+                    // Filtramos por DNI
+                    boolean coincideDni = cliente.getDniEntidad() != null
+                            && cliente.getDniEntidad().contains(textoMinuscula);
+
+                    // Si coincide el nombre O el DNI, el cliente se queda en la tabla
+                    return coincideNombre || coincideDni;
+                }
+        );
 
     }
 
@@ -167,21 +188,8 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
-    private void cargarFacturasDelCliente(clienteClase cliente) {
-        listaFacturasObs.clear();
 
-
-        String dniBuscado = cliente.getDniEntidad();
-
-
-        List<claseFactura> listaGeneralFacturas = contenedorDeDatos.getListaGeneralFacturas();
-
-        for (claseFactura factura : listaGeneralFacturas) {
-            if (factura.getDniCliente().equals(dniBuscado)) {
-
-                listaFacturasObs.add(factura);
-            }
-        }
     }
-}
+
+
 
