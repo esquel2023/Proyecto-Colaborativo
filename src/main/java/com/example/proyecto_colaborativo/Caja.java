@@ -36,32 +36,12 @@ public class Caja {
         } else if (monto > saldoActual) {
             System.out.println("Fondo insuficientes en caja");
         }
-    public void registrarMovimiento (String mensaje){
-            String timestamp = LocalDateTime.now().toString();
-            movimientos.add("[" + timestamp + "]" + mensaje);
-        }
-
-        // Mostrar reporte o arqueo de caja
-    public void imprimirArqueo () {
-            System.out.println("-ARQUEO DE CAJA-");
-            System.out.println("saldo Inicial:$" + saldoInicial);
-            System.out.println("saldo Actual" (cierre) = "$" + saldoActual);
-            System.out.println("Detalle de movimientos");
-            {
-                System.out.println(movimientos);
-            }
-        }
-        //Cerrar Caja
-    public void cerrarCaja () {
-            this abierta = false;
-            registrarMovimiento(50"Caja cerrada.Saldo final:¨$" + saldoActual);
-        }
-    public double getSaldoActual() {
-            return;
-            saldoActual;
-        }
-    public boolean isAbierta () {
-            return abierta;
-        }
     }
+
+    public void registrarMovimiento(String mensaje) {
+        String timestamp = LocalDateTime.now().toString();
+        movimientos.add("[" + timestamp + "]" + mensaje);
+    }
+
+}
 
