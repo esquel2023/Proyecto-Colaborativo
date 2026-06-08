@@ -180,4 +180,5 @@ public class controladorCliente {
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
     }
+
 }
