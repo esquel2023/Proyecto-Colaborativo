@@ -1,5 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.AlertasUtils;
 import com.example.proyecto_colaborativo.BuscadorUtils;
 import com.example.proyecto_colaborativo.Producto;
 import javafx.collections.FXCollections;
@@ -111,13 +112,17 @@ public class ControladorProducto {
     // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
     private void clickModificar(ActionEvent event) {
+        // LLAMADA A LA CLASE UTILITARIA
         // 1. Validar que el usuario haya seleccionado una fila previamente
-        if (productoseleccionado == null) {
+        AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
+                "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
+        // 1. Validar que el usuario haya seleccionado una fila previamente
+        /*if (productoseleccionado == null) {
             mostrarAlerta("Sin selección", "No se seleccionó ningún producto", "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
             //System.out.println("Error: Debes seleccionar un producto de la tabla.");
             return;
 
-        }
+        }*/
 
         try {
             // 2. Tomar los nuevos valores directamente desde los TextField
@@ -128,8 +133,11 @@ public class ControladorProducto {
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
             if (nuevacantidad < 0 || nuevacantidad <0) {
-                mostrarAlerta("Valores inválidos", "Números negativos detectados",
+                AlertasUtils.mostrarAlerta("Valores inválidos", "Números negativos detectados",
                         "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);
+
+                /*mostrarAlerta("Valores inválidos", "Números negativos detectados",
+                        "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);*/
                 return;
             }
 
@@ -149,16 +157,20 @@ public class ControladorProducto {
             tablaProductos.getSelectionModel().clearSelection();
             limpiarCampos();
             this.productoseleccionado = null;
-
-            mostrarAlerta("Éxito", "Producto modificado", "El producto se modificó correctamente en la tabla.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarAlerta("Éxito", "Producto modificado", "El producto se modificó correctamente en la tabla.", Alert.AlertType.INFORMATION);
+            //mostrarAlerta("Éxito", "Producto modificado", "El producto se modificó correctamente en la tabla.", Alert.AlertType.INFORMATION);
            // System.out.println("¡Producto modificado con éxito en la tabla!");
 
         } catch (NumberFormatException e) {
             // Alerta si el usuario ingresó letras o formatos incorrectos
-            mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+            AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
                     "Por favor, verifica los campos:\n" +
                             "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
                             "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.", Alert.AlertType.ERROR);
+            /*mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+                    "Por favor, verifica los campos:\n" +
+                            "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
+                            "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.", Alert.AlertType.ERROR);*/
         //System.out.println("Error: El precio ingresado no es un número válido.");
         }
 
@@ -172,7 +184,8 @@ public class ControladorProducto {
             // 1. Validar que los campos no estén vacíos
             if (codigo.getText().isEmpty() || nombre.getText().isEmpty() ||
                     cantidad.getText().isEmpty() || precioFinal.getText().isEmpty()) {
-                mostrarAlerta("Campos vacíos", "Faltan datos", "Debes completar todos los campos para agregar un producto.",Alert.AlertType.WARNING);
+                AlertasUtils.mostrarAlerta("Campos vacíos", "Faltan datos", "Debes completar todos los campos para agregar un producto.",Alert.AlertType.WARNING);
+                //mostrarAlerta("Campos vacíos", "Faltan datos", "Debes completar todos los campos para agregar un producto.",Alert.AlertType.WARNING);
                 //System.out.println("Error: Debes ingresar un valor.");
                 return;
             }
@@ -185,8 +198,10 @@ public class ControladorProducto {
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
             if (nuevacantidad < 0 || nuevoPrecio < 0){
-                mostrarAlerta("Valores inválidos", "Números negativos detectados",
-                        "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);
+                AlertasUtils.mostrarAlerta("Valores inválidos Números negativos detectados",
+                        "La cantidad y el precio final no pueden ser números negativos", "Por favor ingresá valores mayores o iguales a cero.",Alert.AlertType.ERROR);
+                /*mostrarAlerta("Valores inválidos", "Números negativos detectados",
+                        "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);*/
                 return;
             }
 
@@ -199,15 +214,20 @@ public class ControladorProducto {
 
             // 5. Limpiar los componentes de la interfaz
             limpiarCampos();
-            mostrarAlerta("Éxito", "Producto agregado", "El producto se añadió correctamente a la lista.",Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarAlerta("Éxito", "Producto agregado", "El producto se añadió correctamente a la lista.",Alert.AlertType.INFORMATION);
+            //mostrarAlerta("Éxito", "Producto agregado", "El producto se añadió correctamente a la lista.",Alert.AlertType.INFORMATION);
             //System.out.println("Error: El precio ingresado no es un número válido.");
 
         } catch (NumberFormatException e) {
             // Alerta si el usuario ingresó letras o formatos incorrectos
-            mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+            AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
                     "Por favor, verifica los campos:\n" +
                             "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
                             "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.",Alert.AlertType.ERROR);
+            /*mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+                    "Por favor, verifica los campos:\n" +
+                            "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
+                            "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.",Alert.AlertType.ERROR);*/
             //System.out.println("Error: El precio ingresado no es un número válido.");
         }
 
@@ -216,13 +236,13 @@ public class ControladorProducto {
     //----------------------------------------------------------------------------------------
     // NUEVA FUNCIÓN AUXILIAR PARA GENERAR ALERTAS REUTILIZABLES
     //----------------------------------------------------------------------------------------
-    private void mostrarAlerta(String titulo, String encabezado, String contenido, javafx.scene.control.Alert.AlertType tipo) {
+   /* private void mostrarAlerta(String titulo, String encabezado, String contenido, javafx.scene.control.Alert.AlertType tipo) {
         javafx.scene.control.Alert alerta = new javafx.scene.control.Alert(tipo);
         alerta.setTitle("Aviso del Sistema");
         alerta.setHeaderText(null);
         alerta.setContentText(contenido);
         alerta.showAndWait();
-    }
+    }*/
 
 
     //----------------------------------------------------------------------------------------
@@ -241,7 +261,8 @@ public class ControladorProducto {
     public void clickEliminar(ActionEvent event) {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
         if (productoseleccionado == null){
-           mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
+           AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
+            //mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
             //System.out.println("Error: Debes seleccionar un producto de la tabla para eliminarlo.");
             return;
         }
