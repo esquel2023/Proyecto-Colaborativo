@@ -82,8 +82,11 @@ private proovedorClase proveedorSeleccionado;
 
         if (txtNombre.isEmpty() || txtCuil.isEmpty() ||
                 txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("Campos vacios", "Falta completar informacion", "Por favor, complete los campos faltantes y vuelva a intentarlo.", Alert.AlertType.INFORMATION);
+
             return;
         }
+
 
         String mensaje = String.format(
                 "¿Confirmas los datos del proveedor?\n\n" +

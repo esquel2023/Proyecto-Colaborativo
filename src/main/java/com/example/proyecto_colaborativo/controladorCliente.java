@@ -102,9 +102,21 @@ public class controladorCliente {
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
                 txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacios, por favor, agrega toda la informacion requerida y vuelve a intentarlo.", Alert.AlertType.INFORMATION);
             return;
         }
+        String texto = dni.getText();
 
+        try {
+
+            int numero = Integer.parseInt(texto);
+            System.out.println("Número válido: " + numero);
+
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("Datos invalidos", "Dni", "Por favor, corriga el DNI sin puntos ni guiones ni letras ni caracteres... y vuelva a intentarlo.", Alert.AlertType.INFORMATION);
+
+            return;
+        }
 
         String mensaje = String.format(
                 "¿Confirmas los datos del cliente?\n\n" +
