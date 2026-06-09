@@ -12,31 +12,49 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class controladorCliente {
-    @FXML public TableView<claseFactura> tablaClientes1;
-    @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
-    @FXML public TableColumn<claseFactura, String> dniTabla1;
+    @FXML
+    public TableView<claseFactura> tablaClientes1;
+    @FXML
+    public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
+    @FXML
+    public TableColumn<claseFactura, String> dniTabla1;
     clienteClase Cliente;
 
-    @FXML private Button lupa;
-    @FXML private Button botonAgregar;
-    @FXML private Button botonModificar;
-    @FXML private Button botonEliminar;
+    @FXML
+    private Button lupa;
+    @FXML
+    private Button botonAgregar;
+    @FXML
+    private Button botonModificar;
+    @FXML
+    private Button botonEliminar;
 
-    @FXML private TextField cuil;
-    @FXML private TextField buscadorClientes;
-    @FXML private TextField telefono;
-    @FXML private TextField dni;
-    @FXML private TextField nombreApellido;
-    @FXML private TextField direccion;
-    @FXML private TextField email;
+    @FXML
+    private TextField cuil;
+    @FXML
+    private TextField buscadorClientes;
+    @FXML
+    private TextField telefono;
+    @FXML
+    private TextField dni;
+    @FXML
+    private TextField nombreApellido;
+    @FXML
+    private TextField direccion;
+    @FXML
+    private TextField email;
 
     public TableView<Object> tablaClientes;
-    @FXML private TableColumn<clienteClase, String> nombreTabla;
-    @FXML private TableColumn<clienteClase, String> dniTabla;
-    @FXML private TableColumn<clienteClase, String> telefonoTabla;
+    @FXML
+    private TableColumn<clienteClase, String> nombreTabla;
+    @FXML
+    private TableColumn<clienteClase, String> dniTabla;
+    @FXML
+    private TableColumn<clienteClase, String> telefonoTabla;
 
     private final ObservableList<Object> listaClientesObs = FXCollections.observableArrayList();
     private final ObservableList<claseFactura> listaFacturasObs = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
 
@@ -60,7 +78,7 @@ public class controladorCliente {
                 clienteClase clienteSeleccionado = (clienteClase) newSelection;
 
                 // Filtramos las facturas usando el método de abajo
-              //  cargarFacturasDelCliente(clienteSeleccionado);
+                //  cargarFacturasDelCliente(clienteSeleccionado);
             } else {
                 // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
@@ -167,7 +185,9 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
+}
 
+/*
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
 
@@ -183,8 +203,6 @@ public class controladorCliente {
                 listaFacturasObs.add(factura);
             }
         }
-    }
+    }*/
 
-
-}
 
