@@ -36,34 +36,35 @@ public class controladorProovedor {
     private final ObservableList<Object> listaProductosProveedorObs = FXCollections.observableArrayList();
 private proovedorClase proveedorSeleccionado;
     public void initialize() {
+        if (tablaProovedores != null) {
+            tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
+            tablaProductosProovedor.setPlaceholder(new Label("Este proveedor no tiene productos"));
+            nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
+            telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
+            prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
+            precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
+            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
 
-        tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
-        tablaProductosProovedor.setPlaceholder(new Label("Este proveedor no tiene productos"));
-        nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
-        telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
-        prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
-        precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
-        tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+                    this.proveedorSeleccionado = (proovedorClase) newValue;
 
-                this.proveedorSeleccionado = (proovedorClase) newValue;
+                    System.out.println("Seleccionaste al proveedor: " + proveedorSeleccionado.getNombreEntidad());
 
-                System.out.println("Seleccionaste al proveedor: " + proveedorSeleccionado.getNombreEntidad());
-
-                nombre.setText(proveedorSeleccionado.getNombreEntidad());
-                telefono.setText(proveedorSeleccionado.getTelefonoEntidad());
-                email.setText(proveedorSeleccionado.getEmailEntidad());
-                direccion.setText(proveedorSeleccionado.getDireccionEntidad());
-                cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
+                    nombre.setText(proveedorSeleccionado.getNombreEntidad());
+                    telefono.setText(proveedorSeleccionado.getTelefonoEntidad());
+                    email.setText(proveedorSeleccionado.getEmailEntidad());
+                    direccion.setText(proveedorSeleccionado.getDireccionEntidad());
+                    cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
 
 
-                cargarProductosDelProveedor(proveedorSeleccionado);
-            }
-        });
-        // Asignar listas a las tablas de proveedores
-        tablaProovedores.setItems(listaProveedoresObs);
-        tablaProductosProovedor.setItems(listaProductosProveedorObs);
+                    cargarProductosDelProveedor(proveedorSeleccionado);
+                }
+            });
+            // Asignar listas a las tablas de proveedores
+            tablaProovedores.setItems(listaProveedoresObs);
+            tablaProductosProovedor.setItems(listaProductosProveedorObs);
 
+        }
     }
 
     private void cargarProductosDelProveedor(Object proveedor) {
@@ -81,8 +82,11 @@ private proovedorClase proveedorSeleccionado;
 
         if (txtNombre.isEmpty() || txtCuil.isEmpty() ||
                 txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("Campos vacios", "Falta completar informacion", "Por favor, complete los campos faltantes y vuelva a intentarlo.", Alert.AlertType.INFORMATION);
+
             return;
         }
+
 
         String mensaje = String.format(
                 "¿Confirmas los datos del proveedor?\n\n" +

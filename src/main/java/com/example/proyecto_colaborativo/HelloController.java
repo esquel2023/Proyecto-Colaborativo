@@ -56,8 +56,14 @@ public class HelloController {
 
     }
 
-    public void botonProveedores (ActionEvent actionEvent) {
-            }
+    public void botonProveedores (ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("proveedores.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Stage stage = new Stage();
+        stage.setTitle("Proveedores");
+        stage.setScene(scene);
+        stage.show();
+    }
     public void botonStock (ActionEvent actionEvent){
             }
 
