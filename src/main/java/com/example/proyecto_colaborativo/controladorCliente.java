@@ -105,6 +105,11 @@ public class controladorCliente {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacios, por favor, agrega toda la informacion requerida y vuelve a intentarlo.", Alert.AlertType.INFORMATION);
             return;
         }
+        if (txtDni.contains("-") ||
+                 !txtEmail.contains("@") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacios, por favor, agrega toda la informacion requerida y vuelve a intentarlo.", Alert.AlertType.INFORMATION);
+            return;
+        }
         String texto = dni.getText();
 
         try {
