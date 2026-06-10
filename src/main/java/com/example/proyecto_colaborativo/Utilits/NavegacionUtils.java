@@ -1,4 +1,4 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Utilits;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,7 +19,7 @@ public class NavegacionUtils {
     public  static void abrirPantalla(String rutaFxml,String titulo, boolean esModal) {
         try {
             // 1. Cargar el diseño FXML
-            FXMLLoader fxmlLoader = new FXMLLoader(NavegacionUtils.class.getResource(rutaFxml));
+            FXMLLoader fxmlLoader = new FXMLLoader(NavegacionUtils.class.getResource("/com/example/proyecto_colaborativo/"+rutaFxml));
             Scene scene = new Scene(fxmlLoader.load());
 
             // 2. Crear y configurar el nuevo Stage
