@@ -114,9 +114,12 @@ public class ControladorProducto {
     private void clickModificar(ActionEvent event) {
         // LLAMADA A LA CLASE UTILITARIA
         // 1. Validar que el usuario haya seleccionado una fila previamente
-        AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
-                "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
+        if (productoseleccionado == null) {
+            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
+                    "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
 
+            return;
+        }
 
         try {
             // 2. Tomar los nuevos valores directamente desde los TextField
@@ -126,7 +129,7 @@ public class ControladorProducto {
             String nuevonombre = nombre.getText();
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
-            if (nuevacantidad < 0 || nuevacantidad <0) {
+            if (nuevacantidad <= 0 || nuevoPrecio <=0) {
                 AlertasUtils.mostrarAlerta("Valores inválidos", "Números negativos detectados",
                         "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);
 
@@ -182,7 +185,7 @@ public class ControladorProducto {
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
-            if (nuevacantidad < 0 || nuevoPrecio < 0){
+            if (nuevacantidad <= 0 || nuevoPrecio <= 0){
                 AlertasUtils.mostrarAlerta("Valores inválidos Números negativos detectados",
                         "La cantidad y el precio final no pueden ser números negativos", "Por favor ingresá valores mayores o iguales a cero.",Alert.AlertType.ERROR);
 
