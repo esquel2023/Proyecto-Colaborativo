@@ -1,5 +1,7 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

@@ -1,13 +1,12 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.AlertasUtils;
-import com.example.proyecto_colaborativo.BuscadorUtils;
-import com.example.proyecto_colaborativo.Producto;
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
+import com.example.proyecto_colaborativo.Clases.Producto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
