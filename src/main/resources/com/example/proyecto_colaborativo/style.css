@@ -1,0 +1,31 @@
+*{
+    -fx-primary-color: #374151;
+    -fx-secondary-color: #D1D5DB;
+    -fx-font-family: "Fira Code Light";
+             -fx-font-weight: BOLD;
+             -fx-font-size: 10.0px;
+             -fx-text-alignment:center;
+}
+.button{
+    -fx-background-color:  -fx-secondary-color;
+    -fx-padding:5px 5px;
+    -fx-border-width:3px;
+    -fx-border-color: -fx-primary-color;
+    -fx-border-radius:5px
+}
+
+.button:hover { -fx-background-color: #567C8D;
+
+}
+
+.text-field {   -fx-background-color: -fx-primary-color;
+                -fx-opacity:0.6;
+                -fx-border-color: #FFFFFF;
+                -fx-border-width: 1.4;
+                -fx-background-radius: 10px;
+                -fx-cursor:text;
+                -fx-pref-height:10px;
+                -fx-max-height:10px;
+                -fx-padding: 10px;
+}
+
