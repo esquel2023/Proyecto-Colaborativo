@@ -1,5 +1,8 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Clases.claseFactura;
+import com.example.proyecto_colaborativo.Clases.clienteClase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,31 +15,49 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class controladorCliente {
-    @FXML public TableView<claseFactura> tablaClientes1;
-    @FXML public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
-    @FXML public TableColumn<claseFactura, String> dniTabla1;
+    @FXML
+    public TableView<claseFactura> tablaClientes1;
+    @FXML
+    public TableColumn<claseFactura, String> nombreTabla1; // Esta será para la Fecha
+    @FXML
+    public TableColumn<claseFactura, String> dniTabla1;
     clienteClase Cliente;
 
-    @FXML private Button lupa;
-    @FXML private Button botonAgregar;
-    @FXML private Button botonModificar;
-    @FXML private Button botonEliminar;
+    @FXML
+    private Button lupa;
+    @FXML
+    private Button botonAgregar;
+    @FXML
+    private Button botonModificar;
+    @FXML
+    private Button botonEliminar;
 
-    @FXML private TextField cuil;
-    @FXML private TextField buscadorClientes;
-    @FXML private TextField telefono;
-    @FXML private TextField dni;
-    @FXML private TextField nombreApellido;
-    @FXML private TextField direccion;
-    @FXML private TextField email;
+    @FXML
+    private TextField cuil;
+    @FXML
+    private TextField buscadorClientes;
+    @FXML
+    private TextField telefono;
+    @FXML
+    private TextField dni;
+    @FXML
+    private TextField nombreApellido;
+    @FXML
+    private TextField direccion;
+    @FXML
+    private TextField email;
 
     public TableView<Object> tablaClientes;
-    @FXML private TableColumn<clienteClase, String> nombreTabla;
-    @FXML private TableColumn<clienteClase, String> dniTabla;
-    @FXML private TableColumn<clienteClase, String> telefonoTabla;
+    @FXML
+    private TableColumn<clienteClase, String> nombreTabla;
+    @FXML
+    private TableColumn<clienteClase, String> dniTabla;
+    @FXML
+    private TableColumn<clienteClase, String> telefonoTabla;
 
     private final ObservableList<Object> listaClientesObs = FXCollections.observableArrayList();
     private final ObservableList<claseFactura> listaFacturasObs = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
 
@@ -60,7 +81,7 @@ public class controladorCliente {
                 clienteClase clienteSeleccionado = (clienteClase) newSelection;
 
                 // Filtramos las facturas usando el método de abajo
-                cargarFacturasDelCliente(clienteSeleccionado);
+                //  cargarFacturasDelCliente(clienteSeleccionado);
             } else {
                 // Si deseleccionan al cliente, limpiamos la tabla de facturas
                 listaFacturasObs.clear();
@@ -81,9 +102,26 @@ public class controladorCliente {
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
                 txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacios, por favor, agrega toda la informacion requerida y vuelve a intentarlo.", Alert.AlertType.INFORMATION);
             return;
         }
+        if (txtDni.contains("-") ||
+                 !txtEmail.contains("@") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacios, por favor, agrega toda la informacion requerida y vuelve a intentarlo.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        String texto = dni.getText();
 
+        try {
+
+            int numero = Integer.parseInt(texto);
+            System.out.println("Número válido: " + numero);
+
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("Datos invalidos", "Dni", "Por favor, corriga el DNI sin puntos ni guiones ni letras ni caracteres... y vuelva a intentarlo.", Alert.AlertType.INFORMATION);
+
+            return;
+        }
 
         String mensaje = String.format(
                 "¿Confirmas los datos del cliente?\n\n" +
@@ -167,6 +205,9 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
+}
+
+/*
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
 
@@ -182,6 +223,6 @@ public class controladorCliente {
                 listaFacturasObs.add(factura);
             }
         }
-    }
-}
+    }*/
+
 

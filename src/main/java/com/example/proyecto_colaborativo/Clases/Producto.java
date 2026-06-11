@@ -1,4 +1,4 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Clases;
 
 import javafx.beans.property.*;
 

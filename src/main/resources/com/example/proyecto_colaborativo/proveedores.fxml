@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="731.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="731.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProovedor">
    <children>
       <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
          <menus>
@@ -34,23 +34,21 @@
       <Button fx:id="botonModificar" layoutX="92.0" layoutY="67.0" mnemonicParsing="false" onAction="#botonModificar" text="Modificar" />
       <Button fx:id="botonEliminar" layoutX="170.0" layoutY="67.0" mnemonicParsing="false" onAction="#botonElimina" text="Eliminar" />
       <TextField fx:id="cuil" layoutX="22.0" layoutY="139.0" prefHeight="25.0" prefWidth="115.0" promptText="Cuil/cuit" />
-      <TextField fx:id="buscadorClientes" layoutX="22.0" layoutY="171.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de clientes" />
+      <TextField fx:id="buscadorProovedores" layoutX="22.0" layoutY="171.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de clientes" />
       <TextField fx:id="telefono" layoutX="152.0" layoutY="101.0" prefHeight="25.0" prefWidth="115.0" promptText="Telefono" />
-      <TextField fx:id="dni" layoutX="280.0" layoutY="101.0" prefHeight="25.0" prefWidth="115.0" promptText="DNI" />
-      <TableView fx:id="tablaClientes" layoutX="19.0" layoutY="216.0" prefHeight="162.0" prefWidth="381.0">
+      <TableView fx:id="tablaProovedores" layoutX="19.0" layoutY="216.0" prefHeight="162.0" prefWidth="381.0">
          <columns>
-            <TableColumn fx:id="nombreTabla" prefWidth="158.0" text="Nombre Apellido" />
-            <TableColumn fx:id="dniTabla" prefWidth="104.0" text="DNI" />
+            <TableColumn fx:id="nombreTabla" prefWidth="158.0" text="Nombre" />
             <TableColumn fx:id="telefonoTabla" prefWidth="118.0" text="Telefono" />
          </columns>
       </TableView>
-      <TextField fx:id="nombreApellido" layoutX="21.0" layoutY="101.0" prefHeight="25.0" prefWidth="115.0" promptText="Nombre y Apellido" />
+      <TextField fx:id="nombre" layoutX="21.0" layoutY="101.0" prefHeight="25.0" prefWidth="115.0" promptText="Nombre y Apellido" />
       <TextField fx:id="direccion" layoutX="152.0" layoutY="139.0" prefHeight="25.0" prefWidth="115.0" promptText="Direccion" />
       <TextField fx:id="email" layoutX="280.0" layoutY="139.0" prefHeight="25.0" prefWidth="115.0" promptText="Email" />
-      <TableView fx:id="tablaClientes1" layoutX="433.0" layoutY="128.0" prefHeight="162.0" prefWidth="258.0">
+      <TableView fx:id="tablaProductosProovedor" layoutX="433.0" layoutY="128.0" prefHeight="162.0" prefWidth="258.0">
          <columns>
-            <TableColumn fx:id="nombreTabla1" prefWidth="121.0" text="Fecha" />
-            <TableColumn fx:id="dniTabla1" prefWidth="141.0" text="N° FACTURA" />
+            <TableColumn fx:id="prooductosProovedor" prefWidth="121.0" text="Producto" />
+            <TableColumn fx:id="precioProovedor" prefWidth="141.0" text="Precio" />
          </columns>
       </TableView>
    </children>
