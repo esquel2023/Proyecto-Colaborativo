@@ -1,6 +1,6 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Clases;
 
-public class clienteClase extends entidadClase{
+public class clienteClase extends entidadClase {
 
 
     // Constructor por defecto

@@ -1,12 +1,10 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Utilits;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-import javax.swing.*;
-import java.io.FileFilter;
 import java.util.function.BiPredicate;
 
 public class BuscadorUtils {

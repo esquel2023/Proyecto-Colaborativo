@@ -1,4 +1,4 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Clases;
 
 public class entidadClase {
  //CLASE ENTIDAD GENERAL

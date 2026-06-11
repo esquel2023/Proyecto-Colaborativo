@@ -1,4 +1,4 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Clases;
 
 public class proovedorClase extends entidadClase {
     public proovedorClase (){
