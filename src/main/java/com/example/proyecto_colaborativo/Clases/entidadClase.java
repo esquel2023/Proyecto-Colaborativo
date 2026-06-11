@@ -1,6 +1,6 @@
-package com.example.proyecto_colaborativo;
+package com.example.proyecto_colaborativo.Clases;
 
-public class eliseoClase {
+public class entidadClase {
  //CLASE ENTIDAD GENERAL
     private String nombreEntidad;
     private String telefonoEntidad;

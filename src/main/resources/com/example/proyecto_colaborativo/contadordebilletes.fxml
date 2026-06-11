@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorBilletes">
+   <children>
+      <Text fx:id="finaltarjeta" layoutX="43.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Tarjeta:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <Text fx:id="finalcaja" layoutX="247.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Caja:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <Label fx:id="totalTarjeta" layoutX="63.0" layoutY="351.0" text="Label" />
+      <Label fx:id="totalCaja" layoutX="260.0" layoutY="351.0" text="Label" />
+      <Button fx:id="salir" layoutX="352.0" layoutY="356.0" mnemonicParsing="false" onAction="#salirPantalla" text="Salir" />
+      <ImageView id="billete50" fx:id="billete50" fitHeight="59.0" fitWidth="101.0" layoutX="103.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField layoutX="14.0" layoutY="38.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="14.0" layoutY="69.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="14.0" layoutY="105.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="14.0" layoutY="136.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="14.0" layoutY="204.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="14.0" layoutY="238.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="14.0" layoutY="269.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="219.0" layoutY="41.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="219.0" layoutY="72.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="219.0" layoutY="108.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="219.0" layoutY="139.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="219.0" layoutY="176.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="219.0" layoutY="207.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <TextField layoutX="219.0" layoutY="241.0" prefHeight="25.0" prefWidth="82.0" promptText="Cant. billetes" />
+      <TextField layoutX="219.0" layoutY="272.0" prefHeight="25.0" prefWidth="82.0" promptText="Total billetes" />
+      <ImageView id="billete50" fx:id="billete100" fitHeight="59.0" fitWidth="101.0" layoutX="103.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete200" fx:id="billete200" fitHeight="59.0" fitWidth="101.0" layoutX="103.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete500" fx:id="billete500" fitHeight="59.0" fitWidth="101.0" layoutX="103.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete1000" fx:id="billete1000" fitHeight="59.0" fitWidth="101.0" layoutX="306.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete2000" fx:id="billete2000" fitHeight="59.0" fitWidth="101.0" layoutX="306.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete10000" fx:id="billete10000" fitHeight="59.0" fitWidth="101.0" layoutX="306.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView id="billete20000" fx:id="billete20000" fitHeight="59.0" fitWidth="101.0" layoutX="306.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
