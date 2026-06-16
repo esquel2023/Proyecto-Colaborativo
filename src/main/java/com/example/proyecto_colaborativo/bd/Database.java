@@ -6,12 +6,11 @@ import java.sql.DriverManager;
 public class Database {
 
     //url de su archivo de db
-    private static final String URL = "jdbc:sqlite:C:/Users/opcd11/Downloads/SQLiteDatabaseBrowserPortable/SistemaGDV.db";
+    private static final String URL = "jdbc:sqlite:C:/Users/opcd06/Downloads/SQLiteDatabaseBrowserPortable/SistemaVentas.db";
 
     public static Connection getConnection() {
-
         try {
-            System.out.println("Si!");
+            System.out.println("Conectando a BD");
             return DriverManager.getConnection(URL);
         } catch (Exception e) {
             throw new RuntimeException("Error conexión SQLite", e);

@@ -9,7 +9,6 @@ module com.example.proyecto_colaborativo {
     requires java.desktop;
     requires java.sql;
 
-
     opens com.example.proyecto_colaborativo to javafx.fxml;
     opens com.example.proyecto_colaborativo.Controlador to javafx.fxml;
     exports com.example.proyecto_colaborativo;
