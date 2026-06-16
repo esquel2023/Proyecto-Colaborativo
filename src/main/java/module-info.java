@@ -7,6 +7,7 @@ module com.example.proyecto_colaborativo {
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
+    requires java.sql;
 
     opens com.example.proyecto_colaborativo to javafx.fxml;
     opens com.example.proyecto_colaborativo.Controlador to javafx.fxml;

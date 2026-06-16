@@ -28,5 +28,12 @@ public class Producto {
     public Integer getCantidad() { return cantidad.get(); }
     public double getPrecio() { return precio.get(); }
     public String getCodigoTabla() { return codigoTabla.get(); }
+
+    // Setters ordinarios
+    public void setNombre(String nombre) { this.nombre.set(nombre); }
+    public void setCantidad(Integer cantidad) { this.cantidad.set(cantidad); }
+    public void setPrecio(double precio) { this.precio.set(precio); }
+    public void setCodigoTabla(String codigoTabla) { this.codigoTabla.set(codigoTabla); }
+
 }
 
