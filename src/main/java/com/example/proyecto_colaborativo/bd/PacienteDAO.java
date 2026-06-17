@@ -1,14 +1,16 @@
 package com.example.proyecto_colaborativo.bd;
 
 
+import com.example.proyecto_colaborativo.Clases.claseFactura;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteDAO {
 
-    public static List<Paciente> listar() {
-        List<Paciente> lista = new ArrayList<>();
+    public static List<claseFactura> listar() {
+        List<claseFactura> lista = new ArrayList<>();
         String sql = "SELECT * FROM paciente ORDER BY apellido";
 
         try (Connection c = Database.getConnection();
@@ -16,7 +18,7 @@ public class PacienteDAO {
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                Paciente p = new Paciente();
+                claseFactura p = new claseFactura();
                 p.setId(rs.getInt("id"));
                 p.setNombre(rs.getString("nombre"));
                 p.setApellido(rs.getString("apellido"));
@@ -30,7 +32,7 @@ public class PacienteDAO {
         return lista;
     }
 
-    public static void insertar(Paciente p) {
+    public static void insertar(claseFactura p) {
         String sql = "INSERT INTO paciente(nombre, apellido, edad, obra_social) VALUES(?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -45,7 +47,7 @@ public class PacienteDAO {
             e.printStackTrace();
         }
     }
-    public static Paciente buscarPorId(int id) {
+    public static claseFactura buscarPorId(int id) {
         String sql = "SELECT * FROM paciente WHERE id=?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -54,12 +56,17 @@ public class PacienteDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Paciente(
-                        rs.getInt("id"),
+                return new claseFactura(
+                        rs.getString("id"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
-                        rs.getInt("edad"),
-                        rs.getString("obra_social")
+                        rs.getString("edad"),
+                        rs.getDouble(""),
+                        rs.getDouble("id"),
+                        rs.getString("nombre"),
+                        rs.getString("nombre")
+
+
                 );
             }
 
@@ -69,7 +76,7 @@ public class PacienteDAO {
         return null;
     }
 
-    public static void actualizar(Paciente p) throws SQLException {
+    public static void actualizar(claseFactura p) throws SQLException {
         String sql = """
             UPDATE paciente
             SET nombre=?, apellido=?, edad=?, obra_social=?

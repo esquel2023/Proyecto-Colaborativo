@@ -1,5 +1,7 @@
 package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
+import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Clases.clienteClase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControladorFactura implements Initializable {
@@ -45,10 +48,10 @@ public class ControladorFactura implements Initializable {
     @FXML
     private TableColumn<Producto, Double> colPrecio;
 
-    @FXML
-    private TableColumn<claseFactura, Double> colSubtotal;
-    claseFactura clasefactura;
+    private final ObservableList<Producto> listaUsuarios = FXCollections.observableArrayList();
 
+    // Instanciamos el DAO de manera global en el controlador
+//    private final productoDao usuarioDAO = new productoDao();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,7 +76,7 @@ public class ControladorFactura implements Initializable {
             producto.add(
                     new Producto(
                             "Alfajor",
-                            "2",
+                            2,
                             1000,
                             "0001"
                     )
@@ -81,8 +84,7 @@ public class ControladorFactura implements Initializable {
 
             producto.add(
                     new Producto(
-                            "Helado",
-                            "1",
+                            "Helado", 1,
                             2500,
                             "0002"
                     )
@@ -97,8 +99,14 @@ public class ControladorFactura implements Initializable {
             colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
             colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-            colSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
         }
+    private void actualizarTabla() {
+//        datosTabla.clear();
+//
+//        // El controlador recibe una lista de Java pura y la convierte en observable para la interfaz
+//        List<Producto> datosBD = productoDAO.listarTodos();
+//        listaUsuarios.addAll(datosBD);
+    }
 
     public void facturaTipo(ActionEvent actionEvent) {
         
