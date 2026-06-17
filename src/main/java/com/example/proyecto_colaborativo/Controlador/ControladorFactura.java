@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.bd.productoDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,7 +52,7 @@ public class ControladorFactura implements Initializable {
     private final ObservableList<Producto> listaUsuarios = FXCollections.observableArrayList();
 
     // Instanciamos el DAO de manera global en el controlador
-//    private final productoDao usuarioDAO = new productoDao();
+        private final productoDao usuarioDAO = new productoDao();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

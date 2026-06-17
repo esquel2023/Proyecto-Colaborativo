@@ -3,12 +3,15 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.sql.SQLException;
 
 public class ControladorProducto {
 
@@ -64,12 +67,16 @@ public class ControladorProducto {
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-
+        /*
         listaProductos.addAll(
                 new Producto("Arroz 1kg", 50, 1200.50, "PROD001"),
                 new Producto("Leche Entera", 30, 950.00, "PROD002"),
                 new Producto("Aceite Girasol", 15, 2500.00, "PROD003")
-        );
+        );*/
+
+        // MEJORA: Cargamos los datos reales desde la base de datos en vez de datos fijos
+        cargarDatosDesdeBD();
+
 
         // ==========================================
         // LLAMADA A LA CLASE REUTILIZABLE
@@ -88,7 +95,7 @@ public class ControladorProducto {
         );
 
         // 4. Cargar los datos en la tabla
-      // tablaProductos.setItems(listaProductos);
+       tablaProductos.setItems(listaProductos);
 
 
         // Escuchar cuando el usuario selecciona una fila de la tabla
@@ -107,6 +114,8 @@ public class ControladorProducto {
             }
 
         });
+
+
     }
     // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
@@ -138,10 +147,14 @@ public class ControladorProducto {
 
             // 3. Modificar las propiedades del objeto observable
             // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
-            productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
+           // productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
+            productoseleccionado.codigoTablaProperty().set(nuevacodigo);
             productoseleccionado.nombreProperty().set(nuevonombre);
             productoseleccionado.cantidadProperty().set(nuevacantidad);
             productoseleccionado.precioProperty().set(nuevoPrecio);
+
+            // 2. Persistir el cambio en la Base de Datos
+            ProductoDAO.actualizar(productoseleccionado);
 
 
             // 4. Refrescar la tabla para asegurar que los cambios visuales se apliquen
@@ -160,6 +173,10 @@ public class ControladorProducto {
                             "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
                             "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.", Alert.AlertType.ERROR);
 
+        } catch (SQLException e) {
+           // throw new RuntimeException(e);
+            AlertasUtils.mostrarAlerta("Error de BD", "Error al actualizar", "No se pudo guardar en la base de datos.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
 
     }
@@ -194,11 +211,15 @@ public class ControladorProducto {
 
             // 3. Crear la nueva instancia de Producto
             Producto nuevoProducto = new Producto( nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
-
+            ProductoDAO.insertar(nuevoProducto);
             // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
             listaProductos.add(nuevoProducto);
 
-            // 5. Limpiar los componentes de la interfaz
+            // 4. Guardar en la Base de Datos primero
+            //ProductoDAO.insertar(nuevoProducto);
+
+            // 5. Refrescar la interfaz gráfica
+            cargarDatosDesdeBD();
             limpiarCampos();
             AlertasUtils.mostrarAlerta("Éxito", "Producto agregado", "El producto se añadió correctamente a la lista.",Alert.AlertType.INFORMATION);
 
@@ -211,6 +232,14 @@ public class ControladorProducto {
                             "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.",Alert.AlertType.ERROR);
 
         }
+
+    }
+
+    private void cargarDatosDesdeBD() {
+
+            listaProductos.clear();
+            listaProductos.addAll(ProductoDAO.listar());
+            tablaProductos.setItems(listaProductos);
 
     }
 
