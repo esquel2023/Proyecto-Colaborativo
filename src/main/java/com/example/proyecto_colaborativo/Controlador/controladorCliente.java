@@ -127,17 +127,42 @@ public class controladorCliente {
     @FXML
     void botonModificar(ActionEvent event) {
         clienteClase clienteSeleccionado = tablaClientes.getSelectionModel().getSelectedItem();
+        String txtNombre = nombreApellido.getText();
+        String txtDni = dni.getText();
+        String txtTelefono = telefono.getText();
+        String txtEmail = email.getText();
+        String txtDireccion = direccion.getText();
+        String txtCuil = cuil.getText();
+
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
+                txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        try {
+            Integer.parseInt(txtDni); // Validación simplificada sin variables huérfanas
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+            return;
+        }
 
         if (clienteSeleccionado != null) {
             // 1. Extrae los NUEVOS datos que el usuario escribió en los campos
-            clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
-            clienteSeleccionado.setDniEntidad(dni.getText());
-            clienteSeleccionado.setTelefonoEntidad(telefono.getText());
-            clienteSeleccionado.setEmailEntidad(email.getText());
-            clienteSeleccionado.setDireccionEntidad(direccion.getText());
-            clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
+
 
             try {
+                clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
+                clienteSeleccionado.setDniEntidad(dni.getText());
+                clienteSeleccionado.setTelefonoEntidad(telefono.getText());
+                clienteSeleccionado.setEmailEntidad(email.getText());
+                clienteSeleccionado.setDireccionEntidad(direccion.getText());
+                clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
                 // 2. Guarda los cambios de forma permanente en la Base de Datos
                 ClienteDAO.actualizar(clienteSeleccionado);
 

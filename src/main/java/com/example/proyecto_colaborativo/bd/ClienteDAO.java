@@ -75,11 +75,10 @@ public class ClienteDAO {
     }
 
     public static void actualizar(clienteClase p) throws SQLException {
-        // CORREGIDO: Se eliminó 'direccion' para que coincida con las columnas reales de tu tabla
         String sql = """
         UPDATE cliente
         SET nombre=?, dni=?, telefono=?, email=?, apellido=?
-        WHERE nombre=?
+        WHERE dni=?
     """;
 
         try (Connection c = Database.getConnection();
@@ -89,12 +88,20 @@ public class ClienteDAO {
             ps.setString(2, p.getDniEntidad());
             ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
-            ps.setString(5, p.getCuitcuilEntidad()); // Recuerda que esto se mapea a 'apellido' en tu BD
-            ps.setString(6, p.getNombreEntidad());    // Condición WHERE
+            ps.setString(5, p.getCuitcuilEntidad());
 
-            ps.executeUpdate();
+            // CORREGIDO: Enviamos el DNI para que coincida con el WHERE dni=?
+            ps.setString(6, p.getDniEntidad());
+
+            int filasAfectadas = ps.executeUpdate();
+            System.out.println("Filas actualizadas en la base de datos: " + filasAfectadas);
+
+        } catch (Exception e) {
+            System.out.println("Error al actualizar:");
+            e.printStackTrace();
         }
     }
+
 
 
 
