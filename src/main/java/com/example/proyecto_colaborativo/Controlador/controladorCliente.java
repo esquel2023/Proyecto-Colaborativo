@@ -63,7 +63,7 @@ public class controladorCliente {
                 // Rellena los TextField con los datos del cliente seleccionado
                 nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
                 dni.setText(clienteSeleccionado.getDniEntidad());
-                telefono.setText(clienteSeleccionado.getTelefonoEntidad());
+                telefono.setText(String.valueOf(clienteSeleccionado.getTelefonoEntidad()));
                 email.setText(clienteSeleccionado.getEmailEntidad());
                 direccion.setText(clienteSeleccionado.getDireccionEntidad());
                 cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
@@ -115,10 +115,21 @@ public class controladorCliente {
         Optional<ButtonType> resultado = alerta.showAndWait();
 
         if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-            clienteClase nuevoCliente = new clienteClase(txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil);
+            // Creamos el objeto vacío (el ID por defecto arranca en 0)
+            clienteClase nuevoCliente = new clienteClase();
+
+            // Le cargamos los textos de la pantalla
+            nuevoCliente.setNombreEntidad(txtNombre);
+            nuevoCliente.setDniEntidad(txtDni);
+            nuevoCliente.setTelefonoEntidad(Integer.parseInt(txtTelefono));
+            nuevoCliente.setEmailEntidad(txtEmail);
+            nuevoCliente.setDireccionEntidad(txtDireccion);
+            nuevoCliente.setCuitcuilEntidad(txtCuil);
+
+            // Lo mandamos al DAO. SQLite ignorará el ID 0 e insertará uno nuevo automático (ej: 1, 2, 3...)
             ClienteDAO.insertar(nuevoCliente);
 
-            listaClientesObs.setAll(ClienteDAO.listar()); // Recarga limpia desde la base de datos
+            listaClientesObs.setAll(ClienteDAO.listar()); // Recarga la tabla leyendo los IDs nuevos
             limpiarCampos();
             System.out.println("Cliente agregado con éxito.");
         }
@@ -131,11 +142,9 @@ public class controladorCliente {
         String txtDni = dni.getText();
         String txtTelefono = telefono.getText();
         String txtEmail = email.getText();
-        String txtDireccion = direccion.getText();
         String txtCuil = cuil.getText();
 
-        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
-                txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
             return;
         }
@@ -146,35 +155,35 @@ public class controladorCliente {
         }
 
         try {
-            Integer.parseInt(txtDni); // Validación simplificada sin variables huérfanas
+            Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
             AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
             return;
         }
 
-        if (clienteSeleccionado != null) {
-            // 1. Extrae los NUEVOS datos que el usuario escribió en los campos
+
+        try {
 
 
-            try {
-                clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
-                clienteSeleccionado.setDniEntidad(dni.getText());
-                clienteSeleccionado.setTelefonoEntidad(telefono.getText());
-                clienteSeleccionado.setEmailEntidad(email.getText());
-                clienteSeleccionado.setDireccionEntidad(direccion.getText());
-                clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
-                // 2. Guarda los cambios de forma permanente en la Base de Datos
-                ClienteDAO.actualizar(clienteSeleccionado);
+            clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
+            clienteSeleccionado.setDniEntidad(dni.getText());
+            clienteSeleccionado.setTelefonoEntidad(Integer.valueOf((telefono.getText())));
+            clienteSeleccionado.setEmailEntidad(email.getText());
+            clienteSeleccionado.setDireccionEntidad(direccion.getText());
+            clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
+            // 2. Guarda los cambios de forma permanente en la Base de Datos
+            ClienteDAO.actualizar(clienteSeleccionado);
 
-                // 3. Refresca la interfaz visual
-                tablaClientes.refresh();
-                limpiarCampos();
-                System.out.println("Cliente modificado con éxito en la BD.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 3. Refresca la interfaz visual
+            tablaClientes.refresh();
+            limpiarCampos();
+            System.out.println("Cliente modificado con éxito en la BD.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+
 
     @FXML
     void botonElimina(ActionEvent event) {

@@ -3,7 +3,7 @@ package com.example.proyecto_colaborativo.Clases;
 public class entidadClase {
  //CLASE ENTIDAD GENERAL
     private String nombreEntidad;
-    private String telefonoEntidad;
+    private Integer telefonoEntidad;
     private String dniEntidad;
     private String emailEntidad;
     private String direccionEntidad;
@@ -18,11 +18,11 @@ public class entidadClase {
         this.nombreEntidad = nombreEntidad;
     }
 
-    public String getTelefonoEntidad() {
+    public int getTelefonoEntidad() {
         return telefonoEntidad;
     }
 
-    public void setTelefonoEntidad(String telefonoEntidad) {
+    public void setTelefonoEntidad(Integer telefonoEntidad) {
         this.telefonoEntidad = telefonoEntidad;
     }
 
