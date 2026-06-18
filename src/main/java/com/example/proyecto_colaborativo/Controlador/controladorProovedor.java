@@ -2,6 +2,8 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
+import com.example.proyecto_colaborativo.bd.ClienteDAO;
+import com.example.proyecto_colaborativo.bd.ProveedorDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,31 +43,36 @@ private proovedorClase proveedorSeleccionado;
         if (tablaProovedores != null) {
             tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
             tablaProductosProovedor.setPlaceholder(new Label("Este proveedor no tiene productos"));
+
+            // 1. Configuración de mapeo de columnas de las tablas
             nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
             telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
             prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
             precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
-            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
 
-                    this.proveedorSeleccionado = (proovedorClase) newValue;
+            listaProveedoresObs.setAll(ProveedorDAO.listar());
 
-                    System.out.println("Seleccionaste al proveedor: " + proveedorSeleccionado.getNombreEntidad());
-
-                    nombre.setText(proveedorSeleccionado.getNombreEntidad());
-                    telefono.setText(proveedorSeleccionado.getTelefonoEntidad());
-                    email.setText(proveedorSeleccionado.getEmailEntidad());
-                    direccion.setText(proveedorSeleccionado.getDireccionEntidad());
-                    cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
-
-
-                    cargarProductosDelProveedor(proveedorSeleccionado);
-                }
-            });
-            // Asignar listas a las tablas de proveedores
             tablaProovedores.setItems(listaProveedoresObs);
-            tablaProductosProovedor.setItems(listaProductosProveedorObs);
+           // tablaProductosProovedor.setItems(listaProductosProveedorObs);
 
+            // 3. Listener de selección optimizado
+            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                // Si no hay nada seleccionado (o se deseleccionó), limpiamos todo
+                if (newValue == null) {
+                    listaProductosProveedorObs.clear();
+                    limpiarCampos();
+                    this.proveedorSeleccionado = null;
+                    return;
+                }
+
+                nombre.setText(proveedorSeleccionado.getNombreEntidad());
+                telefono.setText(String.valueOf(proveedorSeleccionado.getTelefonoEntidad()));
+                email.setText(proveedorSeleccionado.getEmailEntidad());
+                direccion.setText(proveedorSeleccionado.getDireccionEntidad());
+                cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
+
+                cargarProductosDelProveedor(proveedorSeleccionado);
+            });
         }
     }
 
@@ -113,11 +120,12 @@ private proovedorClase proveedorSeleccionado;
 
         if (resultado.isPresent() && resultado.get() == botonConfirmar) {
             // Aquí agregas el objeto correspondiente a tu lista observable de proveedores
-            proovedorClase proveedor = new proovedorClase(txtNombre, txtTelefono, txtEmail, txtDireccion, txtCuil);
-            listaProveedoresObs.add(proveedor);
+            proovedorClase proveedor = new proovedorClase(1, txtNombre, txtTelefono, txtEmail, txtDireccion, txtCuil);
+            ProveedorDAO.insertar(proveedor);
 
+            listaProveedoresObs.setAll(ClienteDAO.listar()); // Recarga limpia desde la base de datos
             limpiarCampos();
-            System.out.println("Proveedor agregado con éxito.");
+            System.out.println("Cliente agregado con éxito.");
         } else {
             System.out.println("El usuario decidió corregir los datos.");
         }
@@ -152,7 +160,7 @@ private proovedorClase proveedorSeleccionado;
 
         // 5. Modificar las propiedades usando los setters que me mostraste
         proveedorSeleccionado.setNombreEntidad(nuevonombre);
-        proveedorSeleccionado.setTelefonoEntidad(nuevotelefono);
+        proveedorSeleccionado.setTelefonoEntidad((nuevotelefono));
         proveedorSeleccionado.setEmailEntidad(nuevoemail);
         proveedorSeleccionado.setDireccionEntidad(nuevadireccion);
         proveedorSeleccionado.setCuitcuilEntidad(nuevocuil);
