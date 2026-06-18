@@ -98,10 +98,6 @@ public class ControladorProducto {
                 }
         );
 
-        // 4. Cargar los datos en la tabla
-       tablaProductos.setItems(listaProductos);
-
-
         // Escuchar cuando el usuario selecciona una fila de la tabla
         tablaProductos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -209,10 +205,11 @@ public class ControladorProducto {
             }
 
             // 2. Extraer los datos de las cajas de texto
-            String nuevocodigo = codigo.getText();
+           // String nuevocodigo = codigo.getText();
             String nuevonombre = nombre.getText();
             Integer nuevacantidad = Integer.parseInt(cantidad.getText());
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+            String nuevocodigoBarra = codigoBarras.getText();
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
             if (nuevacantidad <= 0 || nuevoPrecio <= 0){
@@ -224,7 +221,7 @@ public class ControladorProducto {
 
 
             // 3. Crear la nueva instancia de Producto
-            Producto nuevoProducto = new Producto(nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
+            Producto nuevoProducto = new Producto(nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigoBarra);
             ProductoDAO.insertar(nuevoProducto);
             // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
             listaProductos.add(nuevoProducto);
@@ -252,7 +249,7 @@ public class ControladorProducto {
     private void cargarDatosDesdeBD() {
 
         try {
-           // listaProductos.clear();
+            listaProductos.clear();
             //listaProductos.addAll(ProductoDAO.listar());
             listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
@@ -279,7 +276,7 @@ public class ControladorProducto {
     }
 
 
-    public void clickEliminar(ActionEvent event) {
+    public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
         if (productoseleccionado == null){
            AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
@@ -298,6 +295,8 @@ public class ControladorProducto {
 
         // 4. Si el usuario hace clic en OK, se procede a la eliminación
         if (resultado.isPresent() && resultado.get() == javafx.scene.control.ButtonType.OK) {
+
+            ProductoDAO.eliminar(productoseleccionado.getidProducto());
             // Elimina físicamente el ítem de la lista de datos
             listaProductos.remove(productoseleccionado);
 
