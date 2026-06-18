@@ -58,17 +58,20 @@ public class controladorCliente {
                 listaFacturasObs.clear();
             }
         });
+
         tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, viejoCliente, clienteSeleccionado) -> {
             if (clienteSeleccionado != null) {
                 // Rellena los TextField con los datos del cliente seleccionado
                 nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
                 dni.setText(clienteSeleccionado.getDniEntidad());
-                telefono.setText(clienteSeleccionado.getTelefonoEntidad());
+                telefono.setText((clienteSeleccionado.getTelefonoEntidad()));
                 email.setText(clienteSeleccionado.getEmailEntidad());
                 direccion.setText(clienteSeleccionado.getDireccionEntidad());
                 cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
             }
         });
+
+
     }
 
     @FXML
@@ -77,11 +80,9 @@ public class controladorCliente {
         String txtDni = dni.getText();
         String txtTelefono = telefono.getText();
         String txtEmail = email.getText();
-        String txtDireccion = direccion.getText();
         String txtCuil = cuil.getText();
 
-        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() ||
-                txtDireccion.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
             return;
         }
@@ -92,15 +93,15 @@ public class controladorCliente {
         }
 
         try {
-            Integer.parseInt(txtDni); // Validación simplificada sin variables huérfanas
+            Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
             AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
             return;
         }
 
         String mensaje = String.format(
-                "¿Confirmas los datos del cliente?\n\nNombre: %s\nDNI: %s\nTeléfono: %s\nEmail: %s\nDirección: %s\nCUIL: %s",
-                txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil
+                "¿Confirmas los datos del cliente?\n\nNombre: %s\nDNI: %s\nTeléfono: %s\nEmail: %s\nCUIL: %s",
+                txtNombre, txtDni, txtTelefono, txtEmail, txtCuil
         );
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
@@ -114,42 +115,78 @@ public class controladorCliente {
 
         Optional<ButtonType> resultado = alerta.showAndWait();
 
-        if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-            clienteClase nuevoCliente = new clienteClase(txtNombre, txtDni, txtTelefono, txtEmail, txtDireccion, txtCuil);
+        try {
+            clienteClase nuevoCliente = new clienteClase();
+
+            // Le cargamos los textos de la pantalla
+            nuevoCliente.setNombreEntidad(txtNombre);
+            nuevoCliente.setDniEntidad(txtDni);
+            nuevoCliente.setTelefonoEntidad((txtTelefono));
+            nuevoCliente.setEmailEntidad(txtEmail);
+            nuevoCliente.setCuitcuilEntidad(txtCuil);
+
+            // Lo mandamos al DAO. SQLite ignorará el ID 0 e insertará uno nuevo automático (ej: 1, 2, 3...)
             ClienteDAO.insertar(nuevoCliente);
 
-            listaClientesObs.setAll(ClienteDAO.listar()); // Recarga limpia desde la base de datos
+            listaClientesObs.setAll(ClienteDAO.listar()); // Recarga la tabla leyendo los IDs nuevos
             limpiarCampos();
             System.out.println("Cliente agregado con éxito.");
+        } catch (Exception e) {
+            System.out.println("asd");
         }
     }
 
     @FXML
     void botonModificar(ActionEvent event) {
-        clienteClase clienteSeleccionado = tablaClientes.getSelectionModel().getSelectedItem();
+        //
+        String txtNombre = nombreApellido.getText();
+        String txtDni = dni.getText();
+        String txtTelefono = telefono.getText();
+        String txtEmail = email.getText();
+        String txtCuil = cuil.getText();
 
-        if (clienteSeleccionado != null) {
-            // 1. Extrae los NUEVOS datos que el usuario escribió en los campos
+
+
+        if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        try {
+            Integer.parseInt(txtDni);
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+
+        try {
+
+            clienteClase clienteSeleccionado = tablaClientes.getSelectionModel().getSelectedItem();
             clienteSeleccionado.setNombreEntidad(nombreApellido.getText());
             clienteSeleccionado.setDniEntidad(dni.getText());
-            clienteSeleccionado.setTelefonoEntidad(telefono.getText());
+            clienteSeleccionado.setTelefonoEntidad((telefono.getText()));
             clienteSeleccionado.setEmailEntidad(email.getText());
             clienteSeleccionado.setDireccionEntidad(direccion.getText());
             clienteSeleccionado.setCuitcuilEntidad(cuil.getText());
+            // 2. Guarda los cambios de forma permanente en la Base de Datos
+            ClienteDAO.actualizar(clienteSeleccionado);
 
-            try {
-                // 2. Guarda los cambios de forma permanente en la Base de Datos
-                ClienteDAO.actualizar(clienteSeleccionado);
-
-                // 3. Refresca la interfaz visual
-                tablaClientes.refresh();
-                limpiarCampos();
-                System.out.println("Cliente modificado con éxito en la BD.");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // 3. Refresca la interfaz visual
+            tablaClientes.refresh();
+            limpiarCampos();
+            System.out.println("Cliente modificado con éxito en la BD.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
+
 
     @FXML
     void botonElimina(ActionEvent event) {

@@ -2,29 +2,30 @@ package com.example.proyecto_colaborativo.bd;
 
 
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Clases.proovedorClase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDAO {
+public class ProveedorDAO {
 
-    public static List<clienteClase> listar(){
-        List<clienteClase> lista = new ArrayList<>();
-        String sql = "SELECT * FROM cliente ORDER BY nombre";
+    public static List<proovedorClase> listar(){
+        List<proovedorClase> lista = new ArrayList<>();
+        String sql = "SELECT * FROM proveedor ORDER BY idproveedor";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                clienteClase p = new clienteClase();
-                p.setId(rs.getInt("idcliente"));
+                proovedorClase p = new proovedorClase();
+                p.setId(rs.getInt("idproveedor"));
                 p.setNombreEntidad(rs.getString("nombre"));
-                p.setDniEntidad(rs.getString("dni"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
-                p.setCuitcuilEntidad(rs.getString("cuit"));
+                p.setDireccionEntidad(rs.getString("direccion"));
+                p.setCuitcuilEntidad(rs.getString("cuil"));
 
                 lista.add(p);
             }
@@ -34,8 +35,8 @@ public class ClienteDAO {
         return lista;
     }
 
-    public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente(nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
+    public static void insertar(proovedorClase p) {
+        String sql = "INSERT INTO proveedor(nombre, telefono, email, direccion, cuil) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -50,8 +51,8 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
-    public static clienteClase buscarNombre(String nombre) {
-        String sql = "SELECT * FROM paciente WHERE nombre=?";
+    public static proovedorClase buscarNombre(String nombre) {
+        String sql = "SELECT * FROM proveedor WHERE idproveedor=?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -59,14 +60,14 @@ public class ClienteDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new clienteClase(
+                return new proovedorClase(
                         rs.getInt("idcliente"),
                         rs.getString("nombre"),
                         rs.getString("dni"),
                         rs.getString("telefono"),
                         rs.getString("email"),
                         rs.getString("direccion"),
-                        rs.getString("cuit")
+                        rs.getString("cuil")
                 );
             }
 
@@ -76,11 +77,11 @@ public class ClienteDAO {
         return null;
     }
 
-    public static void actualizar(clienteClase p) throws SQLException {
+    public static void actualizar(proovedorClase p) throws SQLException {
         String sql = """
-        UPDATE cliente
-        SET nombre=?, dni=?, telefono=?, email=?, cuit=?
-        WHERE idcliente=?;
+        UPDATE proveedor
+        SET nombre=?, telefono=?, email=?, direccion=?, cuil=? 
+        WHERE idproveedor=?;
     """;
 
         try (Connection c = Database.getConnection();
@@ -88,7 +89,7 @@ public class ClienteDAO {
 
             ps.setString(1, p.getNombreEntidad());
             ps.setString(2, p.getDniEntidad());
-            ps.setString(3, p.getTelefonoEntidad());
+            ps.setString(3, String.valueOf(p.getTelefonoEntidad()));
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());
             ps.setInt(6,p.getId());
@@ -107,7 +108,7 @@ public class ClienteDAO {
 
 
     public static void eliminar(String nombre) throws SQLException {
-        String sql = "DELETE FROM cliente WHERE nombre=?";
+        String sql = "DELETE FROM proveedor WHERE nombre=?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -117,3 +118,4 @@ public class ClienteDAO {
         }
     }
 }
+

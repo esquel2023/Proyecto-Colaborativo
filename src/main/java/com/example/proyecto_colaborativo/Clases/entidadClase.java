@@ -8,7 +8,6 @@ public class entidadClase {
     private String emailEntidad;
     private String direccionEntidad;
     private String cuitcuilEntidad;
-    private String cbuEntidad;
 
     public String getNombreEntidad() {
         return nombreEntidad;
@@ -58,11 +57,4 @@ public class entidadClase {
         this.cuitcuilEntidad = cuitcuilEntidad;
     }
 
-    public String getCbuEntidad() {
-        return cbuEntidad;
-    }
-
-    public void setCbuEntidad(String cbuEntidad) {
-        this.cbuEntidad = cbuEntidad;
-    }
 }
