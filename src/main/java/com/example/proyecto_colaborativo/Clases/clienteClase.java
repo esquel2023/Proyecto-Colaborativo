@@ -19,12 +19,12 @@ public class clienteClase extends entidadClase {
     }
 
     // Constructor completo adaptado a los métodos de eliseoClase
-    public clienteClase(int idcliente, String nombre, String dni, Integer telefono, String email, String direccion, String cuitcuil) {
+    public clienteClase(int idcliente, String nombre, String dni, String telefono, String email, String direccion, String cuitcuil) {
         super();
         this.setId(idcliente);
         this.setNombreEntidad(nombre);
         this.setDniEntidad(dni);
-        this.setTelefonoEntidad(telefono);
+        this.setTelefonoEntidad((telefono));
         this.setEmailEntidad(email);
         this.setDireccionEntidad(direccion);
         this.setCuitcuilEntidad(cuitcuil);
@@ -32,8 +32,6 @@ public class clienteClase extends entidadClase {
     }
 
 
-    public clienteClase(int idlcliente, String nombre, String dni, String telefono, String email, String direccion, String cuit) {
-        super();
-    }
+
 }
 

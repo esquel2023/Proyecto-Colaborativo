@@ -22,7 +22,7 @@ public class proovedorClase extends entidadClase {
         super();
         this.setId(idproveedor);
         this.setNombreEntidad(nombre);
-        this.setTelefonoEntidad(Integer.valueOf(telefono));
+        this.setTelefonoEntidad((telefono));
         this.setEmailEntidad(email);
         this.setDireccionEntidad(direccion);
         this.setCuitcuilEntidad(cuitcuil);

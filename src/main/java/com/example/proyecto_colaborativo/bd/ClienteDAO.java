@@ -11,7 +11,7 @@ public class ClienteDAO {
 
     public static List<clienteClase> listar(){
         List<clienteClase> lista = new ArrayList<>();
-        String sql = "SELECT * FROM cliente ORDER BY apellido";
+        String sql = "SELECT * FROM cliente ORDER BY nombre";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
@@ -22,9 +22,9 @@ public class ClienteDAO {
                 p.setId(rs.getInt("idcliente"));
                 p.setNombreEntidad(rs.getString("nombre"));
                 p.setDniEntidad(rs.getString("dni"));
-                p.setTelefonoEntidad(rs.getInt("telefono"));
+                p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
-                p.setCuitcuilEntidad(rs.getString("apellido"));
+                p.setCuitcuilEntidad(rs.getString("cuit"));
 
                 lista.add(p);
             }
@@ -35,13 +35,13 @@ public class ClienteDAO {
     }
 
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente(nombre, apellido, dni, telefono, email) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO cliente(nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombreEntidad());
             ps.setString(2, p.getDniEntidad());
-            ps.setInt(3, p.getTelefonoEntidad());
+            ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());
             ps.executeUpdate();
@@ -79,7 +79,7 @@ public class ClienteDAO {
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
         UPDATE cliente
-        SET nombre=?, apellido=?, dni=?, telefono=?, email=?
+        SET nombre=?, dni=?, telefono=?, email=?, cuit=?
         WHERE idcliente=?;
     """;
 
@@ -88,9 +88,9 @@ public class ClienteDAO {
 
             ps.setString(1, p.getNombreEntidad());
             ps.setString(2, p.getDniEntidad());
-            ps.setInt(3, p.getTelefonoEntidad());
+            ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
-            ps.setString(5, p.getDniEntidad());
+            ps.setString(5, p.getCuitcuilEntidad());
             ps.setInt(6,p.getId());
 
 

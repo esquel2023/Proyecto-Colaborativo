@@ -3,12 +3,11 @@ package com.example.proyecto_colaborativo.Clases;
 public class entidadClase {
  //CLASE ENTIDAD GENERAL
     private String nombreEntidad;
-    private Integer telefonoEntidad;
+    private String telefonoEntidad;
     private String dniEntidad;
     private String emailEntidad;
     private String direccionEntidad;
     private String cuitcuilEntidad;
-    private String cbuEntidad;
 
     public String getNombreEntidad() {
         return nombreEntidad;
@@ -18,11 +17,11 @@ public class entidadClase {
         this.nombreEntidad = nombreEntidad;
     }
 
-    public int getTelefonoEntidad() {
+    public String getTelefonoEntidad() {
         return telefonoEntidad;
     }
 
-    public void setTelefonoEntidad(Integer telefonoEntidad) {
+    public void setTelefonoEntidad(String telefonoEntidad) {
         this.telefonoEntidad = telefonoEntidad;
     }
 
@@ -58,11 +57,4 @@ public class entidadClase {
         this.cuitcuilEntidad = cuitcuilEntidad;
     }
 
-    public String getCbuEntidad() {
-        return cbuEntidad;
-    }
-
-    public void setCbuEntidad(String cbuEntidad) {
-        this.cbuEntidad = cbuEntidad;
-    }
 }

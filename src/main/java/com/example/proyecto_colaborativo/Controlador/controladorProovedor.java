@@ -160,7 +160,7 @@ private proovedorClase proveedorSeleccionado;
 
         // 5. Modificar las propiedades usando los setters que me mostraste
         proveedorSeleccionado.setNombreEntidad(nuevonombre);
-        proveedorSeleccionado.setTelefonoEntidad(Integer.valueOf(nuevotelefono));
+        proveedorSeleccionado.setTelefonoEntidad((nuevotelefono));
         proveedorSeleccionado.setEmailEntidad(nuevoemail);
         proveedorSeleccionado.setDireccionEntidad(nuevadireccion);
         proveedorSeleccionado.setCuitcuilEntidad(nuevocuil);

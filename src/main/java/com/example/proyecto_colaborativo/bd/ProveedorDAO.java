@@ -22,7 +22,7 @@ public class ProveedorDAO {
                 proovedorClase p = new proovedorClase();
                 p.setId(rs.getInt("idproveedor"));
                 p.setNombreEntidad(rs.getString("nombre"));
-                p.setTelefonoEntidad(rs.getInt("telefono"));
+                p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
                 p.setDireccionEntidad(rs.getString("direccion"));
                 p.setCuitcuilEntidad(rs.getString("cuil"));
@@ -42,7 +42,7 @@ public class ProveedorDAO {
 
             ps.setString(1, p.getNombreEntidad());
             ps.setString(2, p.getDniEntidad());
-            ps.setInt(3, p.getTelefonoEntidad());
+            ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());
             ps.executeUpdate();
