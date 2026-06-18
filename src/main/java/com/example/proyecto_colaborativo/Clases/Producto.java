@@ -10,6 +10,14 @@ public class Producto {
     private final DoubleProperty precio;
     private final StringProperty codigoBarra;
 
+    public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
+        this.idProducto = new SimpleIntegerProperty();
+        this.cantidad = new SimpleIntegerProperty();
+        this.precio = new SimpleDoubleProperty();
+        this.nombre = new SimpleStringProperty();
+        this.codigoBarra = new SimpleStringProperty();
+    }
+
     // Constructor
     public Producto(int idProducto, String nombre, Integer cantidad, double precio, String codigoBarra) {
         this.idProducto = new SimpleIntegerProperty(idProducto);;
@@ -21,11 +29,21 @@ public class Producto {
 
     // Constructor
     public Producto(String nombre, Integer cantidad, double precio, String codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(idProductoProperty().getValue());
+        //this.idProducto = new SimpleIntegerProperty(idProductoProperty().getValue());
+        this.idProducto = new SimpleIntegerProperty(0);
         this.nombre = new SimpleStringProperty(nombre);
         this.cantidad = new SimpleIntegerProperty(cantidad);
         this.precio = new SimpleDoubleProperty(precio);
         this.codigoBarra = new SimpleStringProperty(codigoBarra);
+    }
+
+    public Producto(String nuevonombre, Integer nuevacantidad, Double nuevoPrecio, IntegerProperty idProducto, StringProperty nombre, IntegerProperty cantidad, DoubleProperty precio, StringProperty codigoBarra) {
+        this.idProducto = idProducto;
+
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.codigoBarra = codigoBarra;
     }
 
 
