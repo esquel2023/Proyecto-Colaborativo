@@ -2,7 +2,8 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
-import com.example.proyecto_colaborativo.bd.productoDao;
+import com.example.proyecto_colaborativo.bd.ProductoDAO;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,11 +35,12 @@ public class ControladorFactura implements Initializable {
     public Label totalFinal;
     public Text total;
     public Label cliente;
-    @FXML
-    private TableView<Producto> datosTabla;
 
     @FXML
-    private TableColumn<Producto, String> colCodigoTabla;
+    private TableView<Producto> TablaProductos;
+
+    @FXML
+    private TableColumn<Producto, String> colCodigo;
 
     @FXML
     private TableColumn<Producto, String> colNombre;
@@ -47,19 +49,20 @@ public class ControladorFactura implements Initializable {
     private TableColumn<Producto, Double> colCantidad;
 
     @FXML
-    private TableColumn<Producto, Double> colPrecio;
+    private TableColumn<Producto, DoubleProperty> colPrecio;
+
 
     private final ObservableList<Producto> listaUsuarios = FXCollections.observableArrayList();
 
     // Instanciamos el DAO de manera global en el controlador
-        private final productoDao usuarioDAO = new productoDao();
+    private final ProductoDAO usuarioDAO = new ProductoDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cargarColumnas();
         obtenerProducto();
         Calcular();
-
+        TablaProductos.setItems(listaUsuarios);
     }
 
     private void Calcular() {
@@ -71,46 +74,27 @@ public class ControladorFactura implements Initializable {
     }
 
     private void obtenerProducto() {
-            ObservableList<Producto> producto =
-                    FXCollections.observableArrayList();
 
-            producto.add(
-                    new Producto(
-                            "Alfajor",
-                            2,
-                            1000,
-                            "0001"
-                    )
-            );
+    }
 
-            producto.add(
-                    new Producto(
-                            "Helado", 1,
-                            2500,
-                            "0002"
-                    )
-            );
+    private void cargarColumnas() {
+        // Enlazar de manera obligatoria las columnas con los nombres de tus variables privadas
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoTabla"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
+        colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
 
-            datosTabla.setItems(producto);
-        }
 
-        private void cargarColumnas() {
-            // Enlazar de manera obligatoria las columnas con los nombres de tus variables privadas
-            colCodigoTabla.setCellValueFactory(new PropertyValueFactory<>("codigoTabla"));
-            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-            colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-            colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        }
-    private void actualizarTabla() {
-//        datosTabla.clear();
-//
-//        // El controlador recibe una lista de Java pura y la convierte en observable para la interfaz
-//        List<Producto> datosBD = productoDAO.listarTodos();
-//        listaUsuarios.addAll(datosBD);
+        // 3. Cargar los registros de forma limpia invocando al DAO
+
+
+        // El controlador recibe una lista de Java pura y la convierte en observable para la interfaz
+        List<Producto> datosBD = usuarioDAO.listar();
+        listaUsuarios.addAll(datosBD);
     }
 
     public void facturaTipo(ActionEvent actionEvent) {
-        
+
     }
 
     public void agregarProducto(ActionEvent actionEvent) {

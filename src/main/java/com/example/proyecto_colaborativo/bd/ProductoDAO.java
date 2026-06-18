@@ -25,9 +25,9 @@ public class ProductoDAO {
                // p.setPrecio(rs.getDouble("precio")),
                // p.setCodigoTabla(rs.getString("codigoTabla"))
                         rs.getString("nombre"),
-                        rs.getInt("PrecioCosto"),
+                        rs.getInt("Precio"),
                         rs.getInt("cantidad"),
-                        rs.getString("CodigoBarra"));
+                        rs.getString("codigoDeBarra"));
 
                 lista.add(p);
 
@@ -39,7 +39,7 @@ public class ProductoDAO {
     }
 
     public static void insertar(Producto p) {
-        String sql = "INSERT INTO Producto(Nombre, PrecioCosto, Cantidad, CodigoBarra) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Producto(Nombre, Precio, codigoDeBarra, cantidad) VALUES(?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -55,7 +55,7 @@ public class ProductoDAO {
         }
     }
     public static Producto buscarPorId(int id) {
-        String sql = "SELECT * FROM Producto WHERE id_Producto = ?=?";
+        String sql = "SELECT * FROM Producto WHERE id_Producto =?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -68,7 +68,7 @@ public class ProductoDAO {
                         rs.getString("nombre"),
                         rs.getInt("cantidad"),
                         rs.getInt("PrecioCosto"),
-                        rs.getString("codigoBarra")
+                        rs.getString("codigoDeBarra")
                        // rs.getInt("id"),
                 );
             }
@@ -82,18 +82,17 @@ public class ProductoDAO {
     public static void actualizar(Producto p) throws SQLException {
         String sql = """
             UPDATE Producto
-            SET Nombre=?, PrecioCosto=?,Cantidad=? ,CodigoBarra=?   //*, obra_social=?*/
-            WHERE CodigoBarra=?;
+            SET Nombre=?, Precio=?,codigoDeBarra=? ,cantidad=?                                                        //*, obra_social=?*/
+            WHERE codigoDeBarra=?;
         """;
-
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombre());
-            ps.setInt(2, p.getCantidad());
-            ps.setDouble(3, p.getPrecio());
-            ps.setString(4, p.getCodigoTabla());
-            //ps.setInt(5, p.getId());
+            ps.setDouble(2, p.getPrecio());
+            ps.setString(3, p.getCodigoTabla());
+            ps.setInt(4, p.getCantidad());
+            ps.setString(5, p.getCodigoTabla());
 
             ps.executeUpdate();
         }
