@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
@@ -56,6 +57,7 @@ public class ControladorFactura implements Initializable {
 
     // Instanciamos el DAO de manera global en el controlador
     private final ProductoDAO usuarioDAO = new ProductoDAO();
+    private final ClienteDAO clienteDAO = new ClienteDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -130,7 +132,9 @@ public class ControladorFactura implements Initializable {
 
             if (clienteSeleccionado != null) {
                 // 5. Mostrar el dato en el campo de texto (ej. usando el nombre del cliente)
-                cliente.setText(clienteSeleccionado.getNombre());
+                cliente.setText(clienteSeleccionado.getNombreEntidad());
+                List<clienteClase> datosBD1 = clienteDAO.listar();
+                listaUsuarios.addAll();
             }
 
         } catch (IOException e) {
