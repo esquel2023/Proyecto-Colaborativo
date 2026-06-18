@@ -22,13 +22,15 @@ public class ControladorProducto {
     private TableView<Producto> tablaProductos;
     // 2. Inyectamos las columnas existentes de tu FXML
     @FXML
-    private TableColumn<Producto, String> colCodigo;
+    private TableColumn<Producto, Integer> colCodigo;
     @FXML
     private TableColumn<Producto, String> colNombre;
     @FXML
     private TableColumn<Producto, Integer> colCantidad;
     @FXML
     private TableColumn<Producto, Double> colPrecio;
+    @FXML
+    private TextField codigoBarras;
     @FXML
     private TextField codigo;
     @FXML
@@ -39,8 +41,6 @@ public class ControladorProducto {
     private TextField precioFinal;
     @FXML
     private TextField txtbuscadorProductos;
-    @FXML
-    private TextField codigoBarras;
     @FXML
     private Button botonSalir;
     @FXML
@@ -53,9 +53,6 @@ public class ControladorProducto {
     // Lista observable única para toda la clase
     private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
-    //@FXML
-
-
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     private Producto productoseleccionado;
 
@@ -63,19 +60,15 @@ public class ControladorProducto {
     public void initialize(){
     // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
 
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoTabla"));
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        /*
-        listaProductos.addAll(
-                new Producto("Arroz 1kg", 50, 1200.50, "PROD001"),
-                new Producto("Leche Entera", 30, 950.00, "PROD002"),
-                new Producto("Aceite Girasol", 15, 2500.00, "PROD003")
-        );*/
+        //listaProductos.setAll(ProductoDAO.listar());
 
         // MEJORA: Cargamos los datos reales desde la base de datos en vez de datos fijos
         cargarDatosDesdeBD();
+
 
 
         // ==========================================
@@ -87,9 +80,20 @@ public class ControladorProducto {
                 tablaProductos,
                 listaProductos,
                 (producto,texto)->{
+                    // Validación segura contra valores nulos
+                    boolean coincideNombre = producto.getNombre() != null &&
+                            producto.getNombre().toLowerCase().contains(texto);
+
+                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
+                            producto.getCodigoBarra().toLowerCase().contains(texto);
+
+                    return coincideNombre || coincideCodigo;
+
+
+
                     // Acá definís la lógica específica para la clase Producto
-                    return producto.getNombre().toLowerCase().contains(texto) ||
-                            producto.getCodigoTabla().toLowerCase().contains(texto);
+                   // return producto.getNombre().toLowerCase().contains(texto) ||
+                   //         producto.getCodigoBarra().toLowerCase().contains(texto);
 
                 }
         );
@@ -107,10 +111,16 @@ public class ControladorProducto {
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
                 // Ejemplo: Llenar tus campos de texto automáticamente con los datos del producto
-                codigo.setText(newValue.getCodigoTabla());
+                //codigo.setText(newValue.getCodigoBarra());
+
+                //codigo.setText(String.valueOf(newValue.getidProducto()));
                 nombre.setText(newValue.getNombre());
                 cantidad.setText(String.valueOf(newValue.getCantidad()));
                 precioFinal.setText(String.valueOf(newValue.getPrecio()));
+
+                if (codigoBarras != null) {
+                    codigoBarras.setText(newValue.getCodigoBarra() != null ? newValue.getCodigoBarra() : "");
+                }
             }
 
         });
@@ -129,12 +139,13 @@ public class ControladorProducto {
             return;
         }
 
-        try {
+       try {
             // 2. Tomar los nuevos valores directamente desde los TextField
             Integer nuevacantidad = Integer.valueOf(cantidad.getText());
             Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
-            String nuevacodigo = codigo.getText();
+            //String nuevacodigo = codigo.getText();
             String nuevonombre = nombre.getText();
+           String nuevocodigo = (codigoBarras != null) ? codigoBarras.getText() : "";
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
             if (nuevacantidad <= 0 || nuevoPrecio <=0) {
@@ -144,14 +155,17 @@ public class ControladorProducto {
                 return;
             }
 
-
             // 3. Modificar las propiedades del objeto observable
             // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
-           // productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
-            productoseleccionado.codigoTablaProperty().set(nuevacodigo);
+            //productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
+            //productoseleccionado.codigoBarraProperty().set(nuevacodigo);
+            //productoseleccionado.setidProducto(nuevaidProducto);
             productoseleccionado.nombreProperty().set(nuevonombre);
+            productoseleccionado.setNombre(nuevonombre);
             productoseleccionado.cantidadProperty().set(nuevacantidad);
+            productoseleccionado.setCantidad(nuevacantidad);
             productoseleccionado.precioProperty().set(nuevoPrecio);
+            productoseleccionado.setPrecio(nuevoPrecio);
 
             // 2. Persistir el cambio en la Base de Datos
             ProductoDAO.actualizar(productoseleccionado);
@@ -187,7 +201,7 @@ public class ControladorProducto {
     private void clickAgregar(ActionEvent event) {
         try {
             // 1. Validar que los campos no estén vacíos
-            if (codigo.getText().isEmpty() || nombre.getText().isEmpty() ||
+            if (nombre.getText().isEmpty() ||
                     cantidad.getText().isEmpty() || precioFinal.getText().isEmpty()) {
                 AlertasUtils.mostrarAlerta("Campos vacíos", "Faltan datos", "Debes completar todos los campos para agregar un producto.",Alert.AlertType.WARNING);
 
@@ -210,7 +224,7 @@ public class ControladorProducto {
 
 
             // 3. Crear la nueva instancia de Producto
-            Producto nuevoProducto = new Producto( nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
+            Producto nuevoProducto = new Producto(nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
             ProductoDAO.insertar(nuevoProducto);
             // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
             listaProductos.add(nuevoProducto);
@@ -237,10 +251,16 @@ public class ControladorProducto {
 
     private void cargarDatosDesdeBD() {
 
-            listaProductos.clear();
-            listaProductos.addAll(ProductoDAO.listar());
-            tablaProductos.setItems(listaProductos);
-
+        try {
+           // listaProductos.clear();
+            //listaProductos.addAll(ProductoDAO.listar());
+            listaProductos.setAll(ProductoDAO.listar());
+            //tablaProductos.setItems(listaProductos);
+        }catch (Exception e) {
+            AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
+                    "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
     }
 
 
@@ -249,11 +269,13 @@ public class ControladorProducto {
     //----------------------------------------------------------------------------------------
     // Método auxiliar para limpiar las cajas de texto
     private void limpiarCampos() {
-        codigo.setText("");
-        codigoBarras.setText("");
-        nombre.setText("");
-        cantidad.setText("");
-        precioFinal.setText("");
+        nombre.clear();
+        cantidad.clear();
+        precioFinal.clear();
+        if (codigoBarras != null) codigoBarras.clear();
+        if (codigo != null) codigo.clear();
+        if (porcentaje != null) porcentaje.clear();
+        if (precioCosto != null) precioCosto.clear();
     }
 
 
