@@ -40,7 +40,7 @@ public class ControladorFactura implements Initializable {
     private TableView<Producto> TablaProductos;
 
     @FXML
-    private TableColumn<Producto, String> colCodigo;
+    private TableColumn<Producto, String> colCodigoDeBarra;
 
     @FXML
     private TableColumn<Producto, String> colNombre;
@@ -79,7 +79,7 @@ public class ControladorFactura implements Initializable {
 
     private void cargarColumnas() {
         // Enlazar de manera obligatoria las columnas con los nombres de tus variables privadas
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoTabla"));
+        colCodigoDeBarra.setCellValueFactory(new PropertyValueFactory<>("CodigoDeBarra"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("Nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));

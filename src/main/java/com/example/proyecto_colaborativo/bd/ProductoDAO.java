@@ -22,8 +22,8 @@ public class ProductoDAO {
                         rs.getInt("idProducto"),
                         rs.getString("nombre"),
                         rs.getInt("cantidad"),
-                        rs.getDouble("PrecioCosto"),
-                        rs.getString("CodigoBarra"));
+                        rs.getDouble("Precio"),
+                        rs.getString("CodigoDeBarra"));
 
                 lista.add(p);
 
@@ -36,7 +36,7 @@ public class ProductoDAO {
     }
 
     public static void insertar(Producto p) {
-        String sql = "INSERT INTO Producto(Nombre, PrecioCosto, Cantidad, CodigoBarra) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Producto(Nombre, Precio, CodigoDeBarra, cantidad) VALUES(?,?,?,?)";
 
         // Añadimos Statement.RETURN_GENERATED_KEYS para capturar el ID que cree la base de datos
         try (Connection c = Database.getConnection();
@@ -46,8 +46,9 @@ public class ProductoDAO {
             ps.setString(1, p.getNombre());
             //ps.setInt(2, (int) p.getPrecio());
             ps.setDouble(2, p.getPrecio());
-            ps.setInt(3, p.getCantidad());
-            ps.setString(4, p.getCodigoBarra());
+            ps.setString(3, p.getCodigoBarra());
+            ps.setInt(4, p.getCantidad());
+
             ps.executeUpdate();
 
             // Recuperamos el ID autogenerado
@@ -77,8 +78,8 @@ public class ProductoDAO {
                         rs.getInt("idProducto"),
                         rs.getString("nombre"),
                         rs.getInt("cantidad"),
-                        rs.getDouble("PrecioCosto"),
-                        rs.getString("codigoBarra")
+                        rs.getDouble("Precio"),
+                        rs.getString("CodigoDeBarra")
                        // rs.getInt("id"),
                 );
             }
@@ -93,7 +94,7 @@ public class ProductoDAO {
     public static void actualizar(Producto p) throws SQLException {
         String sql = """
             UPDATE Producto
-            SET Nombre=?, PrecioCosto=?,Cantidad=? ,CodigoBarra=?
+            SET Nombre=?, Precio=?,codigoDeBarra=? ,cantidad=?
             WHERE idProducto=? ;
         """;
 
@@ -102,8 +103,8 @@ public class ProductoDAO {
 
             ps.setString(1, p.getNombre());
             ps.setDouble(2, p.getPrecio());
-            ps.setInt(3, p.getCantidad());
-            ps.setString(4, p.getCodigoBarra());
+            ps.setString(3, p.getCodigoBarra());
+            ps.setInt(4, p.getCantidad());
             ps.setInt(5, p.getidProducto());
             //ps.setString(5, p.getCodigoTabla());
 
