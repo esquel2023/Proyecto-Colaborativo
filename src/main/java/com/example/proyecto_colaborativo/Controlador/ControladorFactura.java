@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.beans.property.DoubleProperty;
@@ -36,6 +37,7 @@ public class ControladorFactura implements Initializable {
     public Label totalFinal;
     public Text total;
     public Label cliente;
+    public TextField nombreYApellido;
 
     @FXML
     private TableView<Producto> TablaProductos;
@@ -106,6 +108,32 @@ public class ControladorFactura implements Initializable {
     }
 
     public void buscarCliente(ActionEvent actionEvent) {
+        clienteClase cliente = new clienteClase();
+        BuscadorUtils.configuradorBuscador(
+               nombreYApellido,
+              cliente.tablaClientes,
+//                listaProductos,
+                (producto,texto)->{
+                    // Validación segura contra valores nulos
+                    boolean coincideNombre = cliente.getNombreEntidad() != null &&
+                            cliente.getNombreEntidad().toLowerCase().contains(texto);
+
+                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
+                            producto.getCodigoBarra().toLowerCase().contains(texto);
+
+                    return coincideNombre || coincideCodigo;
+
+
+
+                    // Acá definís la lógica específica para la clase Producto
+                    // return producto.getNombre().toLowerCase().contains(texto) ||
+                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
+
+                }
+        );
+
+
+
     }
 
     public void eliminarCliente(ActionEvent actionEvent) {
