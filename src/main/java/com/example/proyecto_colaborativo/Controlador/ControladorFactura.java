@@ -107,7 +107,7 @@ public class ControladorFactura implements Initializable {
     public void eliminarProducto(ActionEvent actionEvent) {
     }
 
-    public void buscarCliente(ActionEvent actionEvent) {
+/*    public void buscarCliente(ActionEvent actionEvent) {
         clienteClase cliente = new clienteClase();
         BuscadorUtils.configuradorBuscador(
                nombreYApellido,
@@ -134,7 +134,7 @@ public class ControladorFactura implements Initializable {
 
 
 
-    }
+    }/*
 
     public void eliminarCliente(ActionEvent actionEvent) {
     }
@@ -181,5 +181,5 @@ public class ControladorFactura implements Initializable {
     }
 
     public void elegirCodigo(ActionEvent actionEvent) {
-    }
+    }*/
 }
