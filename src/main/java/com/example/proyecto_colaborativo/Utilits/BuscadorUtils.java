@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Utilits;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
@@ -31,20 +32,31 @@ public class BuscadorUtils {
         // 2. Escuchar los cambios del TextField
         txtBuscar.textProperty().addListener((observable, oldValue, newValue) -> {
             listafiltrada.setPredicate(item -> {
+
+                // Si el item es nulo, evita un NullPointerException en el criterio
+                if (item == null) {
+                    return true;
+                }
+
                 // Si está vacío, muestra
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
-
+                // Limpia el texto de búsqueda una sola vez por cada cambio, no por cada ítem
                 String textoLimpio = newValue.toLowerCase().trim();
 
-                // Evalúa el criterio personalizado que definas en el controlador
-                return criterioBusqueda.test(item, textoLimpio);
+                // Evalúa el criterio personalizado
+                return criterioBusqueda.test(item,textoLimpio);
+
             });
         });
 
-        // 3. Asignar la lista filtrada a la tabla (Va afuera del listener, se asigna una sola vez)
-        table.setItems(listafiltrada);
+        // 3. Vincular el ordenamiento de la tabla con la lista filtrada
+        SortedList<T> listaOrdenada = new SortedList<>(listafiltrada);
+        listaOrdenada.comparatorProperty().bind(table.comparatorProperty());
+        // 4. Asignar la lista ordenada y filtrada a la tabla
+        table.setItems(listaOrdenada);
+        
     }
 }
 

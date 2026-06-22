@@ -19,7 +19,7 @@ public class ClienteDAO {
 
             while (rs.next()) {
                 clienteClase p = new clienteClase();
-                p.setId(rs.getInt("idcliente"));
+                p.setId(rs.getInt("idCliente"));
                 p.setNombreEntidad(rs.getString("nombre"));
                 p.setDniEntidad(rs.getString("dni"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
@@ -60,7 +60,7 @@ public class ClienteDAO {
 
             if (rs.next()) {
                 return new clienteClase(
-                        rs.getInt("idcliente"),
+                        rs.getInt("idCliente"),
                         rs.getString("nombre"),
                         rs.getString("dni"),
                         rs.getString("telefono"),
@@ -80,7 +80,7 @@ public class ClienteDAO {
         String sql = """
         UPDATE cliente
         SET nombre=?, dni=?, telefono=?, email=?, cuit=?
-        WHERE idcliente=?;
+        WHERE idCliente=?;
     """;
 
         try (Connection c = Database.getConnection();

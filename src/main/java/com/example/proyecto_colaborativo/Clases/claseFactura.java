@@ -30,8 +30,7 @@ public class claseFactura {
 
         calcularPrecioFinal();
     }
-
-    private void calcularPrecioFinal() {
+    public void calcularPrecioFinal() {
         this.precioFinal = this.precioUnitario * this.cantidad;
     }
 

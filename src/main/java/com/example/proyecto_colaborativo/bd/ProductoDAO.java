@@ -11,7 +11,7 @@ public class ProductoDAO {
 
     public static List<Producto> listar() {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Producto ORDER BY nombre";
+        String sql = "SELECT * FROM Producto ORDER BY idProducto DESC";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
@@ -19,15 +19,11 @@ public class ProductoDAO {
 
             while (rs.next()) {
                 Producto p = new Producto(
-                //p.setId(rs.getInt("id"));
-               // p.setNombre(rs.getString("nombre")),
-               // p.setCantidad(rs.getInt("cantidad")),
-               // p.setPrecio(rs.getDouble("precio")),
-               // p.setCodigoTabla(rs.getString("codigoTabla"))
+                        rs.getInt("idProducto"),
                         rs.getString("nombre"),
-                        rs.getInt("PrecioCosto"),
                         rs.getInt("cantidad"),
-                        rs.getString("CodigoBarra"));
+                        rs.getDouble("Precio"),
+                        rs.getString("CodigoDeBarra"));
 
                 lista.add(p);
 
@@ -36,43 +32,59 @@ public class ProductoDAO {
             e.printStackTrace();
         }
         return lista;
+
     }
 
     public static void insertar(Producto p) {
-        String sql = "INSERT INTO Producto(Nombre, PrecioCosto, Cantidad, CodigoBarra) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Producto(Nombre, Precio, CodigoDeBarra, cantidad) VALUES(?,?,?,?)";
+
+        // Añadimos Statement.RETURN_GENERATED_KEYS para capturar el ID que cree la base de datos
         try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+             PreparedStatement ps = c.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
             //ps.setString(1, p.getNombre());
             ps.setString(1, p.getNombre());
-            ps.setInt(2, p.getCantidad());
-            ps.setDouble(3, p.getPrecio());
-            ps.setString(4, p.getCodigoTabla());
+            //ps.setInt(2, (int) p.getPrecio());
+            ps.setDouble(2, p.getPrecio());
+            ps.setString(3, p.getCodigoBarra());
+            ps.setInt(4, p.getCantidad());
+
             ps.executeUpdate();
 
+            // Recuperamos el ID autogenerado
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int idGenerado = rs.getInt(1);
+                    p.setidProducto(idGenerado);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public static Producto buscarPorId(int id) {
-        String sql = "SELECT * FROM Producto WHERE id_Producto = ?=?";
+        String sql = "SELECT * FROM Producto WHERE idProducto = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+           try (ResultSet rs = ps.executeQuery()) {
+
+
 
             if (rs.next()) {
                 return new Producto(
 
+                        rs.getInt("idProducto"),
                         rs.getString("nombre"),
                         rs.getInt("cantidad"),
-                        rs.getInt("PrecioCosto"),
-                        rs.getString("codigoBarra")
+                        rs.getDouble("Precio"),
+                        rs.getString("CodigoDeBarra")
                        // rs.getInt("id"),
                 );
             }
 
+           }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,30 +94,31 @@ public class ProductoDAO {
     public static void actualizar(Producto p) throws SQLException {
         String sql = """
             UPDATE Producto
-            SET Nombre=?, PrecioCosto=?,Cantidad=? ,CodigoBarra=?   //*, obra_social=?*/
-            WHERE CodigoBarra=?;
+            SET Nombre=?, Precio=?,codigoDeBarra=? ,cantidad=?
+            WHERE idProducto=? ;
         """;
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombre());
-            ps.setInt(2, p.getCantidad());
-            ps.setDouble(3, p.getPrecio());
-            ps.setString(4, p.getCodigoTabla());
-            //ps.setInt(5, p.getId());
+            ps.setDouble(2, p.getPrecio());
+            ps.setString(3, p.getCodigoBarra());
+            ps.setInt(4, p.getCantidad());
+            ps.setInt(5, p.getidProducto());
+            //ps.setString(5, p.getCodigoTabla());
 
             ps.executeUpdate();
         }
     }
 
-    public static void eliminar(int id) throws SQLException {
-        String sql = "DELETE FROM Producto WHERE id=?";
+    public static void eliminar(int idProducto) throws SQLException {
+        String sql = "DELETE FROM Producto WHERE idProducto =?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, idProducto);
             ps.executeUpdate();
         }
     }
