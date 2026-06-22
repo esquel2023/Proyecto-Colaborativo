@@ -107,7 +107,34 @@ public class ControladorFactura implements Initializable {
     public void eliminarProducto(ActionEvent actionEvent) {
     }
 
+/*    public void buscarCliente(ActionEvent actionEvent) {
+        clienteClase cliente = new clienteClase();
+        BuscadorUtils.configuradorBuscador(
+               nombreYApellido,
+              cliente.tablaClientes,
+//                listaProductos,
+                (producto,texto)->{
+                    // Validación segura contra valores nulos
+                    boolean coincideNombre = cliente.getNombreEntidad() != null &&
+                            cliente.getNombreEntidad().toLowerCase().contains(texto);
 
+                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
+                            producto.getCodigoBarra().toLowerCase().contains(texto);
+
+                    return coincideNombre || coincideCodigo;
+
+
+
+                    // Acá definís la lógica específica para la clase Producto
+                    // return producto.getNombre().toLowerCase().contains(texto) ||
+                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
+
+                }
+        );
+
+
+
+    }/*
 
     public void eliminarCliente(ActionEvent actionEvent) {
     }
@@ -154,5 +181,5 @@ public class ControladorFactura implements Initializable {
     }
 
     public void elegirCodigo(ActionEvent actionEvent) {
-    }
+    }*/
 }
