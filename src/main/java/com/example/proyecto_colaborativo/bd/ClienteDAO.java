@@ -35,7 +35,7 @@ public class ClienteDAO {
     }
 
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente(nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO cliente (nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 

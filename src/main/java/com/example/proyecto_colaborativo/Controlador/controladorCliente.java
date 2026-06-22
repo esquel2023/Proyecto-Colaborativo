@@ -124,9 +124,11 @@ public class controladorCliente {
             nuevoCliente.setTelefonoEntidad((txtTelefono));
             nuevoCliente.setEmailEntidad(txtEmail);
             nuevoCliente.setCuitcuilEntidad(txtCuil);
+            System.out.println("si");
 
             // Lo mandamos al DAO. SQLite ignorará el ID 0 e insertará uno nuevo automático (ej: 1, 2, 3...)
             ClienteDAO.insertar(nuevoCliente);
+            System.out.println("si si?");
 
             listaClientesObs.setAll(ClienteDAO.listar()); // Recarga la tabla leyendo los IDs nuevos
             limpiarCampos();
