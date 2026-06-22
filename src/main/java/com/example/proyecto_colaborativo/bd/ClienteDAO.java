@@ -11,7 +11,7 @@ public class ClienteDAO {
 
     public static List<clienteClase> listar(){
         List<clienteClase> lista = new ArrayList<>();
-        String sql = "SELECT * FROM cliente ORDER BY nombre";
+        String sql = "SELECT * FROM Cliente ORDER BY nombre";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
@@ -24,7 +24,7 @@ public class ClienteDAO {
                 p.setDniEntidad(rs.getString("dni"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
-                p.setCuitcuilEntidad(rs.getString("cuit"));
+                p.setCuitcuilEntidad(rs.getString("cuitcuil"));
 
                 lista.add(p);
             }
@@ -35,7 +35,7 @@ public class ClienteDAO {
     }
 
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente (nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente(nombre, dni, telefono, email, cuitcuil) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -66,7 +66,7 @@ public class ClienteDAO {
                         rs.getString("telefono"),
                         rs.getString("email"),
                         rs.getString("direccion"),
-                        rs.getString("cuit")
+                        rs.getString("cuitcuil")
                 );
             }
 
@@ -78,7 +78,7 @@ public class ClienteDAO {
 
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
-        UPDATE cliente
+        UPDATE Cliente
         SET nombre=?, dni=?, telefono=?, email=?, cuit=?
         WHERE idCliente=?;
     """;
@@ -107,7 +107,7 @@ public class ClienteDAO {
 
 
     public static void eliminar(String nombre) throws SQLException {
-        String sql = "DELETE FROM cliente WHERE nombre=?";
+        String sql = "DELETE FROM Cliente WHERE nombre=?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
