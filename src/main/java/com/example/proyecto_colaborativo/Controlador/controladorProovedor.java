@@ -66,7 +66,7 @@ private proovedorClase proveedorSeleccionado;
                 }
 
                 nombre.setText(proveedorSeleccionado.getNombreEntidad());
-                telefono.setText(String.valueOf(proveedorSeleccionado.getTelefonoEntidad()));
+                telefono.setText((proveedorSeleccionado.getTelefonoEntidad()));
                 email.setText(proveedorSeleccionado.getEmailEntidad());
                 direccion.setText(proveedorSeleccionado.getDireccionEntidad());
                 cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
