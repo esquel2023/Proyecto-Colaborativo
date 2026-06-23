@@ -1,32 +1,65 @@
 package com.example.proyecto_colaborativo.Clases;
 
-import javafx.beans.property.*;
-
 public class Producto {
 
-    private final StringProperty nombre;
-    private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
-    private final DoubleProperty precio;
-    private final StringProperty codigoTabla;
+    private Integer ID;
+    private  String nombre;
+    private  Integer precio;
+    private  Integer cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
+    private  Integer codigo;
 
-    // Constructor
-    public Producto(String nombre, Integer cantidad, double precio, String codigoTabla) {
-        this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad);
-        this.precio = new SimpleDoubleProperty(precio);
-        this.codigoTabla = new SimpleStringProperty(codigoTabla);
+
+
+    public Producto(String nombre, Integer precio, Integer cantidad, Integer codigo) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.codigo = codigo;
     }
 
-    // Getters de Propiedades (Requeridos por TableView)
-    public StringProperty nombreProperty() { return nombre; }
-    public IntegerProperty cantidadProperty() { return cantidad; }
-    public DoubleProperty precioProperty() { return precio; }
-    public StringProperty codigoTablaProperty() { return codigoTabla; }
+    public Producto() {
 
-    // Getters ordinarios
-    public String getNombre() { return nombre.get(); }
-    public Integer getCantidad() { return cantidad.get(); }
-    public double getPrecio() { return precio.get(); }
-    public String getCodigoTabla() { return codigoTabla.get(); }
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setPrecio(Integer precio) {
+        this.precio = precio;
+    }
+
+    public void setCodigoTabla(Integer codigoTabla) {
+        this.codigo = codigoTabla;
+    }
+
 }
 

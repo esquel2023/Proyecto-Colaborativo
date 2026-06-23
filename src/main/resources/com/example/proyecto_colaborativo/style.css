@@ -1,31 +1,66 @@
-*{
-    -fx-primary-color: #374151;
-    -fx-secondary-color: #D1D5DB;
+/* Variables globales de color basadas en tu imagen */
+.root {
+    -fx-bg-dark-color: #667292;      /* 3er Color: Fondo principal */
+    -fx-secondary-color: #8d9db6;    /* 2do Color: Pestaña normal */
+    -fx-light-color: #bccad6;        /* 1er Color: Pestaña seleccionada */
+    -fx-cream-color: #f1e3dd;        /* 4to Color: Destacados */
+}
+
+/* Estilos de texto generales (Ahora todo es negro y con trazo fino) */
+.root .text, .root .label {
     -fx-font-family: "Fira Code Light";
-             -fx-font-weight: BOLD;
-             -fx-font-size: 10.0px;
-             -fx-text-alignment:center;
-}
-.button{
-    -fx-background-color:  -fx-secondary-color;
-    -fx-padding:5px 5px;
-    -fx-border-width:3px;
-    -fx-border-color: -fx-primary-color;
-    -fx-border-radius:5px
+    -fx-font-weight: normal;
+    -fx-font-style: normal;
+    -fx-font-size: 15px;
+    -fx-text-fill: #000000;          /* Letra negra para toda la aplicación */
 }
 
-.button:hover { -fx-background-color: #567C8D;
-
+/* Contenedor principal con el 3er color de fondo */
+.tab-pane {
+    -fx-tab-min-width: 132px;
+    -fx-tab-max-width: 132px;
+    -fx-tab-min-height: 240px;
+    -fx-tab-max-height: 240px;
+    -fx-background-color: -fx-bg-dark-color;
 }
 
-.text-field {   -fx-background-color: -fx-primary-color;
-                -fx-opacity:0.6;
-                -fx-border-color: #FFFFFF;
-                -fx-border-width: 1.4;
-                -fx-background-radius: 10px;
-                -fx-cursor:text;
-                -fx-pref-height:10px;
-                -fx-max-height:10px;
-                -fx-padding: 10px;
+/* Barra de fondo de las pestañas limpia */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
 }
 
+/* Pestaña en estado normal */
+.tab {
+    -fx-background-color: -fx-secondary-color;
+    -fx-padding: 0px;
+}
+
+/* Texto de la pestaña normal en negro */
+.tab .tab-label {
+    -fx-text-fill: #000000;
+}
+
+/* Pestaña seleccionada */
+.tab:selected {
+    -fx-background-color: -fx-light-color;
+    -fx-border-color: transparent;
+    -fx-border-width: 0px;
+}
+
+/* Texto de la pestaña seleccionada en negro */
+.tab:selected .tab-label {
+    -fx-text-fill: #000000;
+}
+
+/* Efecto Hover: Cuando pasás el mouse por encima */
+.tab:hover {
+    -fx-background-color: -fx-cream-color;
+    -fx-cursor: hand;
+}
+
+/* Texto de la pestaña en hover en negro */
+.tab:hover .tab-label {
+    -fx-text-fill: #000000;
+}
+
+}

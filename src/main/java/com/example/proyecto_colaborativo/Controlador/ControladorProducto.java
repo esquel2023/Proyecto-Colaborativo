@@ -3,6 +3,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,27 +66,12 @@ public class ControladorProducto {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
-        listaProductos.addAll(
-                new Producto("Arroz 1kg", 50, 1200.50, "PROD001"),
-                new Producto("Leche Entera", 30, 950.00, "PROD002"),
-                new Producto("Aceite Girasol", 15, 2500.00, "PROD003")
-        );
+
 
         // ==========================================
         // LLAMADA A LA CLASE REUTILIZABLE
         // ==========================================
 
-        BuscadorUtils.configuradorBuscador(
-                txtbuscadorProductos,
-                tablaProductos,
-                listaProductos,
-                (producto,texto)->{
-                    // Acá definís la lógica específica para la clase Producto
-                    return producto.getNombre().toLowerCase().contains(texto) ||
-                            producto.getCodigoTabla().toLowerCase().contains(texto);
-
-                }
-        );
 
         // 4. Cargar los datos en la tabla
       // tablaProductos.setItems(listaProductos);
@@ -100,7 +86,7 @@ public class ControladorProducto {
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
                 // Ejemplo: Llenar tus campos de texto automáticamente con los datos del producto
-                codigo.setText(newValue.getCodigoTabla());
+                codigo.setText(String.valueOf(newValue.getCodigo()));
                 nombre.setText(newValue.getNombre());
                 cantidad.setText(String.valueOf(newValue.getCantidad()));
                 precioFinal.setText(String.valueOf(newValue.getPrecio()));
@@ -136,12 +122,6 @@ public class ControladorProducto {
             }
 
 
-            // 3. Modificar las propiedades del objeto observable
-            // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
-            productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
-            productoseleccionado.nombreProperty().set(nuevonombre);
-            productoseleccionado.cantidadProperty().set(nuevacantidad);
-            productoseleccionado.precioProperty().set(nuevoPrecio);
 
 
             // 4. Refrescar la tabla para asegurar que los cambios visuales se apliquen
@@ -178,10 +158,10 @@ public class ControladorProducto {
             }
 
             // 2. Extraer los datos de las cajas de texto
-            String nuevocodigo = codigo.getText();
+            Integer nuevocodigo = Integer.parseInt(codigo.getText());
             String nuevonombre = nombre.getText();
             Integer nuevacantidad = Integer.parseInt(cantidad.getText());
-            Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+            Integer nuevoPrecio = Integer.parseInt(precioFinal.getText());
 
             // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
             if (nuevacantidad <= 0 || nuevoPrecio <= 0){
@@ -195,6 +175,7 @@ public class ControladorProducto {
             // 3. Crear la nueva instancia de Producto
             Producto nuevoProducto = new Producto( nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigo);
 
+            ProductoDAO.insertar(nuevoProducto);
             // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
             listaProductos.add(nuevoProducto);
 
