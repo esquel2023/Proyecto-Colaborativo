@@ -120,7 +120,6 @@ public class ControladorFactura implements Initializable {
 
                     boolean coincideCodigo = producto.getCodigoBarra() != null &&
                             producto.getCodigoBarra().toLowerCase().contains(texto);
-
                     return coincideNombre || coincideCodigo;
 
 
