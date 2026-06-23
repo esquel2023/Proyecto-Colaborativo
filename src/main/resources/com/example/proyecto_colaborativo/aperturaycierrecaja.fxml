@@ -37,19 +37,19 @@
       </Text>
       <Text layoutX="20.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CIERRE DE CAJA" />
       <Button fx:id="saldoInicial" layoutX="174.0" layoutY="102.0" mnemonicParsing="false" onAction="#butonSaldo" prefHeight="25.0" prefWidth="85.0" text="Saldo Inicial" />
-      <Label fx:id="totalInicialdeCaja" layoutX="244.0" layoutY="174.0" />
+      <Label layoutX="244.0" layoutY="174.0" />
       <Label layoutX="21.0" layoutY="174.0" text="Total inicial en caja:" />
-      <Text fx:id="retirodeCaja" layoutX="21.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total retiro de caja:" />
-      <Label fx:id="tretirodeCaja" layoutX="238.0" layoutY="200.0" text="label" />
+      <Text layoutX="21.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total retiro de caja:" />
+      <Label fx:id="tretirodeCaja" layoutX="238.0" layoutY="200.0" text="30" />
       <Text layoutX="20.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total  ventas en efectivo:" />
       <Text layoutX="20.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total ventas con medios digitales:" />
-      <Label fx:id="ventasEfectivo" layoutX="237.0" layoutY="224.0" text="Label" />
-      <Label fx:id="ventasMediodigital" layoutX="237.0" layoutY="247.0" text="Label" />
+      <Label layoutX="237.0" layoutY="224.0" text="150" />
+      <Label layoutX="237.0" layoutY="247.0" text="100" />
       <Text layoutX="20.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Final en caja:" />
-      <Label fx:id="totalFinal" layoutX="244.0" layoutY="279.0" text="Label" />
+      <Label layoutX="244.0" layoutY="279.0" text="270" />
       <Text layoutX="24.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Efectivo y tarjeta)" />
       <Button fx:id="cerrarCaja" layoutX="258.0" layoutY="343.0" mnemonicParsing="false" onAction="#botonCerrarCaja" prefHeight="25.0" prefWidth="85.0" text="Cerrar Caja" />
-      <Label fx:id= layoutX="132.0" layoutY="106.0" text="Label" />
-      <Label layoutX="237.0" layoutY="174.0" text="Label" />
+      <Label layoutX="132.0" layoutY="106.0" text="Label" />
+      <Label layoutX="237.0" layoutY="174.0" text="50" />
    </children>
 </AnchorPane>
