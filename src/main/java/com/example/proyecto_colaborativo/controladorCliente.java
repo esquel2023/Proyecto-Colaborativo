@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class controladorCliente {
@@ -167,6 +168,7 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
+
     private void cargarFacturasDelCliente(clienteClase cliente) {
         listaFacturasObs.clear();
 

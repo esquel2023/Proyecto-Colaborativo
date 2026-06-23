@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorCaja">
    <children>
-      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+      <MenuBar fx:id="menuBar" layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
          <menus>
             <Menu mnemonicParsing="false" text="Venta" />
             <Menu mnemonicParsing="false" text="Producto" />
@@ -30,12 +24,12 @@
             <Menu mnemonicParsing="false" text="Proveedor" />
          </menus>
       </MenuBar>
-      <TextField fx:id="observaciones" layoutX="21.0" layoutY="333.0" prefHeight="45.0" prefWidth="222.0" promptText="Observaciones" />
-      <Text layoutX="20.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="APERTURA DE CAJA" />
+      <TextField fx:id="observaciones" layoutX="21.0" layoutY="346.0" prefHeight="45.0" prefWidth="222.0" promptText="Observaciones" />
+      <Label layoutX="20.0" layoutY="76.0" text="APERTURA DE CAJA" />
       <Label layoutX="166.0" layoutY="63.0" text="Fecha" />
       <Text layoutX="20.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Inicial en Caja:" />
       <Text layoutX="48.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Efectivo)" />
-      <Button fx:id="inicioAperturaCaja" layoutX="265.0" layoutY="102.0" mnemonicParsing="false" onAction="#botonIniciarCaja" text="Iniciar Apertura de Caja" />
+      <Button fx:id="iniciarAperturaCaja" layoutX="265.0" layoutY="102.0" mnemonicParsing="false" onAction="#botonIniciarCaja" text="Iniciar Apertura de Caja" />
       <Text layoutX="22.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Observaciones antes del cierre:" wrappingWidth="193.6875">
          <font>
             <Font size="14.0" />
@@ -43,18 +37,19 @@
       </Text>
       <Text layoutX="20.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CIERRE DE CAJA" />
       <Button fx:id="saldoInicial" layoutX="174.0" layoutY="102.0" mnemonicParsing="false" onAction="#butonSaldo" prefHeight="25.0" prefWidth="85.0" text="Saldo Inicial" />
-      <Label fx:id="totalInicial" layoutX="244.0" layoutY="174.0" text="Label" />
-      <Text layoutX="20.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total inicial en caja:" />
-      <Text layoutX="21.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total retiro de caja:" />
-      <Label fx:id="retiroCaja" layoutX="244.0" layoutY="200.0" text="Label" />
+      <Label fx:id="totalInicialdeCaja" layoutX="244.0" layoutY="174.0" />
+      <Label layoutX="21.0" layoutY="174.0" text="Total inicial en caja:" />
+      <Text fx:id="retirodeCaja" layoutX="21.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total retiro de caja:" />
+      <Label fx:id="tretirodeCaja" layoutX="238.0" layoutY="200.0" text="label" />
       <Text layoutX="20.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total  ventas en efectivo:" />
       <Text layoutX="20.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total ventas con medios digitales:" />
-      <Label fx:id="ventasEfectivo" layoutX="244.0" layoutY="224.0" text="Label" />
-      <Label fx:id="ventasMediodigital" layoutX="244.0" layoutY="247.0" text="Label" />
+      <Label fx:id="ventasEfectivo" layoutX="237.0" layoutY="224.0" text="Label" />
+      <Label fx:id="ventasMediodigital" layoutX="237.0" layoutY="247.0" text="Label" />
       <Text layoutX="20.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Final en caja:" />
       <Label fx:id="totalFinal" layoutX="244.0" layoutY="279.0" text="Label" />
       <Text layoutX="24.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Efectivo y tarjeta)" />
-      <Button fx:id="cierreCaja" layoutX="258.0" layoutY="343.0" mnemonicParsing="false" onAction="#botonCerrarCaja" prefHeight="25.0" prefWidth="85.0" text="Cerrar Caja" />
-      <Label layoutX="132.0" layoutY="106.0" text="Label" />
+      <Button fx:id="cerrarCaja" layoutX="258.0" layoutY="343.0" mnemonicParsing="false" onAction="#botonCerrarCaja" prefHeight="25.0" prefWidth="85.0" text="Cerrar Caja" />
+      <Label fx:id= layoutX="132.0" layoutY="106.0" text="Label" />
+      <Label layoutX="237.0" layoutY="174.0" text="Label" />
    </children>
 </AnchorPane>
