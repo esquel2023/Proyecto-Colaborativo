@@ -3,6 +3,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ public class controladorCliente {
     @FXML public TableView<claseFactura> tablaClientes1;
     @FXML public TableColumn<claseFactura, String> nombreTabla1;
     @FXML public TableColumn<claseFactura, String> dniTabla1;
+    public Label totalclientes;
 
     @FXML private TextField cuil;
     @FXML private TextField buscadorClientes;
@@ -70,7 +72,7 @@ public class controladorCliente {
                 cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
             }
         });
-
+        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
 
     }
 
@@ -136,6 +138,8 @@ public class controladorCliente {
         } catch (Exception e) {
             System.out.println("asd");
         }
+        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
+
     }
 
     @FXML
@@ -207,13 +211,27 @@ public class controladorCliente {
                 e.printStackTrace();
             }
         }
+        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
+
     }
 
     @FXML
     void botonLupa(ActionEvent event) {
         String buscar = buscadorClientes.getText().toLowerCase();
-        if(!buscar.isEmpty()){
-            // Aquí puedes añadir más adelante tu lógica de filtrado analizando listaClientesObs
+        if (!buscar.isEmpty()) {
+            BuscadorUtils.configuradorBuscador(
+                    buscadorClientes,
+                    tablaClientes,
+                    listaClientesObs,
+                    (cliente, texto) -> {
+                        // Validación segura contra valores nulos
+                        boolean coincideNombre = cliente.getNombreEntidad() != null &&
+                                cliente.getNombreEntidad().toLowerCase().contains(texto);
+
+                        return coincideNombre;
+
+                    });
+
         }
     }
 

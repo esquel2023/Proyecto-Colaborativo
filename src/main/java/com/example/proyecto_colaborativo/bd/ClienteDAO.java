@@ -24,7 +24,7 @@ public class ClienteDAO {
                 p.setDniEntidad(rs.getString("dni"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
-                p.setCuitcuilEntidad(rs.getString("cuit"));
+                p.setCuitcuilEntidad(rs.getString("cuitcuil"));
 
                 lista.add(p);
             }
@@ -35,7 +35,7 @@ public class ClienteDAO {
     }
 
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente (nombre, dni, telefono, email, cuit) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO cliente (nombre, dni, telefono, email, cuitcuil) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -66,7 +66,7 @@ public class ClienteDAO {
                         rs.getString("telefono"),
                         rs.getString("email"),
                         rs.getString("direccion"),
-                        rs.getString("cuit")
+                        rs.getString("cuitcuil")
                 );
             }
 
@@ -79,7 +79,7 @@ public class ClienteDAO {
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
         UPDATE cliente
-        SET nombre=?, dni=?, telefono=?, email=?, cuit=?
+        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?
         WHERE idCliente=?;
     """;
 
@@ -116,4 +116,26 @@ public class ClienteDAO {
             ps.executeUpdate();
         }
     }
+
+    public static String cantidadClientes() {
+        String sql = "SELECT COUNT(*) AS total FROM cliente";
+
+        // Abrimos la conexión usando tu clase Database y preparamos la consulta
+        try (Connection con = Database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            // El COUNT siempre devuelve una fila, nos movemos a ella
+            if (rs.next()) {
+                return rs.getString("total"); // Retorna el número usando el alias 'total'
+            }
+
+        } catch (SQLException e) {
+            // Registramos el error (puedes cambiarlo por un Logger si usas uno)
+            System.err.println("Error en DAO cantidadClientes: " + e.getMessage());
+        }
+
+        return ""; // Si algo falla, devolvemos cero
+    }
+
 }
