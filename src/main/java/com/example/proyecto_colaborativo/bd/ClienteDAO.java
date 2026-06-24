@@ -11,7 +11,7 @@ public class ClienteDAO {
 
     public static List<clienteClase> listar(){
         List<clienteClase> lista = new ArrayList<>();
-        String sql = "SELECT * FROM cliente ORDER BY nombre";
+        String sql = "SELECT * FROM Cliente ORDER BY nombre";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
@@ -35,7 +35,7 @@ public class ClienteDAO {
     }
 
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO cliente (nombre, dni, telefono, email, cuitcuil) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente(nombre, dni, telefono, email, cuitcuil) VALUES(?,?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -78,8 +78,8 @@ public class ClienteDAO {
 
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
-        UPDATE cliente
-        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?
+        UPDATE Cliente
+        SET nombre=?, dni=?, telefono=?, email=?, cuit=?
         WHERE idCliente=?;
     """;
 
@@ -107,7 +107,7 @@ public class ClienteDAO {
 
 
     public static void eliminar(String nombre) throws SQLException {
-        String sql = "DELETE FROM cliente WHERE nombre=?";
+        String sql = "DELETE FROM Cliente WHERE nombre=?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -116,26 +116,4 @@ public class ClienteDAO {
             ps.executeUpdate();
         }
     }
-
-    public static String cantidadClientes() {
-        String sql = "SELECT COUNT(*) AS total FROM cliente";
-
-        // Abrimos la conexión usando tu clase Database y preparamos la consulta
-        try (Connection con = Database.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            // El COUNT siempre devuelve una fila, nos movemos a ella
-            if (rs.next()) {
-                return rs.getString("total"); // Retorna el número usando el alias 'total'
-            }
-
-        } catch (SQLException e) {
-            // Registramos el error (puedes cambiarlo por un Logger si usas uno)
-            System.err.println("Error en DAO cantidadClientes: " + e.getMessage());
-        }
-
-        return ""; // Si algo falla, devolvemos cero
-    }
-
 }
