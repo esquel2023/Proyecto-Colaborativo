@@ -55,23 +55,25 @@ public class controladorCliente {
         tablaClientes1.setItems(listaFacturasObs);
 
         // Listener de selección
-        tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
-            if (newSelection == null) {
+        // UN SOLO LISTENER OPTIMIZADO
+        tablaClientes.getSelectionModel().selectedItemProperty().addListener((_, _, clienteSeleccionado) -> {
+            if (clienteSeleccionado == null) {
+                // Si no hay nada seleccionado, limpiamos todo de un solo viaje
                 listaFacturasObs.clear();
-            }
-        });
-
-        tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, viejoCliente, clienteSeleccionado) -> {
-            if (clienteSeleccionado != null) {
-                // Rellena los TextField con los datos del cliente seleccionado
+                limpiarCampos(); // Método para vaciar los TextField
+            } else {
+                // Si seleccionó un cliente, rellenamos los campos
                 nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
                 dni.setText(clienteSeleccionado.getDniEntidad());
-                telefono.setText((clienteSeleccionado.getTelefonoEntidad()));
+                telefono.setText(clienteSeleccionado.getTelefonoEntidad());
                 email.setText(clienteSeleccionado.getEmailEntidad());
                 direccion.setText(clienteSeleccionado.getDireccionEntidad());
                 cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
+
+                // Aquí puedes cargar las facturas de ese cliente de forma eficiente si lo necesitas
             }
         });
+
         totalclientes.setText("Cantidad total de clientes: " );
 
     }
@@ -243,4 +245,5 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
+
 }

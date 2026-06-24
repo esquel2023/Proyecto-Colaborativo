@@ -38,7 +38,7 @@ public class controladorProovedor {
 
     private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
     private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
-private proovedorClase proveedorSeleccionado;
+
     public void initialize() {
         if (tablaProovedores != null) {
             tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
@@ -53,24 +53,22 @@ private proovedorClase proveedorSeleccionado;
             listaProveedoresObs.setAll(ProveedorDAO.listar());
 
             tablaProovedores.setItems(listaProveedoresObs);
-           // tablaProductosProovedor.setItems(listaProductosProveedorObs);
+            // tablaProductosProovedor.setItems(listaProductosProveedorObs);
 
             // 3. Listener de selección optimizado
             tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                // Si no hay nada seleccionado (o se deseleccionó), limpiamos todo
                 if (newValue == null) {
                     listaProductosProveedorObs.clear();
                     limpiarCampos();
-                    this.proveedorSeleccionado = null;
-                    return;
+                } else {
+                    // SE CORRIGE AQUÍ: Se mapea con 'newValue' que trae los datos reales de la selección
+                    nombre.setText(newValue.getNombreEntidad());
+                    telefono.setText(newValue.getTelefonoEntidad());
+                    email.setText(newValue.getEmailEntidad());
+                    cuil.setText(newValue.getCuitcuilEntidad());
+
+                    cargarProductosDelProveedor(newValue);
                 }
-
-                nombre.setText(proveedorSeleccionado.getNombreEntidad());
-                telefono.setText((proveedorSeleccionado.getTelefonoEntidad()));
-                email.setText(proveedorSeleccionado.getEmailEntidad());
-                cuil.setText(proveedorSeleccionado.getCuitcuilEntidad());
-
-                cargarProductosDelProveedor(proveedorSeleccionado);
             });
         }
     }
@@ -131,17 +129,13 @@ private proovedorClase proveedorSeleccionado;
     @FXML
     void botonModificar(ActionEvent event) {
         // 1. Obtener el proveedor seleccionado de la tabla
-        Object seleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
+        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
 
-        if (seleccionado == null) {
+        if (proveedorSeleccionado == null) {
             System.out.println("Error: Debes seleccionar un proveedor de la tabla.");
             return;
         }
 
-        // 2. Convertir el Object al tipo real de tu clase proovedorClase
-        proovedorClase proveedorSeleccionado = (proovedorClase) seleccionado;
-
-        // 3. Tomar los nuevos valores escritos en tus TextField
         String nuevonombre = nombre.getText();
         String nuevotelefono = telefono.getText();
         String nuevoemail = email.getText();
@@ -177,7 +171,7 @@ private proovedorClase proveedorSeleccionado;
             limpiarCampos();
         }
     }
-    proovedorClase proveedor;
+
     @FXML
     void botonLupa(ActionEvent event) {
 
