@@ -72,7 +72,7 @@ public class controladorCliente {
                 cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
             }
         });
-        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
+        totalclientes.setText("Cantidad total de clientes: " );
 
     }
 
@@ -138,7 +138,7 @@ public class controladorCliente {
         } catch (Exception e) {
             System.out.println("asd");
         }
-        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
+        totalclientes.setText("Cantidad total de clientes: ");
 
     }
 
@@ -211,7 +211,7 @@ public class controladorCliente {
                 e.printStackTrace();
             }
         }
-        totalclientes.setText("Cantidad total de clientes: " + ClienteDAO.cantidadClientes());
+        totalclientes.setText("Cantidad total de clientes: ");
 
     }
 
