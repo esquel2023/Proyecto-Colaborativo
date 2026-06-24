@@ -106,22 +106,21 @@ public class ControladorFactura implements Initializable {
 
     public void eliminarProducto(ActionEvent actionEvent) {
     }
-/*
-   public void buscarCliente(ActionEvent actionEvent) {
-        controladorCliente cliente = new controladorCliente();
-        BuscadorUtils.configuradorBuscador(
-               nombreYApellido,
-              cliente.tablaClientes,
-              cliente.tablaClientes.getItems(),
-                (producto,texto)->{
-                    // Validación segura contra valores nulos
-                    boolean coincideNombre = cliente.get() != null &&
-                            cliente.getNombreEntidad().toLowerCase().contains(texto);
-
-                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
-                            producto.getCodigoBarra().toLowerCase().contains(texto);
-                    return coincideNombre || coincideCodigo;
-
+//
+//    public void buscarCliente(ActionEvent actionEvent) {
+//        controladorBuscadorCliente cliente = new controladorBuscadorCliente();
+//        BuscadorUtils.configuradorBuscador(
+//                nombreYApellido,
+//                cliente.tablaClientes,
+//                cliente.tablaClientes.getItems(),
+//                (producto, texto) -> {
+//                    // Validación segura contra valores nulos
+//                    boolean coincideNombre = cliente.get() != null &&
+//                            cliente.getNombreEntidad().toLowerCase().contains(texto);
+//
+//                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
+//                            producto.getCodigoBarra().toLowerCase().contains(texto);
+//                    return coincideNombre || coincideCodigo;
 
 
                     // Acá definís la lógica específica para la clase Producto
@@ -129,13 +128,9 @@ public class ControladorFactura implements Initializable {
                     //         producto.getCodigoBarra().toLowerCase().contains(texto);
 
                 }
-        );
+//        );
 
-
-
- */
-
-    }/*
+ /*   }
 
     public void eliminarCliente(ActionEvent actionEvent) {
     }
@@ -184,3 +179,4 @@ public class ControladorFactura implements Initializable {
     public void elegirCodigo(ActionEvent actionEvent) {
     }*/
 
+//}

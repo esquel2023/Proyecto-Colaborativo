@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +45,18 @@ public class controladorBuscadorCliente {
                     listaFacturasObs.clear();
                 }
             });
-
-            }
+            BuscadorUtils.configuradorBuscador(
+                    buscadorClientes,
+                    tablaClientes,
+                    tablaClientes.getItems(),
+                    (cliente, texto) -> {
+                        // Validación segura contra valores nulos
+                        boolean coincideNombre = cliente.getNombreEntidad() != null &&
+                                cliente.getNombreEntidad().toLowerCase().contains(texto);
+                        return coincideNombre;
+                    });
         }
+}
+
+
 
