@@ -2,8 +2,6 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
-import com.example.proyecto_colaborativo.Controlador.controladorBuscadorCliente;
-import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.beans.property.DoubleProperty;
@@ -59,7 +57,6 @@ public class ControladorFactura implements Initializable {
 
     @FXML
     private TableColumn<Producto, DoubleProperty> colPrecio;
-
 
     private final ObservableList<Producto> listaUsuarios = FXCollections.observableArrayList();
 
@@ -122,6 +119,7 @@ public class ControladorFactura implements Initializable {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             controladorBuscadorCliente controller = loader.getController();
+            controller.setControladorFactura(this);
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
             Stage stage = new Stage();
@@ -150,32 +148,31 @@ public class ControladorFactura implements Initializable {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("cliente.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador DESPUÉS de cargar el root
+            // 2. Obtener el controlador de clientes
             controladorCliente controller = loader.getController();
-            controller.setControladorFactura(this);
 
-            // 3. Configurar y mostrar la nueva ventana (Stage)
+            // >>> AHORA SÍ va a reconocer el método porque lo agregamos en el Paso 1 <<<
+
+
+            // 3. Configurar y mostrar la nueva ventana de forma MODAL (espera a que se cierre)
             Stage stage = new Stage();
-            stage.setTitle("Factura");
+            stage.setTitle("Registrar / Seleccionar Cliente");
             stage.setScene(new Scene(root, 440, 540));
-            stage.show();
 
-            // 4. Obtener el objeto seleccionado de la tabla
-            // Reemplaza 'ClienteClass' por el nombre real de tu clase modelo (ej. Cliente)
-            clienteClase clienteSeleccionado = (clienteClase) controller.tablaClientes.getSelectionModel().getSelectedItem();
+            // Usamos showAndWait para que el código de abajo "espere" a que el usuario termine
+            stage.showAndWait();
+
+            // 4. Al cerrarse la ventana, verificamos si seleccionó un cliente de esa tabla
+            clienteClase clienteSeleccionado = controller.tablaClientes.getSelectionModel().getSelectedItem();
 
             if (clienteSeleccionado != null) {
-                // 5. Mostrar el dato en el campo de texto (ej. usando el nombre del cliente)
+                // 5. Mostrar el dato en el Label de la factura
                 cliente.setText(clienteSeleccionado.getNombreEntidad());
-                List<clienteClase> datosBD1 = clienteDAO.listar();
-                listaUsuarios.addAll();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void ingresarPago(ActionEvent actionEvent) {
