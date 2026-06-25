@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class controladorProovedor {
@@ -165,11 +166,18 @@ public class controladorProovedor {
 
     @FXML
     void botonElimina(ActionEvent event) {
-        Object proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
+        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
         if (proveedorSeleccionado != null) {
-            listaProveedoresObs.remove(proveedorSeleccionado);
-            limpiarCampos();
+            try{
+                ProveedorDAO.eliminar(proveedorSeleccionado.getNombreEntidad());
+                listaProveedoresObs.remove(proveedorSeleccionado);
+                limpiarCampos();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
         }
+
     }
 
     @FXML
