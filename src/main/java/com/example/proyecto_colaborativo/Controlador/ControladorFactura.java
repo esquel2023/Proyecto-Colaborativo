@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Controlador.controladorBuscadorCliente;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -38,6 +40,10 @@ public class ControladorFactura implements Initializable {
     public Text total;
     public Label cliente;
     public TextField nombreYApellido;
+    public Button agregarCliente;
+
+    @FXML
+    private Button buscarCliente;
 
     @FXML
     private TableView<Producto> TablaProductos;
@@ -106,31 +112,34 @@ public class ControladorFactura implements Initializable {
 
     public void eliminarProducto(ActionEvent actionEvent) {
     }
-//
-//    public void buscarCliente(ActionEvent actionEvent) {
-//        controladorBuscadorCliente cliente = new controladorBuscadorCliente();
-//        BuscadorUtils.configuradorBuscador(
-//                nombreYApellido,
-//                cliente.tablaClientes,
-//                cliente.tablaClientes.getItems(),
-//                (producto, texto) -> {
-//                    // Validación segura contra valores nulos
-//                    boolean coincideNombre = cliente.get() != null &&
-//                            cliente.getNombreEntidad().toLowerCase().contains(texto);
-//
-//                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
-//                            producto.getCodigoBarra().toLowerCase().contains(texto);
-//                    return coincideNombre || coincideCodigo;
 
 
-                    // Acá definís la lógica específica para la clase Producto
-                    // return producto.getNombre().toLowerCase().contains(texto) ||
-                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
+    public void buscarCliente(ActionEvent actionEvent) throws IOException {
+        try {
+            // 1. Cargar el FXML una sola vez
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("buscadorCliente.fxml"));
+            Parent root = loader.load();
 
-                }
-//        );
+            // 2. Obtener el controlador DESPUÉS de cargar el root
+            controladorBuscadorCliente controller = loader.getController();
 
- /*   }
+            // 3. Configurar y mostrar la nueva ventana (Stage)
+            Stage stage = new Stage();
+            stage.setTitle("buscadorCliente");
+            stage.setScene(new Scene(root, 440, 540));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // >>> NUEVO MÉTODO en Factura: El buscador usará esto para meter el nombre aquí <<<
+    // Cambia el nombre del método para que coincida exactamente con lo que busca el controlador del buscador
+    public void asignarClienteDesdeBuscador(String nombreCliente) {
+        if (this.cliente != null) {
+            this.cliente.setText(nombreCliente);
+        }
+    }
 
     public void eliminarCliente(ActionEvent actionEvent) {
     }
@@ -143,6 +152,7 @@ public class ControladorFactura implements Initializable {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             controladorCliente controller = loader.getController();
+            controller.setControladorFactura(this);
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
             Stage stage = new Stage();
@@ -165,6 +175,7 @@ public class ControladorFactura implements Initializable {
             e.printStackTrace();
         }
 
+
     }
 
     public void ingresarPago(ActionEvent actionEvent) {
@@ -177,6 +188,6 @@ public class ControladorFactura implements Initializable {
     }
 
     public void elegirCodigo(ActionEvent actionEvent) {
-    }*/
+    }
 
-//}
+}
