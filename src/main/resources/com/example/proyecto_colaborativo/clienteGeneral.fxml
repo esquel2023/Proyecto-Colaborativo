@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorCliente">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+            <Menu mnemonicParsing="false" text="Historial">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Registro">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+         </menus>
+      </MenuBar>
+      <TextField fx:id="buscadorClientes" layoutX="19.0" layoutY="63.0" prefHeight="25.0" prefWidth="381.0" promptText="Buscador de clientes" />
+      <TableView fx:id="tablaClientes" layoutX="19.0" layoutY="94.0" prefHeight="301.0" prefWidth="381.0">
+         <columns>
+            <TableColumn fx:id="nombreTabla" prefWidth="158.0" text="Nombre" />
+            <TableColumn fx:id="telefonoTabla" prefWidth="118.0" text="Telefono" />
+            <TableColumn fx:id="emailTabla" prefWidth="103.0" text="Email" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
