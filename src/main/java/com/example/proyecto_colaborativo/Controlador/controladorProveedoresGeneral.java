@@ -38,7 +38,7 @@ public class controladorProveedoresGeneral {
                 if (newValue != null) {
 
                     abrirPantalla("proveedorSeleccionado.fxml", "Proovedor Seleccionado", false);
-
+                    controladorProveedorSelec.setProveedorSelec((proovedorClase) newValue);
 
                 }
             });

@@ -42,40 +42,42 @@ public class controladorCliente {
     @FXML
     public void initialize() {
         // Configuración de tabla Clientes
-        nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
-        dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
-        telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
+        if (nombreTabla != null && dniTabla != null && telefonoTabla != null) {
+            nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
+            dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
+            telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
-        listaClientesObs.setAll(ClienteDAO.listar());
-        tablaClientes.setItems(listaClientesObs);
+            listaClientesObs.setAll(ClienteDAO.listar());
+            tablaClientes.setItems(listaClientesObs);
 
-        // Configuración de tabla Facturas
-        nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
-        tablaClientes1.setItems(listaFacturasObs);
+            // Configuración de tabla Facturas
+            nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+            dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
+            tablaClientes1.setItems(listaFacturasObs);
 
-        // Listener de selección
-        // UN SOLO LISTENER OPTIMIZADO
-        tablaClientes.getSelectionModel().selectedItemProperty().addListener((_, _, clienteSeleccionado) -> {
-            if (clienteSeleccionado == null) {
-                // Si no hay nada seleccionado, limpiamos todo de un solo viaje
-                listaFacturasObs.clear();
-                limpiarCampos(); // Método para vaciar los TextField
-            } else {
-                // Si seleccionó un cliente, rellenamos los campos
-                nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
-                dni.setText(clienteSeleccionado.getDniEntidad());
-                telefono.setText(clienteSeleccionado.getTelefonoEntidad());
-                email.setText(clienteSeleccionado.getEmailEntidad());
-                direccion.setText(clienteSeleccionado.getDireccionEntidad());
-                cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
+            // Listener de selección
+            // UN SOLO LISTENER OPTIMIZADO
+            tablaClientes.getSelectionModel().selectedItemProperty().addListener((_, _, clienteSeleccionado) -> {
+                if (clienteSeleccionado == null) {
+                    // Si no hay nada seleccionado, limpiamos todo de un solo viaje
+                    listaFacturasObs.clear();
+                    limpiarCampos(); // Método para vaciar los TextField
+                } else {
+                    // Si seleccionó un cliente, rellenamos los campos
+                    nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
+                    dni.setText(clienteSeleccionado.getDniEntidad());
+                    telefono.setText(clienteSeleccionado.getTelefonoEntidad());
+                    email.setText(clienteSeleccionado.getEmailEntidad());
+                    direccion.setText(clienteSeleccionado.getDireccionEntidad());
+                    cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
 
-                // Aquí puedes cargar las facturas de ese cliente de forma eficiente si lo necesitas
-            }
-        });
+                    // Aquí puedes cargar las facturas de ese cliente de forma eficiente si lo necesitas
+                }
+            });
 
-        totalclientes.setText("Cantidad total de clientes: " );
+            totalclientes.setText("Cantidad total de clientes: ");
 
+        }
     }
 
     @FXML

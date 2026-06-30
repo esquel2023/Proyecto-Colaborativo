@@ -26,6 +26,9 @@ public class controladorProovedor {
     @FXML public TableColumn<proovedorClase, String> precioProovedor;
     @FXML public TableColumn<proovedorClase, String> nombreTabla;
     @FXML public TableColumn<proovedorClase, String> telefonoTabla;
+    public TextField pais;
+    public TextField provincia;
+    public TextField ciudad;
 
 
     @FXML private Button lupa;
@@ -41,7 +44,7 @@ public class controladorProovedor {
     private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
 
     public void initialize() {
-        if (tablaProovedores != null) {
+        if (tablaProovedores != null && tablaProductosProovedor != null) {
             tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
             tablaProductosProovedor.setPlaceholder(new Label("Este proveedor no tiene productos"));
 
