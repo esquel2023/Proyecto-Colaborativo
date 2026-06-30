@@ -47,6 +47,8 @@ public class Producto {
     }
 
 
+
+
     // Getters de Propiedades (Requeridos por TableView)
     public IntegerProperty idProductoProperty() { return idProducto; }
     public StringProperty nombreProperty() { return nombre; }
