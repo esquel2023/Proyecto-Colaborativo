@@ -47,14 +47,14 @@
       <Label fx:id="totalInicial12" layoutX="110.0" layoutY="128.0" prefHeight="17.0" prefWidth="90.0" text="Ingresar codigo" />
       <TextField layoutX="81.0" layoutY="156.0" prefHeight="25.0" prefWidth="24.0" />
       <Text layoutX="25.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unidades:" />
-      <Button layoutX="118.0" layoutY="156.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Agregar Prod." />
+      <Button fx:id="agregarProducto" layoutX="118.0" layoutY="156.0" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="25.0" prefWidth="95.0" text="Agregar Prod." />
       <TableView fx:id="TablaProductos" layoutX="21.0" layoutY="200.0" prefHeight="126.0" prefWidth="376.0">
          <columns>
             <TableColumn fx:id="colCodigoDeBarra" prefWidth="75.0" text="Codigo" />
             <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
             <TableColumn fx:id="colCantidad" prefWidth="75.0" text="Cantidad." />
             <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
-            <TableColumn prefWidth="75.0" text="Subtotal" />
+            <TableColumn fx:id="colSubtotal" prefWidth="75.0" text="Subtotal" />
          </columns>
       </TableView>
       <Text layoutX="27.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente:">
@@ -66,12 +66,12 @@
       <Text layoutX="27.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI/CUIL:" wrappingWidth="63.0" />
       <Text layoutX="25.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre/Apellido:" />
       <TextField fx:id="nombreYApellido" layoutX="143.0" layoutY="423.0" prefHeight="25.0" prefWidth="95.0" />
-      <Button layoutX="221.0" layoutY="156.0" mnemonicParsing="false" text="Eliminar Prod." />
-      <Button layoutX="248.0" layoutY="395.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="78.0" text="Buscar Cliente">
+      <Button fx:id="eliminarProducto" layoutX="221.0" layoutY="156.0" mnemonicParsing="false" onAction="#eliminarProducto" text="Eliminar Prod." />
+      <Button fx:id="buscarCliente" layoutX="248.0" layoutY="395.0" mnemonicParsing="false" onAction="#buscarCliente" prefHeight="19.0" prefWidth="78.0" text="Buscar Cliente">
          <font>
             <Font size="10.0" />
          </font></Button>
-      <Button layoutX="285.0" layoutY="425.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="90.0" text="Eliminar Cliente">
+      <Button fx:id="eliminarCliente" layoutX="285.0" layoutY="425.0" mnemonicParsing="false" onAction="#eliminarCliente" prefHeight="17.0" prefWidth="90.0" text="Eliminar Cliente">
          <font>
             <Font size="10.0" />
          </font></Button>
@@ -82,7 +82,7 @@
       </Text>
       <RadioButton layoutX="27.0" layoutY="485.0" mnemonicParsing="false" text="Efectivo" />
       <RadioButton layoutX="99.0" layoutY="485.0" mnemonicParsing="false" text="Tarjeta" />
-      <Button layoutX="335.0" layoutY="395.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="90.0" text="Agregar Cliente">
+      <Button fx:id="agregarCliente" layoutX="335.0" layoutY="395.0" mnemonicParsing="false" onAction="#agregarCliente" prefHeight="21.0" prefWidth="90.0" text="Agregar Cliente">
          <font>
             <Font size="10.0" />
          </font>
@@ -93,11 +93,11 @@
          </font>
       </Button>
       <Text layoutX="309.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:" />
-      <Label layoutX="346.0" layoutY="333.0" text="Total Final">
+      <Label fx:id="Total" layoutX="346.0" layoutY="333.0" text="Total Final">
          <font>
             <Font size="9.0" />
          </font>
       </Label>
-      <Label layoutX="106.0" layoutY="365.0" prefHeight="17.0" prefWidth="63.0" text="CLiente" />
+      <Label fx:id="cliente" layoutX="106.0" layoutY="365.0" prefHeight="17.0" prefWidth="63.0" text="Cliente" />
    </children>
 </AnchorPane>

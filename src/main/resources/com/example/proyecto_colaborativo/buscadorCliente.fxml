@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="731.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorBuscadorCliente">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+            <Menu mnemonicParsing="false" text="Historial">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Registro">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+         </menus>
+      </MenuBar>
+
+      <TextField fx:id="buscadorClientes" layoutX="115.0" layoutY="110.0" prefHeight="25.0" prefWidth="180.0" promptText="Buscador de clientes" />
+      <TableView fx:id="tablaClientes" layoutX="14.0" layoutY="152.0" prefHeight="258.0" prefWidth="381.0">
+         <columns>
+            <TableColumn fx:id="nombreTabla" prefWidth="125.0" text="Nombre Apellido" />
+            <TableColumn fx:id="dniTabla" prefWidth="121.0" text="DNI" />
+            <TableColumn fx:id="telefonoTabla" prefWidth="134.0" text="Telefono" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

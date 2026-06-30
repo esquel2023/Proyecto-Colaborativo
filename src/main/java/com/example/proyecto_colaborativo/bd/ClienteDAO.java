@@ -79,7 +79,7 @@ public class ClienteDAO {
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
         UPDATE Cliente
-        SET nombre=?, telefono=?, email=?, cuitcuil=?
+        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?
         WHERE idCliente=?;
     """;
 
@@ -87,10 +87,11 @@ public class ClienteDAO {
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombreEntidad());
-            ps.setString(2, p.getTelefonoEntidad());
-            ps.setString(3, p.getEmailEntidad());
-            ps.setString(4, p.getCuitcuilEntidad());
-            ps.setInt(5,p.getId());
+            ps.setString(2, p.getDniEntidad());
+            ps.setString(3, p.getTelefonoEntidad());
+            ps.setString(4, p.getEmailEntidad());
+            ps.setString(5, p.getCuitcuilEntidad());
+            ps.setInt(6,p.getId());
 
 
             int filasAfectadas = ps.executeUpdate();

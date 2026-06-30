@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
@@ -55,6 +56,14 @@ public class ControladorProducto {
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     private Producto productoseleccionado;
+
+    // >>> NUEVA VARIABLE GLOBAL CONECTADA A TU FACTURA <<<
+    private ControladorFactura controladorFactura;
+
+    // >>> NUEVO MÉTODO QUE SE LLAMA DESDE CONTROLADORFACTURA <<<
+    public void setControladorProducto(ControladorFactura factura) {
+        this.controladorFactura = factura;
+    }
 
 
     public void initialize(){
@@ -120,8 +129,26 @@ public class ControladorProducto {
             }
 
         });
+        tablaProductos.setRowFactory(tv -> {
+            TableRow<Producto> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                // Si hace doble clic y la fila contiene un Producto válido
+                if (event.getClickCount() == 2 && (!fila.isEmpty())) {
+                    Producto seleccionado = fila.getItem();
 
+                    // Si este catálogo fue abierto por la factura (controladorFactura no es null)
+                    if (seleccionado != null && controladorFactura != null) {
+                        // Enviamos el producto a la tabla de la factura
+                        controladorFactura.recibirProducto(seleccionado);
 
+                        // Cerramos automáticamente esta ventana de catálogo
+                        Stage stage = (Stage) tablaProductos.getScene().getWindow();
+                        stage.close();
+                    }
+                }
+            });
+            return fila;
+        });
     }
     // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
@@ -150,7 +177,6 @@ public class ControladorProducto {
 
                 return;
             }
-
             // 3. Modificar las propiedades del objeto observable
             // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
             //productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
