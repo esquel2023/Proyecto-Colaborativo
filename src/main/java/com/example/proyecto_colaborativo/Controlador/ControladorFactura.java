@@ -26,6 +26,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControladorFactura implements Initializable {
@@ -177,7 +178,7 @@ public class ControladorFactura implements Initializable {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             ControladorProducto controller = loader.getController();
-            controller.setControladorProducto(this);
+//            controller.setControladorProducto(this);
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
             Stage stage = new Stage();
@@ -193,6 +194,11 @@ public class ControladorFactura implements Initializable {
         // >>> NUEVO: Permite borrar un producto seleccionado de la factura <<<
         Producto seleccionado = TablaProductos.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
+            boolean result = AlertasUtils.mostrarAlertaError("error","borrar","d", Alert.AlertType.ERROR);
+
+            if (result) {
+               //eliminar
+            }
             listaUsuarios.remove(seleccionado);
             Calcular();
         }

@@ -56,6 +56,7 @@ public class ControladorProducto {
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     public static Producto productoseleccionado;
+    private  ControladorFactura ControladorFactura;
 
     @FXML
     public void initialize(){
