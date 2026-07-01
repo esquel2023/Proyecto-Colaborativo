@@ -19,7 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +40,7 @@ public class controladorProveedorSelec {
     @FXML
     public TableColumn<Producto, String> prooductosProovedor;
     @FXML
-    public TableColumn<Producto, String> precioProovedor;
+    public TableColumn<Producto, Double> precioProovedor;
     @FXML
     public TableColumn<Producto, String> prooductosProovedor1;
 
@@ -46,6 +49,7 @@ public class controladorProveedorSelec {
 
     private final ObservableList<Producto> listaProductosObs = FXCollections.observableArrayList();
     private proovedorClase proveedorActual;
+    private Producto productoseleccionado;
 
 
     @FXML
@@ -59,8 +63,29 @@ public class controladorProveedorSelec {
 
 
         tablaProductosProovedor.setItems(listaProductosObs);
+        tablaProductosProovedor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+           this.productoseleccionado = newValue;
+            configurarTablaEditable();
+        });
     }
+    private void configurarTablaEditable() {
+        // 1. Permitir que la tabla acepte edición
+        tablaProductosProovedor.setEditable(true);
 
+        // 3. Hacer editable la columna Precio (usa DoubleStringConverter)
+        precioProovedor.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        precioProovedor.setOnEditCommit(event -> {
+            Producto p = event.getRowValue();
+            Double nuevoPrecio = event.getNewValue();
+            if (nuevoPrecio != null && nuevoPrecio > 0) {
+                p.setPrecio(nuevoPrecio);
+                p.precioProperty().set(nuevoPrecio);
+
+            } else {
+                tablaProductosProovedor.refresh(); // Revierte el cambio visual si es inválido
+            }
+        });
+    }
 
     public static void setProveedorSelec(proovedorClase proveedor) {
         if (instanciaActiva != null && proveedor != null) {
@@ -116,7 +141,8 @@ public class controladorProveedorSelec {
 
     @FXML
     public void botonElimina(ActionEvent actionEvent) {
-        ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
+        desasociarProducto(productoseleccionado);
+
     }
 
     public void recibirProducto(Producto producto) {
@@ -125,5 +151,11 @@ public class controladorProveedorSelec {
            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
 
             }
+        }
+        public void desasociarProducto(Producto producto) {
+        if (producto != null){
+            listaProductosObs.remove(producto);
+            ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
+        }
         }
     }

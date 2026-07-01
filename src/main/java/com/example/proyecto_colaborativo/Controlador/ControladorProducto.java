@@ -150,6 +150,7 @@ public class ControladorProducto {
                             controladorProveedorSelec.recibirProducto(seleccionado);
                         }
 
+
                         // Cerramos automáticamente esta ventana de catálogo
                         Stage stage = (Stage) tablaProductos.getScene().getWindow();
                         stage.close();
