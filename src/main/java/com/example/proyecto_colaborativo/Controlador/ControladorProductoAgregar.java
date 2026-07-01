@@ -22,21 +22,8 @@ public class ControladorProductoAgregar {
     @FXML
     public TextField nombre;
 
-
     private Producto productoLocal = null;
 
-
-    //----------------------------------------------------------------------------------------
-    //FUNCIONES
-    //----------------------------------------------------------------------------------------
-    // Método auxiliar para limpiar las cajas de texto
-    private void limpiarCampos() {
-        nombre.clear();
-        cantidad.clear();
-        precioFinal.clear();
-        if (codigoBarras != null) codigoBarras.clear();
-
-    }
 
     // === 3. MÉTODO INITIALIZE ===
     @FXML
@@ -57,24 +44,50 @@ public class ControladorProductoAgregar {
             // Limpiamos el puente
             Producto.productoSeleccionadoParaEditar = null;
         }
+
+        // Filtro para Cantidad (Solo permite números enteros positivos)
+        cantidad.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                cantidad.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        // Filtro para Precio (Solo permite números y un único punto decimal)
+        precioFinal.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                precioFinal.setText(oldValue);
+            }
+        });
+
+
     }
 
     // === 4. TU BOTÓN GUARDAR ===
     @FXML
     private void Clickguardar(ActionEvent event) {
-        try{
-            // 1. Capturar los valores directamente desde los TextField
-            String nuevonombre=nombre.getText().trim();
-            Integer nuevacantidad=Integer.valueOf(cantidad.getText());
-            Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
-            String nuevocodigo = (codigoBarras != null) ? codigoBarras.getText().trim() : "";
 
-            // VALIDACIÓN: Validar campos vacíos o números negativos
-            if (nuevonombre.isEmpty()) {
-                AlertasUtils.mostrarAlerta("Campos vacíos", "Nombre requerido",
-                        "Por favor, ingresá el nombre del producto.", Alert.AlertType.WARNING);
-                return;
-            }
+        // 1. Capturar los valores directamente desde los TextField
+        String textoNombre = nombre.getText().trim();
+        String textoCantidad = cantidad.getText().trim();
+        String textoPrecio = precioFinal.getText().trim();
+        String nuevocodigo = (codigoBarras != null) ? codigoBarras.getText().trim() : "";
+
+
+        // 2. VALIDACIÓN: Validar campos vacíos o números negativos
+        if (textoNombre.isEmpty() || textoCantidad.isEmpty() || textoPrecio.isEmpty() ) {
+            AlertasUtils.mostrarAlerta("Campos vacíos", "Nombre requerido",
+                    "Por favor, ingresá el nombre del producto.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try{
+
+            Integer nuevacantidad = Integer.valueOf(textoCantidad);
+            Double nuevoPrecio = Double.parseDouble(textoPrecio);
+            //Integer nuevacantidad=Integer.valueOf(cantidad.getText());
+            //Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+
+
             if (nuevacantidad < 0 || nuevoPrecio < 0) {
                 AlertasUtils.mostrarAlerta("Valores inválidos", "Números negativos detectados",
                         "La cantidad y el precio final no pueden ser números negativos.", Alert.AlertType.ERROR);
@@ -85,8 +98,8 @@ public class ControladorProductoAgregar {
             if (this.productoLocal != null) {
                 // === LÓGICA DE MODIFICACIÓN ===
                 // Modificamos las propiedades del objeto observable (esto refresca la TableView automáticamente)
-                productoLocal.nombreProperty().set(nuevonombre);
-                productoLocal.setNombre(nuevonombre);
+                productoLocal.nombreProperty().set(textoNombre);
+                productoLocal.setNombre(textoNombre);
 
                 productoLocal.cantidadProperty().set(nuevacantidad);
                 productoLocal.setCantidad(nuevacantidad);
@@ -109,7 +122,7 @@ public class ControladorProductoAgregar {
             } else {
                 // === LÓGICA DE AGREGAR (NUEVO PRODUCTO) ===
                 // Creamos una nueva instancia con los datos del formulario
-                Producto nuevoProducto = new Producto(nuevonombre, nuevacantidad, nuevoPrecio, nuevocodigo);
+                Producto nuevoProducto = new Producto(textoNombre, nuevacantidad, nuevoPrecio, nuevocodigo);
 
                 // Guardar el nuevo producto en la Base de Datos
                 ProductoDAO.insertar(nuevoProducto);
@@ -122,8 +135,7 @@ public class ControladorProductoAgregar {
             }
 
             // 3. Cerrar la ventana automáticamente al terminar con éxito
-            Stage stage = (Stage) nombre.getScene().getWindow();
-            stage.close();
+            cerrarVentana();
 
         } catch (NumberFormatException e) {
             AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
@@ -136,6 +148,12 @@ public class ControladorProductoAgregar {
                     "No se pudo guardar la información en la base de datos.", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
+    }
+
+    //Metodo auxiliar para cerrar la ventana actual
+    private void cerrarVentana() {
+        Stage stage = (Stage) nombre.getScene().getWindow();
+        stage.close();
     }
 
 

@@ -39,7 +39,9 @@
       <Label layoutX="52.0" layoutY="157.0" text="CODIGO DE BARRAS : " />
       <Label layoutX="52.0" layoutY="191.0" text="CANTIDAD : " />
       <Label layoutX="50.0" layoutY="225.0" text="PRECIO UNITARIO : " />
-      <CheckBox fx:id="checkProductoActivado" layoutX="180.0" layoutY="255.0" mnemonicParsing="false" text="PRODUCTO ACTIVADO" />
-      <Button fx:id="guardar" layoutX="456.0" layoutY="283.0" mnemonicParsing="false" onAction="#Clickguardar" text="Guardar" />
+      <CheckBox fx:id="checkProductoActivado" layoutX="418.0" layoutY="291.0" mnemonicParsing="false" text="PRODUCTO ACTIVADO" />
+      <Button fx:id="guardar" layoutX="494.0" layoutY="324.0" mnemonicParsing="false" onAction="#Clickguardar" text="Guardar" />
+      <TextField fx:id="precioCosto" layoutX="179.0" layoutY="255.0" prefHeight="25.0" prefWidth="385.0" promptText="Precio Costo" />
+      <Label layoutX="48.0" layoutY="256.0" text="PRECIO COSTO : " />
    </children>
 </AnchorPane>
