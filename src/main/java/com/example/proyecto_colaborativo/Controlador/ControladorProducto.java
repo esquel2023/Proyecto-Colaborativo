@@ -56,6 +56,7 @@ public class ControladorProducto {
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     public static Producto productoseleccionado;
+    private controladorProveedorSelec proveedorSelec;
 
     @FXML
     public void initialize(){
@@ -104,7 +105,10 @@ public class ControladorProducto {
             if (newValue != null) {
                 // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
                 ControladorProducto.productoseleccionado = newValue;
+                if (proveedorSelec != null) {
+                    proveedorSelec.recibirProducto(newValue);
 
+                }
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
 
@@ -227,5 +231,7 @@ public class ControladorProducto {
         // Cierra la ventana actual
         stage.close();
     }
-
+    public void setProveedorSelec(controladorProveedorSelec proveedor) {
+        this.proveedorSelec = proveedor;
+    }
 }

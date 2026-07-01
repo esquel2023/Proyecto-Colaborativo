@@ -64,10 +64,11 @@ public class controladorProveedorSelec {
 
         tablaProductosProovedor.setItems(listaProductosObs);
         tablaProductosProovedor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-           this.productoseleccionado = newValue;
+            this.productoseleccionado = newValue;
             configurarTablaEditable();
         });
     }
+
     private void configurarTablaEditable() {
         // 1. Permitir que la tabla acepte edición
         tablaProductosProovedor.setEditable(true);
@@ -121,7 +122,7 @@ public class controladorProveedorSelec {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             ControladorProducto controller = loader.getController();
-         //   controller.setControladorProveedorSelec(this);
+            controller.setProveedorSelec(this);
 
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
@@ -136,9 +137,6 @@ public class controladorProveedorSelec {
     }
 
 
-
-
-
     @FXML
     public void botonElimina(ActionEvent actionEvent) {
         desasociarProducto(productoseleccionado);
@@ -148,14 +146,15 @@ public class controladorProveedorSelec {
     public void recibirProducto(Producto producto) {
         if (producto != null) {
             listaProductosObs.add(producto);
-           ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
+            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
 
-            }
         }
-        public void desasociarProducto(Producto producto) {
-        if (producto != null){
+    }
+
+    public void desasociarProducto(Producto producto) {
+        if (producto != null) {
             listaProductosObs.remove(producto);
             ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
         }
-        }
     }
+}
