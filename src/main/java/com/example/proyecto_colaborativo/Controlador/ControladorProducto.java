@@ -126,7 +126,6 @@ public class ControladorProducto {
         }
         // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
         Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
-
         // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
         // hasta que el usuario termine de editar en la otra ventana.
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);

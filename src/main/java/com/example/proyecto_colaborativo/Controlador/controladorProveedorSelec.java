@@ -121,7 +121,7 @@ public class controladorProveedorSelec {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             ControladorProducto controller = loader.getController();
-            controller.setControladorProveedorSelec(this);
+         //   controller.setControladorProveedorSelec(this);
 
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
