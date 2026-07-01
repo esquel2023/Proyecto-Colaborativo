@@ -5,7 +5,6 @@ import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
-import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +30,7 @@ import java.util.ResourceBundle;
 public class ControladorFactura implements Initializable {
 
 
+
     public SplitMenuButton tipoFactura;
     public Text unidades;
     public Text dni;
@@ -45,6 +45,7 @@ public class ControladorFactura implements Initializable {
     public Button agregarCliente;
     public Button agregarProducto;
     public Button eliminarProducto;
+    public SplitMenuButton codigo;
 
     @FXML
     private Button buscarCliente;
@@ -115,8 +116,6 @@ public class ControladorFactura implements Initializable {
         });
     }
 
-
-
     private void Calcular() {
         double totalAcumulado = 0.0;
 
@@ -137,7 +136,13 @@ public class ControladorFactura implements Initializable {
     }
 
     private void obtenerProducto() {
-
+        try {
+            List<Producto> datosBD = usuarioDAO.listar();
+            // Si necesitas que la factura inicie con datos de la BD, los agregas acá:
+            // listaUsuarios.addAll(datosBD);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cargarColumnas() {
@@ -157,13 +162,6 @@ public class ControladorFactura implements Initializable {
 
         });
     }
-    // 3. Cargar los registros de forma limpia invocando al DAO
-
-
-    // El controlador recibe una lista de Java pura y la convierte en observable para la interfaz
-    List<Producto> datosBD = usuarioDAO.listar();
-//        listaUsuarios.addAll(datosBD);
-
 
     public void facturaTipo(ActionEvent actionEvent) {
 
@@ -175,7 +173,7 @@ public class ControladorFactura implements Initializable {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador DESPUÉS de cargar el root
+//            // 2. Obtener el controlador DESPUÉS de cargar el root
             ControladorProducto controller = loader.getController();
             controller.setControladorProducto(this);
 
@@ -193,7 +191,8 @@ public class ControladorFactura implements Initializable {
         // >>> NUEVO: Permite borrar un producto seleccionado de la factura <<<
         Producto seleccionado = TablaProductos.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
-            listaUsuarios.remove(seleccionado);
+            AlertasUtils.mostrarAlerta("error", "sin cliente", "no hay ningun cliente seleccionado", Alert.AlertType.CONFIRMATION);
+        }else{  listaUsuarios.remove(seleccionado);
             Calcular();
         }
     }
@@ -228,10 +227,12 @@ public class ControladorFactura implements Initializable {
     }
 
     public void eliminarCliente(ActionEvent actionEvent) {
-//        clienteClase clienteSeleccionado = cliente.getSelectionModel();
-//        if (clienteSeleccionado != null) {
-//            listaUsuarios.remove(clienteSeleccionado);
-//        }
+
+        if (cliente != null && !cliente.getText().isEmpty() && !cliente.getText().equals("Label")) {
+            cliente.setText("");
+        } else {
+                AlertasUtils.mostrarAlerta("error", "sin cliente", "no hay ningun cliente seleccionado", Alert.AlertType.ERROR);
+        }
     }
     public void agregarCliente(ActionEvent actionEvent) throws IOException {
         try {
@@ -295,5 +296,29 @@ public class ControladorFactura implements Initializable {
 //                }
             }
         }
+    }
+
+    public void tipoFactura(ActionEvent actionEvent) {
+
+    }
+
+    public void botonA(ActionEvent actionEvent) {
+        tipoFactura.setText(("A"));
+    }
+
+    public void botonB(ActionEvent actionEvent) {
+        tipoFactura.setText(("B"));
+    }
+
+    public void botonC(ActionEvent actionEvent) {
+        tipoFactura.setText(("C"));
+    }
+
+    public void CodigoBarras(ActionEvent actionEvent) {
+        codigo.setText(("Codigo Barras"));
+    }
+
+    public void CodigoNumerico(ActionEvent actionEvent) {
+        codigo.setText(("Codigo Numerico"));
     }
 }
