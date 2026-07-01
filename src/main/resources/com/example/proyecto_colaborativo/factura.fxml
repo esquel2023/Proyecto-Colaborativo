@@ -26,11 +26,11 @@
       </MenuBar>
       <Label layoutX="20.0" layoutY="56.0" text="Fecha" />
       <Text layoutX="312.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cod Comprob." />
-      <SplitMenuButton layoutX="81.0" layoutY="52.0" mnemonicParsing="false" text="Factura Electronica">
+      <SplitMenuButton fx:id="tipoFactura" layoutX="81.0" layoutY="52.0" mnemonicParsing="false" onAction="#tipoFactura" text="Factura Electronica">
          <items>
-            <MenuItem mnemonicParsing="false" text="A" />
-            <MenuItem mnemonicParsing="false" text="B" />
-            <MenuItem mnemonicParsing="false" text="C" />
+            <MenuItem mnemonicParsing="false" onAction="#botonA" text="A" />
+            <MenuItem mnemonicParsing="false" onAction="#botonB" text="B" />
+            <MenuItem mnemonicParsing="false" onAction="#botonC" text="C" />
          </items>
       </SplitMenuButton>
       <Label fx:id="totalInicial1" layoutX="370.0" layoutY="65.0" text="cod" />
@@ -38,13 +38,13 @@
       <Text layoutX="295.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vence:" />
       <Label fx:id="totalInicial11" layoutX="366.0" layoutY="82.0" text="fecha" />
       <Text layoutX="20.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingresar Articulo:" />
-      <SplitMenuButton layoutX="20.0" layoutY="124.0" mnemonicParsing="false" text="Codigo">
+      <SplitMenuButton fx:id="codigo" layoutX="20.0" layoutY="124.0" mnemonicParsing="false" text="Codigo">
          <items>
-            <MenuItem mnemonicParsing="false" text="Codigo Barras" />
-            <MenuItem mnemonicParsing="false" text="Codigo Numerico" />
+            <MenuItem mnemonicParsing="false" onAction="#CodigoBarras" text="Codigo Barras" />
+            <MenuItem mnemonicParsing="false" onAction="#CodigoNumerico" text="Codigo Numerico" />
          </items>
       </SplitMenuButton>
-      <Label fx:id="totalInicial12" layoutX="110.0" layoutY="128.0" prefHeight="17.0" prefWidth="90.0" text="Ingresar codigo" />
+      <Label fx:id="totalInicial12" layoutX="164.0" layoutY="124.0" prefHeight="25.0" prefWidth="90.0" text="Ingresar codigo" />
       <TextField layoutX="81.0" layoutY="156.0" prefHeight="25.0" prefWidth="24.0" />
       <Text layoutX="25.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unidades:" />
       <Button fx:id="agregarProducto" layoutX="118.0" layoutY="156.0" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="25.0" prefWidth="95.0" text="Agregar Prod." />
@@ -67,7 +67,7 @@
       <Text layoutX="25.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre/Apellido:" />
       <TextField fx:id="nombreYApellido" layoutX="143.0" layoutY="423.0" prefHeight="25.0" prefWidth="95.0" />
       <Button fx:id="eliminarProducto" layoutX="221.0" layoutY="156.0" mnemonicParsing="false" onAction="#eliminarProducto" text="Eliminar Prod." />
-      <Button fx:id="buscarCliente" layoutX="248.0" layoutY="395.0" mnemonicParsing="false" onAction="#buscarCliente" prefHeight="19.0" prefWidth="78.0" text="Buscar Cliente">
+      <Button fx:id="buscarCliente" layoutX="248.0" layoutY="395.0" mnemonicParsing="false" onAction="#buscarCliente" prefHeight="19.0" prefWidth="78.0" text="buscarCliente">
          <font>
             <Font size="10.0" />
          </font></Button>
@@ -98,6 +98,6 @@
             <Font size="9.0" />
          </font>
       </Label>
-      <Label fx:id="cliente" layoutX="106.0" layoutY="365.0" prefHeight="17.0" prefWidth="63.0" text="Cliente" />
+      <Label fx:id="cliente" blendMode="DARKEN" layoutX="106.0" layoutY="365.0" prefHeight="17.0" prefWidth="63.0" text="Cliente" />
    </children>
 </AnchorPane>
