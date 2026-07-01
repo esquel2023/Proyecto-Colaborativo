@@ -12,6 +12,9 @@ public class Producto {
     private final DoubleProperty precio;
     private final StringProperty codigoBarra;
 
+    // Este es el puente estático que guardará el producto temporalmente en memoria
+    public static Producto productoSeleccionadoParaEditar = null;
+
     public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
         this.idProducto = new SimpleIntegerProperty();
         this.cantidad = new SimpleIntegerProperty();
