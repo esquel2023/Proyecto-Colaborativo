@@ -2,7 +2,7 @@ package com.example.proyecto_colaborativo.Clases;
 
 public class clienteClase extends entidadClase {
 
- private int id;
+    private int id;
 
     public clienteClase() {
 
