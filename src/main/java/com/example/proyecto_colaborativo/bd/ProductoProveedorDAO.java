@@ -13,9 +13,9 @@ public class ProductoProveedorDAO {
     public static List<Producto> listar(int idProveedor) {
         List<Producto> lista = new ArrayList<>();
 
-        String sql = "SELECT p.* FROM Productos p " +
-                "INNER JOIN ProductoProveedor pp ON p.id = pp.idproducto " +
-                "WHERE pp.idproveedor = ?";
+        String sql = "SELECT p.* FROM Producto p " +
+                "INNER JOIN ProductoProveedor pp ON p.idproducto = pp.idProducto " +
+                "WHERE pp.idProveedor = ?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class ProductoProveedorDAO {
     }
     // Para el botón Agregar: Inserta una nueva fila en la tabla intermedia
     public static void asociar(int idProducto, int idProveedor) {
-        String sql = "INSERT INTO ProductoProveedor (idproducto, idproveedor) VALUES (?, ?)";
+        String sql = "INSERT INTO ProductoProveedor (idProducto, idProveedor) VALUES (?, ?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, idProducto);
@@ -56,7 +56,7 @@ public class ProductoProveedorDAO {
 
     // Para el botón Eliminar: Borra la fila de la relación sin borrar el producto real
     public static void desasociar(int idProducto, int idProveedor) {
-        String sql = "DELETE FROM ProductoProveedor WHERE idproducto = ? AND idproveedor = ?";
+        String sql = "DELETE FROM ProductoProveedor WHERE idProducto = ? AND idProveedor = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, idProducto);

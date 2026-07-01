@@ -16,10 +16,10 @@ import static com.example.proyecto_colaborativo.Utilits.NavegacionUtils.abrirPan
 
 public class controladorProveedoresGeneral {
     public TextField buscadorProovedores;
-    public TableView tablaProovedores;
-    public TableColumn nombreTabla;
-    public TableColumn telefonoTabla;
-    public TableColumn emailTabla;
+    public TableView<proovedorClase> tablaProovedores;
+    public TableColumn<proovedorClase,String> nombreTabla;
+    public TableColumn<proovedorClase,String> telefonoTabla;
+    public TableColumn<proovedorClase,String> emailTabla;
     private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
 
     public void initialize() {
@@ -30,23 +30,29 @@ public class controladorProveedoresGeneral {
             nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
             telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
             emailTabla.setCellValueFactory(new PropertyValueFactory<>("emailEntidad"));
-            listaProveedoresObs.setAll(ProveedorDAO.listar());
 
+            // 2. Cargamos los datos desde el DAO
+            listaProveedoresObs.setAll(ProveedorDAO.listar());
             tablaProovedores.setItems(listaProveedoresObs);
 
+            // SOLUCIÓN CLAVE: Activamos el método del buscador para que configure la lista filtrada
+            buscadorProveedores();
+
+            // 3. Listener para detectar cuando se hace clic en una fila
             tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
+                    abrirPantalla("proveedorSeleccionado.fxml", "Proveedor Seleccionado", false);
 
-                    abrirPantalla("proveedorSeleccionado.fxml", "Proovedor Seleccionado", false);
-                    //controladorProveedorSelec.setProveedorSelec((proovedorClase) newValue);
-
+                    // CORREGIDO: Quitamos el casteo innecesario (proovedorClase) porque 'newValue' ya es de ese tipo
+                    controladorProveedorSelec.setProveedorSelec(newValue);
                 }
             });
         }
-
     }
-    void buscadorProveedores(){
-                BuscadorUtils.configuradorBuscador(
+
+    // Cambiado a public para que JavaFX o el inicializador puedan gestionarlo sin problemas
+    public void buscadorProveedores(){
+        BuscadorUtils.configuradorBuscador(
                 buscadorProovedores,
                 tablaProovedores,
                 listaProveedoresObs,
@@ -56,7 +62,7 @@ public class controladorProveedoresGeneral {
                             proveedor.getNombreEntidad().toLowerCase().contains(texto);
 
                     return coincideNombre;
-                });
+                }
+        );
     }
 }
-

@@ -59,10 +59,14 @@ public class ControladorProducto {
 
     // >>> NUEVA VARIABLE GLOBAL CONECTADA A TU FACTURA <<<
     private ControladorFactura controladorFactura;
+    private controladorProveedorSelec controladorProveedorSelec;
 
     // >>> NUEVO MÉTODO QUE SE LLAMA DESDE CONTROLADORFACTURA <<<
     public void setControladorProducto(ControladorFactura factura) {
         this.controladorFactura = factura;
+    }
+    public void setControladorProveedorSelec(controladorProveedorSelec prov) {
+        this.controladorProveedorSelec = prov;
     }
 
 
@@ -137,9 +141,14 @@ public class ControladorProducto {
                     Producto seleccionado = fila.getItem();
 
                     // Si este catálogo fue abierto por la factura (controladorFactura no es null)
-                    if (seleccionado != null && controladorFactura != null) {
+                    if (seleccionado != null) {
                         // Enviamos el producto a la tabla de la factura
-                        controladorFactura.recibirProducto(seleccionado);
+                        if(controladorFactura != null){
+                            controladorFactura.recibirProducto(seleccionado);
+                        }
+                        if(controladorProveedorSelec != null){
+                            controladorProveedorSelec.recibirProducto(seleccionado);
+                        }
 
                         // Cerramos automáticamente esta ventana de catálogo
                         Stage stage = (Stage) tablaProductos.getScene().getWindow();

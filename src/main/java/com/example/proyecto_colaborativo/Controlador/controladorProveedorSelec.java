@@ -2,37 +2,51 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
+import com.example.proyecto_colaborativo.HelloApplication;
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import com.example.proyecto_colaborativo.bd.ProductoProveedorDAO;
+import com.example.proyecto_colaborativo.bd.ProveedorDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.List;
 
 public class controladorProveedorSelec {
 
     private static controladorProveedorSelec instanciaActiva;
 
-    @FXML public Button botonAgregar;
-    @FXML public Button botonEliminar;
-    @FXML public TableView<Producto> tablaProductosProovedor;
-    @FXML public TableColumn<Producto, String> prooductosProovedor;
-    @FXML public TableColumn<Producto, String> precioProovedor;
-    @FXML public TableColumn<Producto, String> prooductosProovedor1;
+    @FXML
+    public Button botonAgregar;
+    @FXML
+    public Button botonEliminar;
+    @FXML
+    public TableView<Producto> tablaProductosProovedor;
+    @FXML
+    public TableColumn<Producto, String> prooductosProovedor;
+    @FXML
+    public TableColumn<Producto, String> precioProovedor;
+    @FXML
+    public TableColumn<Producto, String> prooductosProovedor1;
 
-    @FXML private Label proveedorSelec;
+    @FXML
+    private Label proveedorSelec;
 
-    // Lista observable correcta vinculada a la UI
     private final ObservableList<Producto> listaProductosObs = FXCollections.observableArrayList();
     private proovedorClase proveedorActual;
 
-    // ELIMINADO EL CONSTRUCTOR CON PARÁMETROS (JavaFX usará el constructor vacío implícito)
 
     @FXML
     public void initialize() {
@@ -43,13 +57,11 @@ public class controladorProveedorSelec {
         precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precio"));
         prooductosProovedor1.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
 
-        // Enlazamos la lista observable a la tabla visual una sola vez
+
         tablaProductosProovedor.setItems(listaProductosObs);
     }
 
-    /**
-     * Método puente llamado externamente al seleccionar un proveedor en la otra pantalla.
-     */
+
     public static void setProveedorSelec(proovedorClase proveedor) {
         if (instanciaActiva != null && proveedor != null) {
             instanciaActiva.proveedorActual = proveedor;
@@ -72,34 +84,46 @@ public class controladorProveedorSelec {
 
     @FXML
     public void botonAgregar(ActionEvent actionEvent) {
+        if (proveedorActual == null) return;
 
-            if (proveedorActual == null) {
-                return;
-            }
+        // 1. Listamos todos los productos de la base de datos
+        List<Producto> todosLosProductos = ProductoDAO.listar();
 
-            // 1. Traemos TODOS los productos del sistema usando tu ProductoDAO.listar()
-            List<Producto> todosLosProductos = ProductoDAO.listar();
+        try {
+            // 1. Cargar el FXML una sola vez
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
+            Parent root = loader.load();
 
-            // 2. Abrimos una ventanita emergente para que el usuario elija uno
-            javafx.scene.control.ChoiceDialog<Producto> dialogo = new javafx.scene.control.ChoiceDialog<>(null, todosLosProductos);
-            dialogo.setTitle("Asociar Producto");
-            dialogo.setHeaderText("Selecciona el producto que vende este proveedor:");
-            dialogo.setContentText("Producto:");
+            // 2. Obtener el controlador DESPUÉS de cargar el root
+            ControladorProducto controller = loader.getController();
+            controller.setControladorProveedorSelec(this);
 
-            // 3. Si el usuario selecciona un producto y presiona OK
-            dialogo.showAndWait().ifPresent(productoElegido -> {
-                // 4. Lo guardamos en la base de datos usando el nuevo método del DAO
-                ProductoProveedorDAO.asociar(productoElegido.getidProducto(), proveedorActual.getId());
 
-                // 5. Refrescamos la tabla para que aparezca el nuevo producto en la lista
-                actualizarTabla(proveedorActual.getId());
-            });
-
+            // 3. Configurar y mostrar la nueva ventana (Stage)
+            Stage stage = new Stage();
+            stage.setTitle("buscadorCliente");
+            stage.setScene(new Scene(root, 440, 540));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
+
 
     @FXML
     public void botonElimina(ActionEvent actionEvent) {
-        // Lógica para desasociar el producto seleccionado
+        ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
     }
-}
+
+    public void recibirProducto(Producto producto) {
+        if (producto != null) {
+            listaProductosObs.add(producto);
+           ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
+
+            }
+        }
+    }
