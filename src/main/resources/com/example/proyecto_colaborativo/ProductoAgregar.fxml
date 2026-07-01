@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="productoActiva" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorProductoAgregar">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+          <Menu mnemonicParsing="false" text="Historial">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Registro">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+        </menus>
+      </MenuBar>
+      <TextField fx:id="codigoBarras" layoutX="179.0" layoutY="153.0" prefHeight="25.0" prefWidth="385.0" promptText="Codigo de barras" />
+      <TextField fx:id="precioFinal" layoutX="179.0" layoutY="221.0" prefHeight="25.0" prefWidth="385.0" promptText="Precio Unitario" />
+      <TextField fx:id="nombre" layoutX="179.0" layoutY="119.0" prefHeight="25.0" prefWidth="385.0" promptText="Nombre" />
+      <TextField fx:id="cantidad" layoutX="179.0" layoutY="187.0" prefHeight="25.0" prefWidth="385.0" promptText="Cantidad" />
+      <Accordion />
+      <Label layoutX="51.0" layoutY="123.0" text="NOMBRE : " />
+      <Label layoutX="52.0" layoutY="157.0" text="CODIGO DE BARRAS : " />
+      <Label layoutX="52.0" layoutY="191.0" text="CANTIDAD : " />
+      <Label layoutX="50.0" layoutY="225.0" text="PRECIO UNITARIO : " />
+      <CheckBox fx:id="checkProductoActivado" layoutX="418.0" layoutY="291.0" mnemonicParsing="false" text="PRODUCTO ACTIVADO" />
+      <Button fx:id="guardar" layoutX="494.0" layoutY="324.0" mnemonicParsing="false" onAction="#Clickguardar" text="Guardar" />
+      <TextField fx:id="precioCosto" layoutX="179.0" layoutY="255.0" prefHeight="25.0" prefWidth="385.0" promptText="Precio Costo" />
+      <Label layoutX="48.0" layoutY="256.0" text="PRECIO COSTO : " />
+   </children>
+</AnchorPane>
