@@ -1,66 +1,133 @@
-/* Variables globales de color basadas en tu imagen */
 .root {
-    -fx-bg-dark-color: #667292;      /* 3er Color: Fondo principal */
-    -fx-secondary-color: #8d9db6;    /* 2do Color: Pestaña normal */
-    -fx-light-color: #bccad6;        /* 1er Color: Pestaña seleccionada */
-    -fx-cream-color: #f1e3dd;        /* 4to Color: Destacados */
+    -fx-background-color: #FAFAFA;
 }
 
-/* Estilos de texto generales (Ahora todo es negro y con trazo fino) */
-.root .text, .root .label {
-    -fx-font-family: "Fira Code Light";
-    -fx-font-weight: normal;
-    -fx-font-style: normal;
-    -fx-font-size: 15px;
-    -fx-text-fill: #000000;          /* Letra negra para toda la aplicación */
+.sidebar {
+    -fx-background-color: #324A5F;
 }
 
-/* Contenedor principal con el 3er color de fondo */
-.tab-pane {
-    -fx-tab-min-width: 132px;
-    -fx-tab-max-width: 132px;
-    -fx-tab-min-height: 240px;
-    -fx-tab-max-height: 240px;
-    -fx-background-color: -fx-bg-dark-color;
+.sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
 }
 
-/* Barra de fondo de las pestañas limpia */
-.tab-pane .tab-header-area .tab-header-background {
+.sidebar-button {
     -fx-background-color: transparent;
-}
-
-/* Pestaña en estado normal */
-.tab {
-    -fx-background-color: -fx-secondary-color;
-    -fx-padding: 0px;
-}
-
-/* Texto de la pestaña normal en negro */
-.tab .tab-label {
-    -fx-text-fill: #000000;
-}
-
-/* Pestaña seleccionada */
-.tab:selected {
-    -fx-background-color: -fx-light-color;
-    -fx-border-color: transparent;
-    -fx-border-width: 0px;
-}
-
-/* Texto de la pestaña seleccionada en negro */
-.tab:selected .tab-label {
-    -fx-text-fill: #000000;
-}
-
-/* Efecto Hover: Cuando pasás el mouse por encima */
-.tab:hover {
-    -fx-background-color: -fx-cream-color;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 12;
+    -fx-padding: 12 18 12 18;
     -fx-cursor: hand;
+    -fx-pref-width: 180px;
 }
 
-/* Texto de la pestaña en hover en negro */
-.tab:hover .tab-label {
-    -fx-text-fill: #000000;
+.sidebar-button:hover {
+    -fx-background-color: #6F8FAF;
 }
 
+.header {
+    -fx-background-color: white;
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 0 0 1 0;
+}
+
+.content {
+    -fx-background-color: #FAFAFA;
+}
+
+.titulo {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.subtitulo {
+    -fx-font-size: 15px;
+    -fx-text-fill: #6C757D;
+}
+
+.fecha {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #324A5F;
+}
+.card {
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 4);
+}
+
+.card-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.card-number {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #324A5F;
+}
+
+.card-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6C757D;
+}
+
+.panel {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #E8EDF2;
+}
+
+.panel-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+.eye-button{
+
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+
+    -fx-background-radius: 50;
+
+    -fx-padding: 6;
+
+}
+
+.eye-button:hover{
+
+    -fx-background-color: rgba(50,74,95,0.12);
+
+}
+.card-caja {
+    -fx-background-color: #E8F1FF;
+    -fx-border-color: #BFD7FF;
+}
+
+.card-ventas {
+    -fx-background-color: #EAF8EF;
+    -fx-border-color: #BFE8CB;
+}
+
+.card-clientes {
+    -fx-background-color: #FFF4E6;
+    -fx-border-color: #FFD59E;
+}
+
+.card-stock {
+    -fx-background-color: #FDECEC;
+    -fx-border-color: #F5B5B5;
+}
+
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
 }
