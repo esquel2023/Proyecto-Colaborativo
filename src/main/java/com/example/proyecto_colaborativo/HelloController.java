@@ -48,7 +48,7 @@ public class HelloController {
 
     public void botonProveedores (ActionEvent actionEvent) throws IOException {
         // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("proveedores.fxml", "Proveedores", false);
+        NavegacionUtils.abrirPantalla("bifurcacionProveedor.fxml", "proveedores", false);
     }
     public void botonStock (ActionEvent actionEvent){
         // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
@@ -58,7 +58,7 @@ public class HelloController {
 
     public void botonClientes (ActionEvent actionEvent) throws IOException {
         // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("cliente.fxml", "Cliente", false);
+        NavegacionUtils.abrirPantalla("bifurcacionCliente.fxml", "Cliente", false);
     }
 
     public void botonFactura (ActionEvent actionEvent) throws IOException {

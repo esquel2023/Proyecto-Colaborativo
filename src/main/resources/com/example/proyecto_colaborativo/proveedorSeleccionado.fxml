@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProveedorSelec">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+            <Menu mnemonicParsing="false" text="Historial">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Registro">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+         </menus>
+      </MenuBar>
+      <Button fx:id="botonAgregar" layoutX="16.0" layoutY="92.0" mnemonicParsing="false" onAction="#botonAgregar" prefHeight="25.0" prefWidth="131.0" text="Agregar producto" />
+      <Button fx:id="botonEliminar" layoutX="277.0" layoutY="92.0" mnemonicParsing="false" onAction="#botonElimina" prefHeight="25.0" prefWidth="116.0" text="Eliminar producto" />
+      <TableView fx:id="tablaProductosProovedor" layoutX="14.0" layoutY="129.0" prefHeight="274.0" prefWidth="379.0">
+         <columns>
+            <TableColumn fx:id="prooductosProovedor" prefWidth="121.0" text="Producto" />
+            <TableColumn fx:id="precioProovedor" prefWidth="141.0" text="Precio costo" />
+            <TableColumn fx:id="prooductosProovedor1" prefWidth="121.0" text="Precio final" />
+         </columns>
+      </TableView>
+      <Label fx:id="proveedorSelec" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="379.0" />
+   </children>
+</AnchorPane>

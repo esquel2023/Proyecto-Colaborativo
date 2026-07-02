@@ -24,8 +24,7 @@ public class ProveedorDAO {
                 p.setNombreEntidad(rs.getString("nombre"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
-                p.setDireccionEntidad(rs.getString("direccion"));
-                p.setCuitcuilEntidad(rs.getString("cuil"));
+                p.setCuitcuilEntidad(rs.getString("cuitcuil"));
 
                 lista.add(p);
             }
@@ -36,15 +35,14 @@ public class ProveedorDAO {
     }
 
     public static void insertar(proovedorClase p) {
-        String sql = "INSERT INTO proveedor(nombre, telefono, email, direccion, cuil) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO proveedor(nombre, telefono, email, cuitcuil) VALUES(?,?,?,?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombreEntidad());
-            ps.setString(2, p.getDniEntidad());
-            ps.setString(3, p.getTelefonoEntidad());
-            ps.setString(4, p.getEmailEntidad());
-            ps.setString(5, p.getCuitcuilEntidad());
+            ps.setString(2, p.getTelefonoEntidad());
+            ps.setString(3, p.getEmailEntidad());
+            ps.setString(4, p.getCuitcuilEntidad());
             ps.executeUpdate();
 
         } catch (Exception e) {
@@ -63,11 +61,9 @@ public class ProveedorDAO {
                 return new proovedorClase(
                         rs.getInt("idcliente"),
                         rs.getString("nombre"),
-                        rs.getString("dni"),
                         rs.getString("telefono"),
                         rs.getString("email"),
-                        rs.getString("direccion"),
-                        rs.getString("cuil")
+                        rs.getString("cuitcuil")
                 );
             }
 
@@ -80,7 +76,7 @@ public class ProveedorDAO {
     public static void actualizar(proovedorClase p) throws SQLException {
         String sql = """
         UPDATE proveedor
-        SET nombre=?, telefono=?, email=?, direccion=?, cuil=? 
+        SET nombre=?, telefono=?, email=?, cuitcuil=? 
         WHERE idproveedor=?;
     """;
 
@@ -88,7 +84,6 @@ public class ProveedorDAO {
              PreparedStatement ps = c.prepareStatement(sql)) {
 
             ps.setString(1, p.getNombreEntidad());
-            ps.setString(2, p.getDniEntidad());
             ps.setString(3, String.valueOf(p.getTelefonoEntidad()));
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());

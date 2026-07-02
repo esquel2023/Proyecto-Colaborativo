@@ -4,6 +4,8 @@ import javafx.beans.property.*;
 
 public class Producto {
 
+
+
     private final IntegerProperty idProducto;
     private final StringProperty nombre;
     private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
@@ -48,6 +50,8 @@ public class Producto {
         this.precio = precio;
         this.codigoBarra = codigoBarra;
     }
+
+
 
 
     // Getters de Propiedades (Requeridos por TableView)
