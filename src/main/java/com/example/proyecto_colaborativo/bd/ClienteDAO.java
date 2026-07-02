@@ -79,7 +79,7 @@ public class ClienteDAO {
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
         UPDATE Cliente
-        SET nombre=?, dni=?, telefono=?, email=?, cuit=?
+        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?
         WHERE idCliente=?;
     """;
 

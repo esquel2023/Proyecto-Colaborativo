@@ -34,8 +34,6 @@
       <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickModificar" text="Modificar" />
       <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickEliminar" text="Eliminar" />
       <TextField fx:id="txtbuscadorProductos" layoutX="12.0" layoutY="203.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos" />
-      <TextField fx:id="codigoBarras" layoutX="21.0" layoutY="126.0" prefHeight="25.0" prefWidth="385.0" promptText="Codigo de barras" />
-      <TextField fx:id="precioFinal" layoutX="291.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="Precio final" />
       <TableView fx:id="tablaProductos" layoutX="12.0" layoutY="240.0" prefHeight="162.0" prefWidth="391.0">
         <columns>
             <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Codigo" />
@@ -44,8 +42,6 @@
             <TableColumn fx:id="colPrecio" prefWidth="97.0" text="Precio" />
         </columns>
       </TableView>
-      <TextField fx:id="nombre" layoutX="21.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="Nombre" />
-      <TextField fx:id="cantidad" layoutX="152.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="Cantidad" />
       <Button fx:id="botonSalir" layoutX="247.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickSalir" text="Salir" />
       <TextField fx:id="porcentaje" layoutX="433.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="\%" />
       <TextField fx:id="precioCosto" layoutX="427.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Precio costo" />

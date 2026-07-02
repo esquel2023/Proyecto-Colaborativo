@@ -1,8 +1,10 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +22,7 @@ public class controladorCliente {
     @FXML public TableView<claseFactura> tablaClientes1;
     @FXML public TableColumn<claseFactura, String> nombreTabla1;
     @FXML public TableColumn<claseFactura, String> dniTabla1;
+    public Label totalclientes;
 
     @FXML private TextField cuil;
     @FXML private TextField buscadorClientes;
@@ -40,38 +43,42 @@ public class controladorCliente {
     @FXML
     public void initialize() {
         // Configuración de tabla Clientes
-        nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
-        dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
-        telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
+        if (nombreTabla != null && dniTabla != null && telefonoTabla != null) {
+            nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
+            dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
+            telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
-        listaClientesObs.setAll(ClienteDAO.listar());
-        tablaClientes.setItems(listaClientesObs);
+            listaClientesObs.setAll(ClienteDAO.listar());
+            tablaClientes.setItems(listaClientesObs);
 
-        // Configuración de tabla Facturas
-        nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
-        tablaClientes1.setItems(listaFacturasObs);
+            // Configuración de tabla Facturas
+            nombreTabla1.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+            dniTabla1.setCellValueFactory(new PropertyValueFactory<>("numeroFactura"));
+            tablaClientes1.setItems(listaFacturasObs);
 
-        // Listener de selección
-        tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
-            if (newSelection == null) {
-                listaFacturasObs.clear();
-            }
-        });
+            // Listener de selección
+            // UN SOLO LISTENER OPTIMIZADO
+            tablaClientes.getSelectionModel().selectedItemProperty().addListener((_, _, clienteSeleccionado) -> {
+                if (clienteSeleccionado == null) {
+                    // Si no hay nada seleccionado, limpiamos todo de un solo viaje
+                    listaFacturasObs.clear();
+                    limpiarCampos(); // Método para vaciar los TextField
+                } else {
+                    // Si seleccionó un cliente, rellenamos los campos
+                    nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
+                    dni.setText(clienteSeleccionado.getDniEntidad());
+                    telefono.setText(clienteSeleccionado.getTelefonoEntidad());
+                    email.setText(clienteSeleccionado.getEmailEntidad());
+                    direccion.setText(clienteSeleccionado.getDireccionEntidad());
+                    cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
 
-        tablaClientes.getSelectionModel().selectedItemProperty().addListener((observable, viejoCliente, clienteSeleccionado) -> {
-            if (clienteSeleccionado != null) {
-                // Rellena los TextField con los datos del cliente seleccionado
-                nombreApellido.setText(clienteSeleccionado.getNombreEntidad());
-                dni.setText(clienteSeleccionado.getDniEntidad());
-                telefono.setText((clienteSeleccionado.getTelefonoEntidad()));
-                email.setText(clienteSeleccionado.getEmailEntidad());
-                direccion.setText(clienteSeleccionado.getDireccionEntidad());
-                cuil.setText(clienteSeleccionado.getCuitcuilEntidad());
-            }
-        });
+                    // Aquí puedes cargar las facturas de ese cliente de forma eficiente si lo necesitas
+                }
+            });
 
+            totalclientes.setText("Cantidad total de clientes: ");
 
+        }
     }
 
     @FXML
@@ -83,19 +90,22 @@ public class controladorCliente {
         String txtCuil = cuil.getText();
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","No completaste todos los campos hay campos vacíos.");
+
             return;
         }
 
         if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","Formatos inválidos. Por favor revisa los formatos de DNI, Email o Nombre.");
+
             return;
         }
 
         try {
             Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+
+            AlertasUtils.mostrarInformacion("FALTAN DATOS", "Dni Por favor, corrija el DNI sin puntos ni letras.");
             return;
         }
 
@@ -136,6 +146,8 @@ public class controladorCliente {
         } catch (Exception e) {
             System.out.println("asd");
         }
+        totalclientes.setText("Cantidad total de clientes: ");
+
     }
 
     @FXML
@@ -150,19 +162,22 @@ public class controladorCliente {
 
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+
+           AlertasUtils.mostrarInformacion("FALTAN DATOS","No completaste todos los campos. Hay campos vacíos.");
             return;
         }
 
         if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","Formatos inválidos. Por favor revisa los formatos de DNI, Email o Nombre..");
+
             return;
         }
 
         try {
             Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("Datos inválidos","Dni. Por favor, corrija el DNI sin puntos ni letras.");
+
             return;
         }
 
@@ -207,13 +222,27 @@ public class controladorCliente {
                 e.printStackTrace();
             }
         }
+        totalclientes.setText("Cantidad total de clientes: ");
+
     }
 
     @FXML
     void botonLupa(ActionEvent event) {
         String buscar = buscadorClientes.getText().toLowerCase();
-        if(!buscar.isEmpty()){
-            // Aquí puedes añadir más adelante tu lógica de filtrado analizando listaClientesObs
+        if (!buscar.isEmpty()) {
+            BuscadorUtils.configuradorBuscador(
+                    buscadorClientes,
+                    tablaClientes,
+                    listaClientesObs,
+                    (cliente, texto) -> {
+                        // Validación segura contra valores nulos
+                        boolean coincideNombre = cliente.getNombreEntidad() != null &&
+                                cliente.getNombreEntidad().toLowerCase().contains(texto);
+
+                        return coincideNombre;
+
+                    });
+
         }
     }
 
@@ -225,4 +254,5 @@ public class controladorCliente {
         direccion.clear();
         cuil.clear();
     }
+
 }

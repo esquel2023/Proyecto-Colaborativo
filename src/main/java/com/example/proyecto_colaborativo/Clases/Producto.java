@@ -4,11 +4,16 @@ import javafx.beans.property.*;
 
 public class Producto {
 
+
+
     private final IntegerProperty idProducto;
     private final StringProperty nombre;
     private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
     private final DoubleProperty precio;
     private final StringProperty codigoBarra;
+
+    // Este es el puente estático que guardará el producto temporalmente en memoria
+    public static Producto productoSeleccionadoParaEditar = null;
 
     public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
         this.idProducto = new SimpleIntegerProperty();
@@ -45,6 +50,8 @@ public class Producto {
         this.precio = precio;
         this.codigoBarra = codigoBarra;
     }
+
+
 
 
     // Getters de Propiedades (Requeridos por TableView)
