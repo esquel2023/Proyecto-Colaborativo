@@ -4,7 +4,8 @@ import javafx.beans.property.*;
 
 public class Producto {
 
-
+    public static Integer idProveedorParaAsociar = null;
+    public static boolean debeAsociarProveedor = false;
 
     private final IntegerProperty idProducto;
     private final StringProperty nombre;

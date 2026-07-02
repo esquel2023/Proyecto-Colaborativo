@@ -73,20 +73,31 @@ public class controladorProveedorSelec {
         // 1. Permitir que la tabla acepte edición
         tablaProductosProovedor.setEditable(true);
 
-        // 3. Hacer editable la columna Precio (usa DoubleStringConverter)
+        // 2. Hacer editable la columna Precio
         precioProovedor.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         precioProovedor.setOnEditCommit(event -> {
             Producto p = event.getRowValue();
-            Double nuevoPrecio = event.getNewValue();
-            if (nuevoPrecio != null && nuevoPrecio > 0) {
-                p.setPrecio(nuevoPrecio);
-                p.precioProperty().set(nuevoPrecio);
+            Double nuevoPrecioCosto = event.getNewValue();
+
+            if (nuevoPrecioCosto != null && nuevoPrecioCosto >= 0) {
+                // Esto actualiza el objeto en memoria (Pantalla)
+                p.setPrecio(nuevoPrecioCosto);
+                p.precioProperty().set(nuevoPrecioCosto);
+
+                // =========================================================================
+                // ¡NUEVO!: Guardamos el nuevo precio de costo editado en la base de datos
+                // Para esto, puedes usar el mismo método 'asociar' (ya que tu SQL usa INSERT o puedes crear un UPDATE)
+                // La forma más limpia es crear un método 'actualizarPrecioCosto' en tu DAO.
+                // =========================================================================
+                ProductoProveedorDAO.actualizarPrecioCosto(p.getidProducto(), proveedorActual.getId(), nuevoPrecioCosto);
+                // =========================================================================
 
             } else {
                 tablaProductosProovedor.refresh(); // Revierte el cambio visual si es inválido
             }
         });
     }
+
 
     public static void setProveedorSelec(proovedorClase proveedor) {
         if (instanciaActiva != null && proveedor != null) {
@@ -145,11 +156,16 @@ public class controladorProveedorSelec {
 
     public void recibirProducto(Producto producto) {
         if (producto != null) {
-            listaProductosObs.add(producto);
-            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
+                listaProductosObs.add(producto);
+
+                ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId(), 0.0);
+
+                // 3. Refrescamos la tabla para asegurar que todo se vea alineado
+                tablaProductosProovedor.refresh();
 
         }
     }
+
 
     public void desasociarProducto(Producto producto) {
         if (producto != null) {
