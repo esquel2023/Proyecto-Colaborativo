@@ -1,6 +1,7 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
@@ -89,19 +90,22 @@ public class controladorCliente {
         String txtCuil = cuil.getText();
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","No completaste todos los campos hay campos vacíos.");
+
             return;
         }
 
         if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","Formatos inválidos. Por favor revisa los formatos de DNI, Email o Nombre.");
+
             return;
         }
 
         try {
             Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+
+            AlertasUtils.mostrarInformacion("FALTAN DATOS", "Dni Por favor, corrija el DNI sin puntos ni letras.");
             return;
         }
 
@@ -158,19 +162,22 @@ public class controladorCliente {
 
 
         if (txtNombre.isEmpty() || txtDni.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+
+           AlertasUtils.mostrarInformacion("FALTAN DATOS","No completaste todos los campos. Hay campos vacíos.");
             return;
         }
 
         if (txtDni.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("FALTAN DATOS","Formatos inválidos. Por favor revisa los formatos de DNI, Email o Nombre..");
+
             return;
         }
 
         try {
             Integer.parseInt(txtDni);
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Datos inválidos", "Dni", "Por favor, corrija el DNI sin puntos ni letras.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("Datos inválidos","Dni. Por favor, corrija el DNI sin puntos ni letras.");
+
             return;
         }
 

@@ -1,9 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -122,8 +122,9 @@ public class ControladorProducto {
     private void clickModificar(ActionEvent event) {
         // 1. Validar que el usuario haya seleccionado una fila previamente
         if (this.productoseleccionado == null) {
-            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
-                    "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
+            AlertasUtils.mostrarAdvertencia("Sin selección", "No se seleccionó ningún producto\n" +
+                    "                    debes seleccionar un producto de la tabla para poder modificarlo.");
+
             return;
         }
         // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
@@ -173,8 +174,8 @@ public class ControladorProducto {
             listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
         } catch (Exception e) {
-            AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
-                    "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
+            AlertasUtils.mostrarError("Error de BD - Error de lectura", "No se pudieron recuperar los productos de la base de datos.");
+
             e.printStackTrace();
         }
     }
@@ -186,8 +187,8 @@ public class ControladorProducto {
     public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
         if (productoseleccionado == null) {
-            AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.", Alert.AlertType.INFORMATION);
 
+            AlertasUtils.mostrarInformacion("Producto no Seleccionado","Debes seleccionar un producto de la tabla para eliminarlo.");
             return;
         }
 

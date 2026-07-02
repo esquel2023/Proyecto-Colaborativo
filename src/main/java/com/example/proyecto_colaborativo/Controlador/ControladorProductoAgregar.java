@@ -2,6 +2,7 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.lang.annotation.Native;
 import java.sql.SQLException;
 
 public class ControladorProductoAgregar {
@@ -75,8 +75,8 @@ public class ControladorProductoAgregar {
 
         // 2. VALIDACIÓN: Validar campos vacíos o números negativos
         if (textoNombre.isEmpty() || textoCantidad.isEmpty() || textoPrecio.isEmpty() ) {
-            AlertasUtils.mostrarAlerta("Campos vacíos", "Nombre requerido",
-                    "Por favor, ingresá el nombre del producto.", Alert.AlertType.WARNING);
+            AlertasUtils.mostrarAdvertencia("Campos vacíos", "Nombre requerido. Por favor, ingresá el nombre del producto.");
+
             return;
         }
 
@@ -89,8 +89,8 @@ public class ControladorProductoAgregar {
 
 
             if (nuevacantidad < 0 || nuevoPrecio < 0) {
-                AlertasUtils.mostrarAlerta("Valores inválidos", "Números negativos detectados",
-                        "La cantidad y el precio final no pueden ser números negativos.", Alert.AlertType.ERROR);
+                AlertasUtils.mostrarError("Valores inválidos","Números negativos detectados.  cantidad y el precio final no pueden ser números negativos.");
+
                 return;
             }
 
@@ -115,9 +115,7 @@ public class ControladorProductoAgregar {
 
                 // Persistir el cambio en la Base de Datos
                 ProductoDAO.actualizar(productoLocal);
-
-                AlertasUtils.mostrarAlerta("Éxito", "Producto modificado",
-                        "El producto se modificó correctamente.", Alert.AlertType.INFORMATION);
+                AlertasUtils.mostrarInformacion("Éxito","Producto modificado. El producto se modificó correctamente.");
 
             } else {
                 // === LÓGICA DE AGREGAR (NUEVO PRODUCTO) ===
@@ -130,22 +128,21 @@ public class ControladorProductoAgregar {
                 // Opcional: Si manejás una lista observable global para la tabla, podrías agregar aquí:
                 // listadoProductosGlobal.add(nuevoProducto);
 
-                AlertasUtils.mostrarAlerta("Éxito", "Producto agregado",
-                        "El nuevo producto se registró correctamente.", Alert.AlertType.INFORMATION);
+                AlertasUtils.mostrarInformacion("Éxito","Producto agregado. El nuevo producto se registró correctamente.");
+
             }
 
             // 3. Cerrar la ventana automáticamente al terminar con éxito
             cerrarVentana();
 
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
-                    "Por favor, verifica los campos:\n" +
-                            "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
-                            "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.",
-                    Alert.AlertType.ERROR);
+            AlertasUtils.mostrarError("Error de formato","Datos numéricos inválidos. Por favor, verifica los campos:\\n\" +\n" +
+                    "                            \"- Cantidad: Debe ser un número entero (ej: 10, 50).\\n\" +\n" +
+                    "                            \"- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales. ");
+
         } catch (SQLException e) {
-            AlertasUtils.mostrarAlerta("Error de BD", "Error al procesar",
-                    "No se pudo guardar la información en la base de datos.", Alert.AlertType.ERROR);
+            AlertasUtils.mostrarError("Error de BD","Error al procesar. No se pudo guardar la información en la base de datos.");
+
             e.printStackTrace();
         }
     }

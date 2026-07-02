@@ -1,9 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProveedorDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -91,7 +91,8 @@ public class controladorProovedor {
 
         if (txtNombre.isEmpty() || txtCuil.isEmpty()
                  || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("Campos vacios", "Falta completar informacion", "Por favor, complete los campos faltantes y vuelva a intentarlo.", Alert.AlertType.INFORMATION);
+            AlertasUtils.mostrarInformacion("Campos vacios", "Falta completar informacion. Por favor, complete los campos faltantes y vuelva a intentarlo.");
+
 
             return;
         }

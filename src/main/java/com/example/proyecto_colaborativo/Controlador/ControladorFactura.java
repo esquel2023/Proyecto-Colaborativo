@@ -3,6 +3,7 @@ import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
@@ -21,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -191,7 +191,8 @@ public class ControladorFactura implements Initializable {
         // >>> NUEVO: Permite borrar un producto seleccionado de la factura <<<
         Producto seleccionado = TablaProductos.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
-            AlertasUtils.mostrarAlerta("error", "sin cliente", "no hay ningun cliente seleccionado", Alert.AlertType.CONFIRMATION);
+
+            AlertasUtils.mostrarAdvertencia("Error","sin cliente. no hay cliente seleccionado");
         }else{  listaUsuarios.remove(seleccionado);
             Calcular();
         }
@@ -231,7 +232,8 @@ public class ControladorFactura implements Initializable {
         if (cliente != null && !cliente.getText().isEmpty() && !cliente.getText().equals("Label")) {
             cliente.setText("");
         } else {
-                AlertasUtils.mostrarAlerta("error", "sin cliente", "no hay ningun cliente seleccionado", Alert.AlertType.ERROR);
+            AlertasUtils.mostrarAdvertencia("error", "sin cliente. No hay ningun cliente seleccionado");
+
         }
     }
     public void agregarCliente(ActionEvent actionEvent) throws IOException {
