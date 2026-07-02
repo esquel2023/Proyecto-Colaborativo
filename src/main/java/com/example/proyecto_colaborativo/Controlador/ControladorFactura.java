@@ -165,7 +165,7 @@ public class ControladorFactura implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("agregarProducto");
             stage.setScene(new Scene(root, 440, 540));
-            stage.show();
+            stage.show();//
         } catch (IOException e) {
             e.printStackTrace();
         }
