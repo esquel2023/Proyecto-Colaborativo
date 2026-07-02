@@ -16,7 +16,7 @@ public class NavegacionUtils {
      * @param rutaFxml La ruta del archivo FXML (ej: "/com/example/proyecto_colaborativo/Producto.fxml")
      * @param titulo   El título que tendrá la nueva ventana
      * @param esModal  Si es true, bloquea la ventana de atrás hasta que se cierre la nueva
-     * @return
+     * @return El controlador de la pantalla abierta, o null si ocurre un error.
      */
     public  static ControladorProductoAgregar abrirPantalla(String rutaFxml, String titulo, boolean esModal) {
         try {
@@ -37,15 +37,14 @@ public class NavegacionUtils {
             }else{
                 nuevostage.show();
             }
-            //return Loader.getController();
+            return fxmlLoader.getController();
 
         } catch (IOException e) {
             e.printStackTrace();
-            AlertasUtils.mostrarAlerta("Error de Navegacion",
-                    "No se pudo cargar la vista",
-                    "Hubo un problema al intentar abrir" + rutaFxml + "\nDetalle " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            //return null;
+            // IMPLEMENTACIÓN DE LA NUEVA ALERTA OPTIMIZADA
+            AlertasUtils.mostrarError( "No se pudo cargar la vista",
+                    "Hubo un problema al intentar abrir " + rutaFxml + "\n\nDetalle: " + e.getMessage()
+            );
         }
         return null;
     }

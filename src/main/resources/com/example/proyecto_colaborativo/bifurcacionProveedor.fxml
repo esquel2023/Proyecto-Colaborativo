@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="174.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorBifProv" >
+   <children>
+      <Button layoutX="8.0" layoutY="54.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="274.0" text="Agregar proveedor" onAction="#agregar"/>
+      <Button layoutX="297.0" layoutY="54.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="274.0" text="Listado proveedores" onAction="#listado"/>
+   </children>
+</AnchorPane>

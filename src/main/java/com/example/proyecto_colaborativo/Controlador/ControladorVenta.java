@@ -1,8 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import com.example.proyecto_colaborativo.Clases.Producto;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
