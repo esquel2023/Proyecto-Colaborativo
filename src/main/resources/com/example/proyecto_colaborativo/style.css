@@ -1,31 +1,133 @@
-*{
-    -fx-primary-color: #374151;
-    -fx-secondary-color: #D1D5DB;
-    -fx-font-family: "Fira Code Light";
-             -fx-font-weight: BOLD;
-             -fx-font-size: 10.0px;
-             -fx-text-alignment:center;
-}
-.button{
-    -fx-background-color:  -fx-secondary-color;
-    -fx-padding:5px 5px;
-    -fx-border-width:3px;
-    -fx-border-color: -fx-primary-color;
-    -fx-border-radius:5px
+.root {
+    -fx-background-color: #FAFAFA;
 }
 
-.button:hover { -fx-background-color: #567C8D;
+.sidebar {
+    -fx-background-color: #324A5F;
+}
+
+.sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 12;
+    -fx-padding: 12 18 12 18;
+    -fx-cursor: hand;
+    -fx-pref-width: 180px;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+.header {
+    -fx-background-color: white;
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 0 0 1 0;
+}
+
+.content {
+    -fx-background-color: #FAFAFA;
+}
+
+.titulo {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.subtitulo {
+    -fx-font-size: 15px;
+    -fx-text-fill: #6C757D;
+}
+
+.fecha {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #324A5F;
+}
+.card {
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 4);
+}
+
+.card-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.card-number {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #324A5F;
+}
+
+.card-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6C757D;
+}
+
+.panel {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #E8EDF2;
+}
+
+.panel-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+.eye-button{
+
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+
+    -fx-background-radius: 50;
+
+    -fx-padding: 6;
 
 }
 
-.text-field {   -fx-background-color: -fx-primary-color;
-                -fx-opacity:0.6;
-                -fx-border-color: #FFFFFF;
-                -fx-border-width: 1.4;
-                -fx-background-radius: 10px;
-                -fx-cursor:text;
-                -fx-pref-height:10px;
-                -fx-max-height:10px;
-                -fx-padding: 10px;
+.eye-button:hover{
+
+    -fx-background-color: rgba(50,74,95,0.12);
+
+}
+.card-caja {
+    -fx-background-color: #E8F1FF;
+    -fx-border-color: #BFD7FF;
 }
 
+.card-ventas {
+    -fx-background-color: #EAF8EF;
+    -fx-border-color: #BFE8CB;
+}
+
+.card-clientes {
+    -fx-background-color: #FFF4E6;
+    -fx-border-color: #FFD59E;
+}
+
+.card-stock {
+    -fx-background-color: #FDECEC;
+    -fx-border-color: #F5B5B5;
+}
+
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
+}

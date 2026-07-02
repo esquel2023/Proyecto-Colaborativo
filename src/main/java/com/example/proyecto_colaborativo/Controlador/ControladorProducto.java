@@ -1,7 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
@@ -17,9 +16,10 @@ import java.sql.SQLException;
 public class ControladorProducto {
 
 
+
     // 1. Inyectamos la TableView apuntando a la clase Producto
     @FXML
-    public TableView<Producto> tablaProductos;
+    private TableView<Producto> tablaProductos;
     // 2. Inyectamos las columnas existentes de tu FXML
     @FXML
     private TableColumn<Producto, Integer> colCodigo;
@@ -29,37 +29,36 @@ public class ControladorProducto {
     private TableColumn<Producto, Integer> colCantidad;
     @FXML
     private TableColumn<Producto, Double> colPrecio;
-    //@FXML
-    //private TextField codigoBarras;
+    @FXML
+    private TextField codigoBarras;
     @FXML
     private TextField codigo;
-    //@FXML
-    //private TextField nombre;
-    // @FXML
-    //private TextField cantidad;
-    // @FXML
-    //private TextField precioFinal;
+    @FXML
+    private TextField nombre;
+    @FXML
+    private TextField cantidad;
+    @FXML
+    private TextField precioFinal;
     @FXML
     private TextField txtbuscadorProductos;
     @FXML
     private Button botonSalir;
-    // @FXML
-    // private TextField porcentaje;
-    // @FXML
-    // private TextField precioCosto;
+    @FXML
+    private TextField porcentaje;
+    @FXML
+    private TextField precioCosto;
 
 
     // Lista observable que contendrá los productos reales
     // Lista observable única para toda la clase
-    public static final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
+    private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
-    public static Producto productoseleccionado;
-    private controladorProveedorSelec proveedorSelec;
+    private Producto productoseleccionado;
 
-    @FXML
-    public void initialize() {
-        // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
+
+    public void initialize(){
+    // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
 
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -71,6 +70,7 @@ public class ControladorProducto {
         cargarDatosDesdeBD();
 
 
+
         // ==========================================
         // LLAMADA A LA CLASE REUTILIZABLE
         // ==========================================
@@ -79,7 +79,7 @@ public class ControladorProducto {
                 txtbuscadorProductos,
                 tablaProductos,
                 listaProductos,
-                (producto, texto) -> {
+                (producto,texto)->{
                     // Validación segura contra valores nulos
                     boolean coincideNombre = producto.getNombre() != null &&
                             producto.getNombre().toLowerCase().contains(texto);
@@ -90,9 +90,10 @@ public class ControladorProducto {
                     return coincideNombre || coincideCodigo;
 
 
+
                     // Acá definís la lógica específica para la clase Producto
-                    // return producto.getNombre().toLowerCase().contains(texto) ||
-                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
+                   // return producto.getNombre().toLowerCase().contains(texto) ||
+                   //         producto.getCodigoBarra().toLowerCase().contains(texto);
 
                 }
         );
@@ -101,69 +102,148 @@ public class ControladorProducto {
         tablaProductos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
-                ControladorProducto.productoseleccionado = newValue;
-                if (proveedorSelec != null) {
-                    proveedorSelec.recibirProducto(newValue);
+                this.productoseleccionado = newValue;
 
-                }
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
+                // Ejemplo: Llenar tus campos de texto automáticamente con los datos del producto
+                //codigo.setText(newValue.getCodigoBarra());
 
+                //codigo.setText(String.valueOf(newValue.getidProducto()));
+                nombre.setText(newValue.getNombre());
+                cantidad.setText(String.valueOf(newValue.getCantidad()));
+                precioFinal.setText(String.valueOf(newValue.getPrecio()));
 
+                if (codigoBarras != null) {
+                    codigoBarras.setText(newValue.getCodigoBarra() != null ? newValue.getCodigoBarra() : "");
+                }
             }
 
         });
 
 
     }
-
     // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
     private void clickModificar(ActionEvent event) {
+        // LLAMADA A LA CLASE UTILITARIA
         // 1. Validar que el usuario haya seleccionado una fila previamente
-        if (this.productoseleccionado == null) {
-            AlertasUtils.mostrarAdvertencia("Sin selección", "No se seleccionó ningún producto\n" +
-                    "                    debes seleccionar un producto de la tabla para poder modificarlo.");
+        if (productoseleccionado == null) {
+            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
+                    "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
 
             return;
         }
-        // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
-        Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
-        // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
-        // hasta que el usuario termine de editar en la otra ventana.
-        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
 
-        // 4. Al regresar (cuando se cierra la ventana de edición), refrescamos la tabla y limpiamos
-        tablaProductos.refresh();
-        tablaProductos.getSelectionModel().clearSelection();
-        this.productoseleccionado = null;
+       try {
+            // 2. Tomar los nuevos valores directamente desde los TextField
+            Integer nuevacantidad = Integer.valueOf(cantidad.getText());
+            Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+            //String nuevacodigo = codigo.getText();
+            String nuevonombre = nombre.getText();
+           String nuevocodigo = (codigoBarras != null) ? codigoBarras.getText() : "";
 
-        // 2. Cargar la pantalla obteniendo su controlador (pasamos 'true' para que sea Modal)
-        //ControladorProductoAgregar controller = NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
+            // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
+            if (nuevacantidad <= 0 || nuevoPrecio <=0) {
+                AlertasUtils.mostrarAlerta("Valores inválidos", "Números negativos detectados",
+                        "La cantidad y el precio final no pueden ser números negativos. Por favor, ingresá valores mayores o iguales a cero.",javafx.scene.control.Alert.AlertType.ERROR);
+
+                return;
+            }
+
+            // 3. Modificar las propiedades del objeto observable
+            // Al usar .set(), JavaFX avisa automáticamente a la TableView y se refresca sola
+            //productoseleccionado.codigoTablaProperty().set(String.valueOf(nuevacodigo));
+            //productoseleccionado.codigoBarraProperty().set(nuevacodigo);
+            //productoseleccionado.setidProducto(nuevaidProducto);
+            productoseleccionado.nombreProperty().set(nuevonombre);
+            productoseleccionado.setNombre(nuevonombre);
+            productoseleccionado.cantidadProperty().set(nuevacantidad);
+            productoseleccionado.setCantidad(nuevacantidad);
+            productoseleccionado.precioProperty().set(nuevoPrecio);
+            productoseleccionado.setPrecio(nuevoPrecio);
+
+            // 2. Persistir el cambio en la Base de Datos
+            ProductoDAO.actualizar(productoseleccionado);
 
 
-        // 3. Mandar el registro seleccionado a la nueva pantalla
-//        if (controller != null) {
-        //          controller.cargarProducto(this.productoseleccionado);
-        //    }
+            // 4. Refrescar la tabla para asegurar que los cambios visuales se apliquen
+            tablaProductos.refresh();
 
-        // 4. Al regresar (cuando se cierra la modal), refrescar cambios visuales
-        //  tablaProductos.refresh();
-        //  tablaProductos.getSelectionModel().clearSelection();
-        //  this.productoseleccionado = null;
+            // 5. Limpiar los campos y la selección de la tabla para el siguiente producto
+            tablaProductos.getSelectionModel().clearSelection();
+            limpiarCampos();
+            this.productoseleccionado = null;
+            AlertasUtils.mostrarAlerta("Éxito", "Producto modificado", "El producto se modificó correctamente en la tabla.", Alert.AlertType.INFORMATION);
+
+        } catch (NumberFormatException e) {
+            // Alerta si el usuario ingresó letras o formatos incorrectos
+            AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+                    "Por favor, verifica los campos:\n" +
+                            "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
+                            "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.", Alert.AlertType.ERROR);
+
+        } catch (SQLException e) {
+           // throw new RuntimeException(e);
+            AlertasUtils.mostrarAlerta("Error de BD", "Error al actualizar", "No se pudo guardar en la base de datos.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
 
     }
 
 
+
     @FXML
     private void clickAgregar(ActionEvent event) {
+        try {
+            // 1. Validar que los campos no estén vacíos
+            if (nombre.getText().isEmpty() ||
+                    cantidad.getText().isEmpty() || precioFinal.getText().isEmpty()) {
+                AlertasUtils.mostrarAlerta("Campos vacíos", "Faltan datos", "Debes completar todos los campos para agregar un producto.",Alert.AlertType.WARNING);
 
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Agregar Nuevo Producto", true);
+                return;
+            }
 
-        // 2. Al regresar (cuando el usuario le da a Guardar y la ventana se cierra),
-        // volvemos a consultar la base de datos para traer el nuevo producto con su ID real.
-        cargarDatosDesdeBD();
+            // 2. Extraer los datos de las cajas de texto
+           // String nuevocodigo = codigo.getText();
+            String nuevonombre = nombre.getText();
+            Integer nuevacantidad = Integer.parseInt(cantidad.getText());
+            Double nuevoPrecio = Double.parseDouble(precioFinal.getText());
+            String nuevocodigoBarra = codigoBarras.getText();
+
+            // VALIDACIÓN: Controlar que cantidad y precio no sean negativos
+            if (nuevacantidad <= 0 || nuevoPrecio <= 0){
+                AlertasUtils.mostrarAlerta("Valores inválidos Números negativos detectados",
+                        "La cantidad y el precio final no pueden ser números negativos", "Por favor ingresá valores mayores o iguales a cero.",Alert.AlertType.ERROR);
+
+                return;
+            }
+
+
+            // 3. Crear la nueva instancia de Producto
+            Producto nuevoProducto = new Producto(nuevonombre, nuevacantidad, nuevoPrecio,nuevocodigoBarra);
+            ProductoDAO.insertar(nuevoProducto);
+            // 4. Añadirlo a la lista global. La tabla se actualiza de inmediato de forma automática.
+            listaProductos.add(nuevoProducto);
+
+            // 4. Guardar en la Base de Datos primero
+            //ProductoDAO.insertar(nuevoProducto);
+
+            // 5. Refrescar la interfaz gráfica
+            cargarDatosDesdeBD();
+            limpiarCampos();
+            AlertasUtils.mostrarAlerta("Éxito", "Producto agregado", "El producto se añadió correctamente a la lista.",Alert.AlertType.INFORMATION);
+
+
+        } catch (NumberFormatException e) {
+            // Alerta si el usuario ingresó letras o formatos incorrectos
+            AlertasUtils.mostrarAlerta("Error de formato", "Datos numéricos inválidos",
+                    "Por favor, verifica los campos:\n" +
+                            "- Cantidad: Debe ser un número entero (ej: 10, 50).\n" +
+                            "- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales.",Alert.AlertType.ERROR);
+
+        }
+
     }
 
     private void cargarDatosDesdeBD() {
@@ -173,9 +253,9 @@ public class ControladorProducto {
             //listaProductos.addAll(ProductoDAO.listar());
             listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
-        } catch (Exception e) {
-            AlertasUtils.mostrarError("Error de BD - Error de lectura", "No se pudieron recuperar los productos de la base de datos.");
-
+        }catch (Exception e) {
+            AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
+                    "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
@@ -184,11 +264,23 @@ public class ControladorProducto {
     //----------------------------------------------------------------------------------------
     //FUNCIONES
     //----------------------------------------------------------------------------------------
+    // Método auxiliar para limpiar las cajas de texto
+    private void limpiarCampos() {
+        nombre.clear();
+        cantidad.clear();
+        precioFinal.clear();
+        if (codigoBarras != null) codigoBarras.clear();
+        if (codigo != null) codigo.clear();
+        if (porcentaje != null) porcentaje.clear();
+        if (precioCosto != null) precioCosto.clear();
+    }
+
+
     public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
-        if (productoseleccionado == null) {
+        if (productoseleccionado == null){
+           AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
 
-            AlertasUtils.mostrarInformacion("Producto no Seleccionado","Debes seleccionar un producto de la tabla para eliminarlo.");
             return;
         }
 
@@ -210,13 +302,13 @@ public class ControladorProducto {
 
             // 3. Remover el producto de la lista observable global
             tablaProductos.getSelectionModel().clearSelection();
-
+            limpiarCampos();
 
             // 4. Resetear la variable de control
             this.productoseleccionado = null;
             System.out.println("¡Producto eliminado con éxito!");
 
-        } else {
+        }else {
             System.out.println("Eliminación cancelada por el usuario.");
         }
 
@@ -229,8 +321,27 @@ public class ControladorProducto {
         // Cierra la ventana actual
         stage.close();
     }
+    private void calcularPrecioFinal() {
+        String textcosto = precioFinal.getText().trim();
+        String textporcentaje = porcentaje.getText().trim();
 
-    public void setProveedorSelec(controladorProveedorSelec proveedor) {
-        this.proveedorSelec = proveedor;
+        if(textcosto.isEmpty() || textporcentaje.isEmpty()){
+            return;  // Esperamos a que ambos campos tengan datos
+        }
+
+        try{
+            // Reemplazamos comas por puntos por si el usuario escribe con coma decimal
+            double costo = Double.parseDouble(textcosto.replace(",", "."));
+            double porcentaje = Double.parseDouble(textporcentaje.replace(",", "."));
+
+            if(costo > 0 || porcentaje > 0){
+                double resultado = costo * (1 + (porcentaje / 100));
+                // Formateamos a dos decimales para que quede prolijo
+                precioFinal.setText(String.format(java.util.Locale.US, "%.2fi", resultado).replace("i", ""));
+            }
+        } catch (NumberFormatException e) {
+            // No hacemos nada para no interrumpir al usuario mientras escribe valores intermedios
+        }
+
     }
 }
