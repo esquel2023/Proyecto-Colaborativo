@@ -17,7 +17,6 @@ import java.sql.SQLException;
 public class ControladorProducto {
 
 
-
     // 1. Inyectamos la TableView apuntando a la clase Producto
     @FXML
     public TableView<Producto> tablaProductos;
@@ -36,18 +35,18 @@ public class ControladorProducto {
     private TextField codigo;
     //@FXML
     //private TextField nombre;
-   // @FXML
+    // @FXML
     //private TextField cantidad;
-   // @FXML
+    // @FXML
     //private TextField precioFinal;
     @FXML
     private TextField txtbuscadorProductos;
     @FXML
     private Button botonSalir;
-   // @FXML
-   // private TextField porcentaje;
-   // @FXML
-   // private TextField precioCosto;
+    // @FXML
+    // private TextField porcentaje;
+    // @FXML
+    // private TextField precioCosto;
 
 
     // Lista observable que contendrá los productos reales
@@ -56,10 +55,11 @@ public class ControladorProducto {
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     public static Producto productoseleccionado;
+    private controladorProveedorSelec proveedorSelec;
 
     @FXML
-    public void initialize(){
-    // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
+    public void initialize() {
+        // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
 
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -71,7 +71,6 @@ public class ControladorProducto {
         cargarDatosDesdeBD();
 
 
-
         // ==========================================
         // LLAMADA A LA CLASE REUTILIZABLE
         // ==========================================
@@ -80,7 +79,7 @@ public class ControladorProducto {
                 txtbuscadorProductos,
                 tablaProductos,
                 listaProductos,
-                (producto,texto)->{
+                (producto, texto) -> {
                     // Validación segura contra valores nulos
                     boolean coincideNombre = producto.getNombre() != null &&
                             producto.getNombre().toLowerCase().contains(texto);
@@ -91,10 +90,9 @@ public class ControladorProducto {
                     return coincideNombre || coincideCodigo;
 
 
-
                     // Acá definís la lógica específica para la clase Producto
-                   // return producto.getNombre().toLowerCase().contains(texto) ||
-                   //         producto.getCodigoBarra().toLowerCase().contains(texto);
+                    // return producto.getNombre().toLowerCase().contains(texto) ||
+                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
 
                 }
         );
@@ -104,7 +102,10 @@ public class ControladorProducto {
             if (newValue != null) {
                 // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
                 ControladorProducto.productoseleccionado = newValue;
+                if (proveedorSelec != null) {
+                    proveedorSelec.recibirProducto(newValue);
 
+                }
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
 
@@ -115,18 +116,18 @@ public class ControladorProducto {
 
 
     }
+
     // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
     private void clickModificar(ActionEvent event) {
         // 1. Validar que el usuario haya seleccionado una fila previamente
-        if(this.productoseleccionado == null){
+        if (this.productoseleccionado == null) {
             AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
                     "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
             return;
         }
         // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
         Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
-
         // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
         // hasta que el usuario termine de editar en la otra ventana.
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
@@ -142,16 +143,15 @@ public class ControladorProducto {
 
         // 3. Mandar el registro seleccionado a la nueva pantalla
 //        if (controller != null) {
-  //          controller.cargarProducto(this.productoseleccionado);
-    //    }
+        //          controller.cargarProducto(this.productoseleccionado);
+        //    }
 
         // 4. Al regresar (cuando se cierra la modal), refrescar cambios visuales
-      //  tablaProductos.refresh();
-      //  tablaProductos.getSelectionModel().clearSelection();
-      //  this.productoseleccionado = null;
+        //  tablaProductos.refresh();
+        //  tablaProductos.getSelectionModel().clearSelection();
+        //  this.productoseleccionado = null;
 
     }
-
 
 
     @FXML
@@ -172,7 +172,7 @@ public class ControladorProducto {
             //listaProductos.addAll(ProductoDAO.listar());
             listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
-        }catch (Exception e) {
+        } catch (Exception e) {
             AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
                     "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
             e.printStackTrace();
@@ -185,8 +185,8 @@ public class ControladorProducto {
     //----------------------------------------------------------------------------------------
     public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
-        if (productoseleccionado == null){
-           AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.",Alert.AlertType.INFORMATION);
+        if (productoseleccionado == null) {
+            AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.", Alert.AlertType.INFORMATION);
 
             return;
         }
@@ -215,7 +215,7 @@ public class ControladorProducto {
             this.productoseleccionado = null;
             System.out.println("¡Producto eliminado con éxito!");
 
-        }else {
+        } else {
             System.out.println("Eliminación cancelada por el usuario.");
         }
 
@@ -229,4 +229,7 @@ public class ControladorProducto {
         stage.close();
     }
 
+    public void setProveedorSelec(controladorProveedorSelec proveedor) {
+        this.proveedorSelec = proveedor;
+    }
 }

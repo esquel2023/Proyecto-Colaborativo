@@ -177,7 +177,7 @@ public class ControladorFactura implements Initializable {
 
             // 2. Obtener el controlador DESPUÉS de cargar el root
             ControladorProducto controller = loader.getController();
-            controller.setControladorProducto(this);
+          //  controller.setControladorProducto(this);
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
             Stage stage = new Stage();
