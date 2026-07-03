@@ -1,9 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
@@ -55,7 +56,11 @@ public class ControladorProducto {
 
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     public static Producto productoseleccionado;
-    private controladorProveedorSelec proveedorSelec;
+    private ControladorFactura controladorFactura;
+
+    public void setControladorProducto(ControladorFactura controladorFactura) {
+        this.controladorFactura = controladorFactura;
+    }
 
     @FXML
     public void initialize() {
@@ -102,10 +107,7 @@ public class ControladorProducto {
             if (newValue != null) {
                 // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
                 ControladorProducto.productoseleccionado = newValue;
-                if (proveedorSelec != null) {
-                    proveedorSelec.recibirProducto(newValue);
 
-                }
                 // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
 
@@ -113,7 +115,25 @@ public class ControladorProducto {
             }
 
         });
+        tablaProductos.setRowFactory(tv -> {
+            TableRow<Producto> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!fila.isEmpty())) {
+                    Producto productoSeleccionado = fila.getItem();
 
+                    // Si el enlace con la factura existe, le mandamos el producto
+                    if (controladorFactura != null) {
+                        controladorFactura.recibirProducto(productoSeleccionado);
+
+                        // Opcional: Cierra la ventana del catálogo automáticamente tras elegir
+                        Stage stage = (Stage) tablaProductos.getScene().getWindow();
+                        stage.close();
+                    }
+                }
+            });
+            return fila;
+
+        });
 
     }
 
@@ -122,13 +142,13 @@ public class ControladorProducto {
     private void clickModificar(ActionEvent event) {
         // 1. Validar que el usuario haya seleccionado una fila previamente
         if (this.productoseleccionado == null) {
-            AlertasUtils.mostrarAdvertencia("Sin selección", "No se seleccionó ningún producto\n" +
-                    "                    debes seleccionar un producto de la tabla para poder modificarlo.");
-
+            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
+                    "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
             return;
         }
         // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
         Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
+
         // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
         // hasta que el usuario termine de editar en la otra ventana.
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
@@ -174,8 +194,8 @@ public class ControladorProducto {
             listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
         } catch (Exception e) {
-            AlertasUtils.mostrarError("Error de BD - Error de lectura", "No se pudieron recuperar los productos de la base de datos.");
-
+            AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
+                    "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
@@ -187,8 +207,8 @@ public class ControladorProducto {
     public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
         if (productoseleccionado == null) {
+            AlertasUtils.mostrarAlerta("Error", "Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.", Alert.AlertType.INFORMATION);
 
-            AlertasUtils.mostrarInformacion("Producto no Seleccionado","Debes seleccionar un producto de la tabla para eliminarlo.");
             return;
         }
 
@@ -228,9 +248,5 @@ public class ControladorProducto {
 
         // Cierra la ventana actual
         stage.close();
-    }
-
-    public void setProveedorSelec(controladorProveedorSelec proveedor) {
-        this.proveedorSelec = proveedor;
     }
 }
