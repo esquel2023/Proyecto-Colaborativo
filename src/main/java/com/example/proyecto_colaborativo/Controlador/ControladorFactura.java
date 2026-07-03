@@ -21,7 +21,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -173,7 +172,9 @@ public class ControladorFactura implements Initializable {
 
     public void eliminarProducto(ActionEvent actionEvent) {
         Producto seleccionado = TablaProductos.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
+        var confirmacion =  AlertasUtils.mostrarConfirmacion("confirmacion?","estas seguro","hola");
+
+        if (seleccionado != null && confirmacion ) {
             listaUsuarios.remove(seleccionado);
             Calcular();
         }
@@ -285,7 +286,19 @@ public class ControladorFactura implements Initializable {
         codigo.setText("CodigoNumerico");
     }
 
-    public void IngresarPago(ActionEvent actionEvent) {
+    public void IngresarPago(ActionEvent actionEvent) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ingresoDePago.fxml"));
+        Parent root = loader.load();
+
+        controladorIngresoDePago controller = loader.getController();
+
+        Stage stage = new Stage();
+        stage.setTitle("ingresoDePago");
+        stage.setScene(new Scene(root, 440, 540));
+
+        stage.showAndWait();
+
 
     }
 }

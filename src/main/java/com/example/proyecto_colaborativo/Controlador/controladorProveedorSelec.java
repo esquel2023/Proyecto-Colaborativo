@@ -117,9 +117,9 @@ public class controladorProveedorSelec {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador DESPUÉS de cargar el root
-            ControladorProducto controller = loader.getController();
-            controller.setProveedorSelec(this);
+//            // 2. Obtener el controlador DESPUÉS de cargar el root
+//            ControladorProducto controller = loader.getController();
+//            controller.setProveedorSelec(this);
 
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
