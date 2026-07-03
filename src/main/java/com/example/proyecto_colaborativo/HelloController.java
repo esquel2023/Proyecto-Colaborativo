@@ -153,7 +153,6 @@ public class HelloController implements Initializable {
                 asignarImagen(btnOjoCaja, "/ImagenesBilletes/openn.png");
 
 
-                btnOjoCaja.getTooltip().setText("Ocultar monto");
 
             } else {
 
@@ -162,7 +161,6 @@ public class HelloController implements Initializable {
                 asignarImagen(btnOjoCaja, "/ImagenesBilletes/closee.png");
 
 
-                btnOjoCaja.getTooltip().setText("Mostrar monto");
 
             }
 
