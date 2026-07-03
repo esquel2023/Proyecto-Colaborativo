@@ -114,7 +114,7 @@ public class ControladorProductoAgregar {
                 }
 
                 // Persistir el cambio en la Base de Datos
-                ProductoDAO.actualizar(productoLocal);
+               // ProductoDAO.actualizar(productoLocal);
                 AlertasUtils.mostrarInformacion("Éxito","Producto modificado. El producto se modificó correctamente.");
 
             } else {
@@ -140,10 +140,6 @@ public class ControladorProductoAgregar {
                     "                            \"- Cantidad: Debe ser un número entero (ej: 10, 50).\\n\" +\n" +
                     "                            \"- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales. ");
 
-        } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de BD","Error al procesar. No se pudo guardar la información en la base de datos.");
-
-            e.printStackTrace();
         }
     }
 
