@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class controladorProveedorSelec {
@@ -110,9 +111,12 @@ public class controladorProveedorSelec {
         if (proveedorActual == null) return;
 
         // 1. Listamos todos los productos de la base de datos
-        List<Producto> todosLosProductos = ProductoDAO.listar();
+      //  List<Producto> todosLosProductos = ProductoDAO.listar();
 
         try {
+
+            // 1. Listamos todos los productos de la base de datos
+            List<Producto> todosLosProductos = ProductoDAO.listar();
             // 1. Cargar el FXML una sola vez
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
             Parent root = loader.load();
@@ -129,6 +133,8 @@ public class controladorProveedorSelec {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -154,4 +160,6 @@ public class controladorProveedorSelec {
             ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
         }
     }
+
+
 }

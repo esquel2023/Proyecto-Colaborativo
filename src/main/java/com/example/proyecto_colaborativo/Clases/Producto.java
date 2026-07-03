@@ -3,77 +3,109 @@ package com.example.proyecto_colaborativo.Clases;
 import javafx.beans.property.*;
 
 public class Producto {
+    // Propiedades nativas de JavaFX para enlace reactivo (Binding)
+    private final IntegerProperty idProducto = new SimpleIntegerProperty();
+    private final StringProperty nombre = new SimpleStringProperty();
+    private final IntegerProperty cantidad = new SimpleIntegerProperty();
+    private final DoubleProperty precio = new SimpleDoubleProperty();
+    private final StringProperty codigoBarra = new SimpleStringProperty();
+    private final BooleanProperty activado = new SimpleBooleanProperty();
 
-
-
-    private final IntegerProperty idProducto;
-    private final StringProperty nombre;
-    private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
-    private final DoubleProperty precio;
-    private final StringProperty codigoBarra;
-
-    // Este es el puente estático que guardará el producto temporalmente en memoria
+    // Puente estático para transferir datos de forma segura entre ventanas
     public static Producto productoSeleccionadoParaEditar = null;
 
-    public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty();
-        this.cantidad = new SimpleIntegerProperty();
-        this.precio = new SimpleDoubleProperty();
-        this.nombre = new SimpleStringProperty();
-        this.codigoBarra = new SimpleStringProperty();
+    // Constructor completo (Utilizado por el DAO al leer de la BD)
+    public Producto(int idProducto, String nombre, int cantidad, double precio, String codigoBarra, boolean activado) {
+        setidProducto(idProducto);
+        setNombre(nombre);
+        setCantidad(cantidad);
+        setPrecio(precio);
+        setCodigoBarra(codigoBarra);
+        setActivado(activado);
     }
 
-    // Constructor
-    public Producto(int idProducto, String nombre, Integer cantidad, double precio, String codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(idProducto);;
-        this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad);
-        this.precio = new SimpleDoubleProperty(precio);
-        this.codigoBarra = new SimpleStringProperty(codigoBarra);
+    // Constructor sin ID (Utilizado para crear nuevos registros antes de insertar en la BD)
+    public Producto(String nombre, int cantidad, double precio, String codigoBarra, boolean activado) {
+        setidProducto(0);
+        setNombre(nombre);
+        setCantidad(cantidad);
+        setPrecio(precio);
+        setCodigoBarra(codigoBarra);
+        setActivado(activado);
     }
 
-    // Constructor
-    public Producto(String nombre, Integer cantidad, double precio, String codigoBarra) {
-        //this.idProducto = new SimpleIntegerProperty(idProductoProperty().getValue());
-        this.idProducto = new SimpleIntegerProperty(0);
-        this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad);
-        this.precio = new SimpleDoubleProperty(precio);
-        this.codigoBarra = new SimpleStringProperty(codigoBarra);
+    // Getters de Propiedades (Requeridos obligatoriamente por TableView)
+    public IntegerProperty idProductoProperty() {
+        return idProducto;
     }
 
-    public Producto(String nuevonombre, Integer nuevacantidad, Double nuevoPrecio, IntegerProperty idProducto, StringProperty nombre, IntegerProperty cantidad, DoubleProperty precio, StringProperty codigoBarra) {
-        this.idProducto = idProducto;
-
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.codigoBarra = codigoBarra;
+    public StringProperty nombreProperty() {
+        return nombre;
     }
 
+    public IntegerProperty cantidadProperty() {
+        return cantidad;
+    }
 
+    public DoubleProperty precioProperty() {
+        return precio;
+    }
 
+    public StringProperty codigoBarraProperty() {
+        return codigoBarra;
+    }
 
-    // Getters de Propiedades (Requeridos por TableView)
-    public IntegerProperty idProductoProperty() { return idProducto; }
-    public StringProperty nombreProperty() { return nombre; }
-    public IntegerProperty cantidadProperty() { return cantidad; }
-    public DoubleProperty precioProperty() { return precio; }
-    public StringProperty codigoBarraProperty() { return codigoBarra; }
+    public BooleanProperty activadoProperty() {
+        return activado;
+    }
 
-    // Getters ordinarios
-    public Integer getidProducto() { return idProducto.get(); }
-    public String getNombre() { return nombre.get(); }
-    public Integer getCantidad() { return cantidad.get(); }
-    public double getPrecio() { return precio.get(); }
-    public String getCodigoBarra() { return codigoBarra.get(); }
+    // Getters ordinarios (Extraen el valor primitivo puro)
+    public int getidProducto() {
+        return idProducto.get();
+    }
 
-    // Setters ordinarios
-    public void setidProducto(int idProducto) { this.idProducto.set(idProducto);}
-    public void setNombre(String nombre) { this.nombre.set(nombre); }
-    public void setCantidad(Integer cantidad) { this.cantidad.set(cantidad); }
-    public void setPrecio(double precio) { this.precio.set(precio); }
-    public void setCodigoBarra(String codigoBarra) { this.codigoBarra.set(codigoBarra); }
+    public String getNombre() {
+        return nombre.get();
+    }
 
+    public int getCantidad() {
+        return cantidad.get();
+    }
+
+    public double getPrecio() {
+        return precio.get();
+    }
+
+    public String getCodigoBarra() {
+        return codigoBarra.get();
+    }
+
+    public boolean isActivado() {
+        return activado.get();
+    }
+
+    // Setters ordinarios (Modifican el valor interno de la propiedad conservando el Binding)
+    public void setidProducto(int idProducto) {
+        this.idProducto.set(idProducto);
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre.set(nombre);
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad.set(cantidad);
+    }
+
+    public void setPrecio(double precio) {
+        this.precio.set(precio);
+    }
+
+    public void setCodigoBarra(String codigoBarra) {
+        this.codigoBarra.set(codigoBarra);
+    }
+
+    public void setActivado(boolean activado) {
+        this.activado.set(activado);
+    }
 }
-

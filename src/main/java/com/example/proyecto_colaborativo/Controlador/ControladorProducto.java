@@ -10,227 +10,141 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ControladorProducto {
 
+    @FXML public TableView<Producto> tablaProductos;
+    @FXML private TableColumn<Producto, String> colCodigo;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, Integer> colCantidad;
+    @FXML private TableColumn<Producto, Double> colPrecio;
+    @FXML private TextField txtbuscadorProductos;
+    @FXML private Button botonSalir;
 
-    // 1. Inyectamos la TableView apuntando a la clase Producto
-    @FXML
-    public TableView<Producto> tablaProductos;
-    // 2. Inyectamos las columnas existentes de tu FXML
-    @FXML
-    private TableColumn<Producto, Integer> colCodigo;
-    @FXML
-    private TableColumn<Producto, String> colNombre;
-    @FXML
-    private TableColumn<Producto, Integer> colCantidad;
-    @FXML
-    private TableColumn<Producto, Double> colPrecio;
-    //@FXML
-    //private TextField codigoBarras;
-    @FXML
-    private TextField codigo;
-    //@FXML
-    //private TextField nombre;
-    // @FXML
-    //private TextField cantidad;
-    // @FXML
-    //private TextField precioFinal;
-    @FXML
-    private TextField txtbuscadorProductos;
-    @FXML
-    private Button botonSalir;
-    // @FXML
-    // private TextField porcentaje;
-    // @FXML
-    // private TextField precioCosto;
-
-
-    // Lista observable que contendrá los productos reales
-    // Lista observable única para toda la clase
     public static final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
-
-    // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
-    public static Producto productoseleccionado;
+    public static Producto productoseleccionado = null;
     private controladorProveedorSelec proveedorSelec;
 
     @FXML
     public void initialize() {
-        // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
+        // Enlace moderno mediante Lambdas (Soluciona incompatibilidades de mayúsculas y minúsculas)
+        colCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoBarraProperty());
+        colNombre.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
+        colCantidad.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty().asObject());
+        colPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
 
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        //listaProductos.setAll(ProductoDAO.listar());
-
-        // MEJORA: Cargamos los datos reales desde la base de datos en vez de datos fijos
         cargarDatosDesdeBD();
 
-
-        // ==========================================
-        // LLAMADA A LA CLASE REUTILIZABLE
-        // ==========================================
-
+        // Configuración segura del Buscador Reutilizable
         BuscadorUtils.configuradorBuscador(
                 txtbuscadorProductos,
                 tablaProductos,
                 listaProductos,
                 (producto, texto) -> {
-                    // Validación segura contra valores nulos
                     boolean coincideNombre = producto.getNombre() != null &&
                             producto.getNombre().toLowerCase().contains(texto);
-
                     boolean coincideCodigo = producto.getCodigoBarra() != null &&
                             producto.getCodigoBarra().toLowerCase().contains(texto);
-
                     return coincideNombre || coincideCodigo;
-
-
-                    // Acá definís la lógica específica para la clase Producto
-                    // return producto.getNombre().toLowerCase().contains(texto) ||
-                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
-
                 }
         );
 
-        // Escuchar cuando el usuario selecciona una fila de la tabla
+        // Listener de Selección de Filas
         tablaProductos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
                 ControladorProducto.productoseleccionado = newValue;
                 if (proveedorSelec != null) {
                     proveedorSelec.recibirProducto(newValue);
-
                 }
-                // 'newValue' contiene el objeto Producto seleccionado
                 System.out.println("Seleccionaste: " + newValue.getNombre());
-
-
             }
-
         });
-
-
     }
 
-    // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
     private void clickModificar(ActionEvent event) {
-        // 1. Validar que el usuario haya seleccionado una fila previamente
-        if (this.productoseleccionado == null) {
-            AlertasUtils.mostrarAdvertencia("Sin selección", "No se seleccionó ningún producto\n" +
-                    "                    debes seleccionar un producto de la tabla para poder modificarlo.");
-
+        if (ControladorProducto.productoseleccionado == null) {
+            AlertasUtils.mostrarAdvertencia("Sin selección", "Debes seleccionar un producto de la tabla para poder modificarlo.");
             return;
         }
-        // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
-        Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
-        // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
-        // hasta que el usuario termine de editar en la otra ventana.
+
+        Producto.productoSeleccionadoParaEditar = ControladorProducto.productoseleccionado;
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
 
-        // 4. Al regresar (cuando se cierra la ventana de edición), refrescamos la tabla y limpiamos
-        tablaProductos.refresh();
-        tablaProductos.getSelectionModel().clearSelection();
-        this.productoseleccionado = null;
-
-        // 2. Cargar la pantalla obteniendo su controlador (pasamos 'true' para que sea Modal)
-        //ControladorProductoAgregar controller = NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
-
-
-        // 3. Mandar el registro seleccionado a la nueva pantalla
-//        if (controller != null) {
-        //          controller.cargarProducto(this.productoseleccionado);
-        //    }
-
-        // 4. Al regresar (cuando se cierra la modal), refrescar cambios visuales
-        //  tablaProductos.refresh();
-        //  tablaProductos.getSelectionModel().clearSelection();
-        //  this.productoseleccionado = null;
-
+        tablaProductos.refresh(); // Refresca cambios visuales en el acto
+        limpiarSeleccion();
     }
-
 
     @FXML
     private void clickAgregar(ActionEvent event) {
-
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
+        Producto.productoSeleccionadoParaEditar = null;
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Agregar Nuevo Producto", true);
 
-        // 2. Al regresar (cuando el usuario le da a Guardar y la ventana se cierra),
-        // volvemos a consultar la base de datos para traer el nuevo producto con su ID real.
-        cargarDatosDesdeBD();
+        cargarDatosDesdeBD(); // Trae el nuevo ítem con el ID que generó la BD
+        limpiarSeleccion();
     }
 
-    private void cargarDatosDesdeBD() {
-
-        try {
-            listaProductos.clear();
-            //listaProductos.addAll(ProductoDAO.listar());
-            listaProductos.setAll(ProductoDAO.listar());
-            //tablaProductos.setItems(listaProductos);
-        } catch (Exception e) {
-            AlertasUtils.mostrarError("Error de BD - Error de lectura", "No se pudieron recuperar los productos de la base de datos.");
-
-            e.printStackTrace();
-        }
-    }
-
-
-    //----------------------------------------------------------------------------------------
-    //FUNCIONES
-    //----------------------------------------------------------------------------------------
-    public void clickEliminar(ActionEvent event) throws SQLException {
-        // 1. Validar que el usuario haya seleccionado un producto de la tabla
+    @FXML
+    public void clickEliminar(ActionEvent event) {
         if (productoseleccionado == null) {
-
-            AlertasUtils.mostrarInformacion("Producto no Seleccionado","Debes seleccionar un producto de la tabla para eliminarlo.");
+            AlertasUtils.mostrarInformacion("Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.");
             return;
         }
 
-        // 2. Alerta de confirmación visual
-        javafx.scene.control.Alert alerta = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Confirmar Eliminación");
         alerta.setHeaderText("¿Estás seguro de que querés eliminar este producto?");
         alerta.setContentText("Producto: " + productoseleccionado.getNombre() + "\nEsta acción no se puede deshacer.");
 
-        // 3. Mostrar la alerta y esperar la respuesta del usuario
-        java.util.Optional<javafx.scene.control.ButtonType> resultado = alerta.showAndWait();
-
-        // 4. Si el usuario hace clic en OK, se procede a la eliminación
-        if (resultado.isPresent() && resultado.get() == javafx.scene.control.ButtonType.OK) {
-
-            ProductoDAO.eliminar(productoseleccionado.getidProducto());
-            // Elimina físicamente el ítem de la lista de datos
-            listaProductos.remove(productoseleccionado);
-
-            // 3. Remover el producto de la lista observable global
-            tablaProductos.getSelectionModel().clearSelection();
-
-
-            // 4. Resetear la variable de control
-            this.productoseleccionado = null;
-            System.out.println("¡Producto eliminado con éxito!");
-
-        } else {
-            System.out.println("Eliminación cancelada por el usuario.");
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            try {
+                ProductoDAO.eliminar(productoseleccionado.getidProducto());
+                listaProductos.remove(productoseleccionado); // Remueve directo de la vista reactiva
+                AlertasUtils.mostrarInformacion("Éxito", "El producto se eliminó correctamente.");
+            } catch (SQLException e) {
+                AlertasUtils.mostrarError("Error de BD", "No se pudo eliminar el producto de la base de datos.");
+                e.printStackTrace();
+            } finally {
+                limpiarSeleccion();
+            }
         }
-
     }
 
-    public void clickSalir(ActionEvent event) {
-        // Obtiene la ventana (Stage) actual a partir de cualquier componente de la pantalla
-        javafx.stage.Stage stage = (javafx.stage.Stage) botonSalir.getScene().getWindow();
-
-        // Cierra la ventana actual
-        stage.close();
+    @FXML
+    void clickSalir(ActionEvent event) {
+        if (botonSalir.getScene() != null) {
+            botonSalir.getScene().getWindow().hide();
+        }
     }
 
-    public void setProveedorSelec(controladorProveedorSelec proveedor) {
-        this.proveedorSelec = proveedor;
+    private void cargarDatosDesdeBD() {
+        try {
+            // 1. Traemos los datos frescos del motor de base de datos
+            var productosBD = ProductoDAO.listar();
+
+            // 2. setAll limpia la lista original e inyecta los nuevos elementos.
+            // Como BuscadorUtils está escuchando esta lista, la FilteredList se actualiza sola.
+            listaProductos.setAll(productosBD);
+
+            // ✅ REMOVIDO: Ya no volvemos a hacer tablaProductos.setItems(...).
+            // Dejamos que la SortedList de BuscadorUtils mantenga el control total de la vista.
+
+        } catch (SQLException e) {
+            AlertasUtils.mostrarError("Error de Base de Datos",
+                    "No se pudieron recuperar los productos de la base de datos.");
+            e.printStackTrace();
+        }
+    }
+
+    private void limpiarSeleccion() {
+        tablaProductos.getSelectionModel().clearSelection();
+        ControladorProducto.productoseleccionado = null;
+    }
+
+    public void setProveedorSelec(controladorProveedorSelec controladorProveedorSelec) {
+        this.proveedorSelec = proveedorSelec;
     }
 }

@@ -29,7 +29,8 @@ public class ProductoProveedorDAO {
                             rs.getString("nombre"),
                             rs.getInt("cantidad"),
                             rs.getDouble("Precio"),
-                            rs.getString("CodigoDeBarra")
+                            rs.getString("CodigoDeBarra"),
+                            rs.getBoolean("activado")
                     );
 
                     lista.add(p);
