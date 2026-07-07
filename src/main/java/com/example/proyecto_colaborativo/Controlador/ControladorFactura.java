@@ -2,7 +2,6 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
@@ -172,14 +171,15 @@ public class ControladorFactura implements Initializable {
 
     public void eliminarProducto(ActionEvent actionEvent) {
         Producto seleccionado = TablaProductos.getSelectionModel().getSelectedItem();
-        var confirmacion =  AlertasUtils.mostrarConfirmacion("confirmacion?","estas seguro","hola");
 
-        if (seleccionado != null && confirmacion ) {
+        if (seleccionado != null && AlertasUtils.mostrarConfirmacion("Confirmación", "¿Estás seguro?", "Vas a eliminar el producto")) {
             listaUsuarios.remove(seleccionado);
             Calcular();
+
+        } else if (seleccionado == null) {
+            AlertasUtils.mostrarAlerta("Información", "Sin producto", "No hay ningún producto seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
         }
     }
-
     public void buscarCliente(ActionEvent actionEvent) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("buscadorCliente.fxml"));
@@ -204,32 +204,32 @@ public class ControladorFactura implements Initializable {
     }
 
     public void eliminarCliente(ActionEvent actionEvent) {
-        if (cliente != null && !cliente.getText().isEmpty()) {
+        if (cliente != null && !cliente.getText().isEmpty() && AlertasUtils.mostrarConfirmacion("Confirmación", "¿Estás seguro?", "Vas a quitar al cliente de esta factura")) {
             cliente.setText("");
             if (nombreYApellido != null) nombreYApellido.clear();
-        }else AlertasUtils.mostrarAlerta("Información","Sin cliente", "No hay ningún cliente seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
-
-
+        }else if (nombreYApellido == null || cliente.getText().isEmpty()) {
+            AlertasUtils.mostrarAlerta("Información","Sin cliente", "No hay ningún cliente seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
+        }
     }
 
     public void agregarCliente(ActionEvent actionEvent) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("cliente.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("agregarCliente.fxml"));
             Parent root = loader.load();
 
-            controladorCliente controller = loader.getController();
+            controladorAgregarCliente controller = loader.getController();
 
             Stage stage = new Stage();
             stage.setTitle("Registrar / Seleccionar Cliente");
             stage.setScene(new Scene(root, 440, 540));
 
             stage.showAndWait();
-
-            clienteClase clienteSeleccionado = controller.tablaClientes.getSelectionModel().getSelectedItem();
-
-            if (clienteSeleccionado != null) {
-                cliente.setText(clienteSeleccionado.getNombreEntidad());
-            }
+//
+//            controladorAgregarCliente clienteSeleccionado = controller.tablaClientes.getSelectionModel().getSelectedItem();
+//
+//            if (clienteSeleccionado != null) {
+//                cliente.setText(clienteSeleccionado.getNombreEntidad());
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
