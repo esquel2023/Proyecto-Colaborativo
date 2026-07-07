@@ -1,45 +1,246 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProveedorSelec">
-   <children>
-      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
-         <menus>
-            <Menu mnemonicParsing="false" text="Venta" />
-            <Menu mnemonicParsing="false" text="Producto" />
-            <Menu mnemonicParsing="false" text="Historial">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Registro">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Cliente" />
-            <Menu mnemonicParsing="false" text="Proveedor" />
-         </menus>
-      </MenuBar>
-      <Button fx:id="botonAgregar" layoutX="16.0" layoutY="92.0" mnemonicParsing="false" onAction="#botonAgregar" prefHeight="25.0" prefWidth="137.0" text="Agregar producto" />
-      <Button fx:id="botonEliminar" layoutX="262.0" layoutY="92.0" mnemonicParsing="false" onAction="#botonElimina" prefHeight="25.0" prefWidth="131.0" text="Eliminar producto" />
-      <TableView fx:id="tablaProductosProovedor" layoutX="14.0" layoutY="129.0" prefHeight="274.0" prefWidth="379.0">
-         <columns>
-            <TableColumn fx:id="prooductosProovedor" prefWidth="121.0" text="Producto" />
-            <TableColumn fx:id="precioProovedor" prefWidth="141.0" text="Precio costo" />
-            <TableColumn fx:id="prooductosProovedor1" prefWidth="121.0" text="Precio final" />
-         </columns>
-      </TableView>
-      <Label fx:id="proveedorSelec" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="379.0" />
-      <Button fx:id="botonAgregar1" layoutX="16.0" layoutY="61.0" mnemonicParsing="false" onAction="#botonAgregar" prefHeight="25.0" prefWidth="137.0" text="Modificar Proveedor" />
-      <Button fx:id="botonEliminar1" layoutX="261.0" layoutY="61.0" mnemonicParsing="false" onAction="#botonElimina" prefHeight="25.0" prefWidth="131.0" text="Eliminar Proveedor" />
-   </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProveedorSelec"
+            stylesheets="@stylo.css">
+
+   <!-- ================= HEADER ================= -->
+
+   <top>
+
+      <HBox alignment="CENTER_LEFT"
+            spacing="20"
+            styleClass="header">
+
+         <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+         </padding>
+
+         <Label text="Productos del proveedor"
+                styleClass="titulo"/>
+
+      </HBox>
+
+   </top>
+
+   <!-- ================= CONTENIDO ================= -->
+
+   <center>
+
+      <HBox spacing="25"
+            styleClass="content">
+
+         <padding>
+            <Insets top="25" right="25" bottom="25" left="25"/>
+         </padding>
+
+         <!-- ================= PANEL IZQUIERDO ================= -->
+
+         <VBox spacing="20"
+               prefWidth="350"
+               styleClass="panel">
+
+            <padding>
+               <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Datos del proveedor"
+                   styleClass="panel-title"/>
+
+            <GridPane hgap="15"
+                      vgap="15">
+
+               <columnConstraints>
+                  <ColumnConstraints prefWidth="110"/>
+                  <ColumnConstraints hgrow="ALWAYS"/>
+               </columnConstraints>
+
+               <Label text="Nombre"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="nombreProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          styleClass="form-field"/>
+
+               <Label text="CUIT"
+                      GridPane.rowIndex="1"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="cuitProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="1"
+                          styleClass="form-field"/>
+
+               <Label text="Correo"
+                      GridPane.rowIndex="2"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="correoProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="2"
+                          styleClass="form-field"/>
+
+               <Label text="Teléfono"
+                      GridPane.rowIndex="3"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="telefonoProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="3"
+                          styleClass="form-field"/>
+
+               <Label text="País"
+                      GridPane.rowIndex="4"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="paisProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="4"
+                          styleClass="form-field"/>
+
+               <Label text="Provincia"
+                      GridPane.rowIndex="5"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="provinciaProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="5"
+                          styleClass="form-field"/>
+
+               <Label text="Localidad"
+                      GridPane.rowIndex="6"
+                      styleClass="form-label"/>
+
+               <TextField fx:id="localidadProveedor"
+                          editable="false"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="6"
+                          styleClass="form-field"/>
+
+            </GridPane>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <HBox spacing="15"
+                  alignment="CENTER">
+
+               <Button fx:id="botonModificarProveedor"
+                       text="Modificar"
+                       prefWidth="140"
+                       prefHeight="40"
+                       styleClass="btn-warning"
+                       onAction="#botonModificarProveedor"/>
+
+               <Button fx:id="botonEliminarProveedor"
+                       text="Eliminar"
+                       prefWidth="140"
+                       prefHeight="40"
+                       styleClass="btn-danger"
+                       onAction="#botonEliminarProveedor"/>
+
+            </HBox>
+
+         </VBox>
+
+         <!-- ================= PANEL DERECHO ================= -->
+
+         <VBox spacing="15"
+               HBox.hgrow="ALWAYS"
+               styleClass="panel">
+
+            <padding>
+               <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <HBox spacing="10"
+                  alignment="CENTER_LEFT">
+
+               <Label text="Lista de productos"
+                      styleClass="panel-title"/>
+
+               <Pane HBox.hgrow="ALWAYS"/>
+
+               <TextField fx:id="txtBuscar"
+                          promptText="Buscar producto..."
+                          prefWidth="230"
+                          styleClass="form-field"/>
+
+               <Button fx:id="botonBuscar"
+                       text="🔍 Buscar"
+                       prefWidth="110"
+                       prefHeight="38"
+                       styleClass="btn-primary"
+                       onAction="#buscarProducto"/>
+
+            </HBox>
+            <TableView fx:id="tablaProductosProveedor"
+                       VBox.vgrow="ALWAYS">
+
+               <columns>
+
+                  <TableColumn fx:id="colProducto"
+                               text="Producto"
+                               prefWidth="260"/>
+
+                  <TableColumn fx:id="colPrecioCosto"
+                               text="Precio costo"
+                               prefWidth="150"/>
+
+                  <TableColumn fx:id="colPrecioVenta"
+                               text="Precio venta"
+                               prefWidth="150"/>
+
+                  <TableColumn fx:id="colStock"
+                               text="Stock"
+                               prefWidth="100"/>
+
+               </columns>
+
+            </TableView>
+
+            <HBox spacing="15"
+                  alignment="CENTER_RIGHT">
+
+               <Pane HBox.hgrow="ALWAYS"/>
+
+               <Button fx:id="botonAgregarProducto"
+                       text="Agregar"
+                       prefWidth="120"
+                       prefHeight="40"
+                       styleClass="btn-primary"
+                       onAction="#botonAgregarProducto"/>
+
+               <Button fx:id="botonModificarProducto"
+                       text="Modificar"
+                       prefWidth="120"
+                       prefHeight="40"
+                       styleClass="btn-warning"
+                       onAction="#botonModificarProducto"/>
+
+               <Button fx:id="botonEliminarProducto"
+                       text="Eliminar"
+                       prefWidth="120"
+                       prefHeight="40"
+                       styleClass="btn-danger"
+                       onAction="#botonEliminarProducto"/>
+
+            </HBox>
+
+         </VBox>
+
+      </HBox>
+
+   </center>
+
+</BorderPane>

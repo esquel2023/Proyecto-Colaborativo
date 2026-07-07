@@ -214,6 +214,12 @@ public class controladorProovedor {
         email.clear();
         cuil.clear();
     }
+
+    public void buscarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminar(ActionEvent actionEvent) {
+    }
 }
 
 
