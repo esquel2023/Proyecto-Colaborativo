@@ -68,12 +68,7 @@ public class controladorProovedor {
                     pais.setText(newValue.getPais());
                     provincia.setText(newValue.getProvincia());
                     localidad.setText(newValue.getCiudad());
-// ¡SOLUCIÓN AQUÍ! Muestra el IVA guardado en el botón desplegable
-                    if (newValue.getCondicionIva() != null && !newValue.getCondicionIva().isEmpty()) {
-                        splitIva.setText(newValue.getCondicionIva());
-                    } else {
-                        splitIva.setText("--");
-                    }
+                    splitIva.setText(newValue.getCondicionIva());
                     cargarProductosDelProveedor(newValue);
                 }
             });
@@ -81,9 +76,10 @@ public class controladorProovedor {
     }
     @FXML
     public void cambiarIva(ActionEvent event) {
-        // Obtiene la opción de IVA elegida y actualiza el texto del SplitMenuButton
         MenuItem item = (MenuItem) event.getSource();
-        splitIva.setText(item.getText());
+        String nuevoIva = item.getText();
+        splitIva.setText(nuevoIva);
+
     }
     private void cargarProductosDelProveedor(Object proveedor) {
         // Lógica para filtrar o cargar productos del proveedor seleccionado
