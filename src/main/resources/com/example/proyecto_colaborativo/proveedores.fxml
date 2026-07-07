@@ -36,15 +36,15 @@
       <TextField fx:id="telefono" layoutX="165.0" layoutY="222.0" prefHeight="25.0" prefWidth="224.0" promptText="Telefono" />
       <TextField fx:id="nombre" layoutX="166.0" layoutY="115.0" prefHeight="25.0" prefWidth="224.0" promptText="Nombre " />
       <TextField fx:id="email" layoutX="165.0" layoutY="188.0" prefHeight="25.0" prefWidth="224.0" promptText="Email" />
-      <SplitMenuButton layoutX="165.0" layoutY="261.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" text="--">
+      <SplitMenuButton layoutX="165.0" fx:id="splitIva" layoutY="261.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" text="--">
         <items>
-          <MenuItem mnemonicParsing="false" text="Consumidor final" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
+          <MenuItem mnemonicParsing="false" text="Responsable Inscripto" />
+          <MenuItem mnemonicParsing="false" text="Monotributista" />
         </items>
       </SplitMenuButton>
-      <TextField fx:id="cuil1" layoutX="165.0" layoutY="297.0" prefHeight="25.0" prefWidth="224.0" promptText="Pais" />
-      <TextField fx:id="cuil2" layoutX="165.0" layoutY="335.0" prefHeight="25.0" prefWidth="224.0" promptText="Provincia" />
-      <TextField fx:id="cuil3" layoutX="165.0" layoutY="372.0" prefHeight="25.0" prefWidth="224.0" promptText="Localidad" />
+      <TextField fx:id="pais" layoutX="165.0" layoutY="297.0" prefHeight="25.0" prefWidth="224.0" promptText="Pais" />
+      <TextField fx:id="provincia" layoutX="165.0" layoutY="335.0" prefHeight="25.0" prefWidth="224.0" promptText="Provincia" />
+      <TextField fx:id="localidad" layoutX="165.0" layoutY="372.0" prefHeight="25.0" prefWidth="224.0" promptText="Localidad" />
       <Label layoutX="14.0" layoutY="116.0" prefHeight="25.0" prefWidth="129.0" text="Nombre" />
       <Label layoutX="14.0" layoutY="149.0" prefHeight="25.0" prefWidth="142.0" text="Numero de identificacion" />
       <Label layoutX="14.0" layoutY="188.0" prefHeight="25.0" prefWidth="129.0" text="Correo electronico" />

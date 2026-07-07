@@ -26,19 +26,16 @@ public class controladorProovedor {
     @FXML public TableColumn<proovedorClase, String> precioProovedor;
     @FXML public TableColumn<proovedorClase, String> nombreTabla;
     @FXML public TableColumn<proovedorClase, String> telefonoTabla;
-    public TextField pais;
-    public TextField provincia;
-    public TextField ciudad;
+    @FXML public SplitMenuButton splitIva;
 
 
-    @FXML private Button lupa;
-    @FXML private Button botonAgregar;
-    @FXML private Button botonModificar;
-    @FXML private Button botonEliminar;
     @FXML private TextField cuil;
     @FXML private TextField telefono;
     @FXML private TextField nombre;
     @FXML private TextField email;
+    public TextField pais;
+    public TextField provincia;
+    public TextField localidad;
 
     private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
     private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
@@ -57,54 +54,74 @@ public class controladorProovedor {
             listaProveedoresObs.setAll(ProveedorDAO.listar());
 
             tablaProovedores.setItems(listaProveedoresObs);
-            // tablaProductosProovedor.setItems(listaProductosProveedorObs);
 
-            // 3. Listener de selección optimizado
+
             tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue == null) {
                     listaProductosProveedorObs.clear();
                     limpiarCampos();
                 } else {
-                    // SE CORRIGE AQUÍ: Se mapea con 'newValue' que trae los datos reales de la selección
                     nombre.setText(newValue.getNombreEntidad());
                     telefono.setText(newValue.getTelefonoEntidad());
                     email.setText(newValue.getEmailEntidad());
                     cuil.setText(newValue.getCuitcuilEntidad());
-
+                    pais.setText(newValue.getPais());
+                    provincia.setText(newValue.getProvincia());
+                    localidad.setText(newValue.getCiudad());
+// ¡SOLUCIÓN AQUÍ! Muestra el IVA guardado en el botón desplegable
+                    if (newValue.getCondicionIva() != null && !newValue.getCondicionIva().isEmpty()) {
+                        splitIva.setText(newValue.getCondicionIva());
+                    } else {
+                        splitIva.setText("--");
+                    }
                     cargarProductosDelProveedor(newValue);
                 }
             });
         }
     }
-
+    @FXML
+    public void cambiarIva(ActionEvent event) {
+        // Obtiene la opción de IVA elegida y actualiza el texto del SplitMenuButton
+        MenuItem item = (MenuItem) event.getSource();
+        splitIva.setText(item.getText());
+    }
     private void cargarProductosDelProveedor(Object proveedor) {
         // Lógica para filtrar o cargar productos del proveedor seleccionado
     }
 
     @FXML
     void botonAgregar(ActionEvent event) throws IOException {
-
         String txtNombre = nombre.getText();
         String txtTelefono = telefono.getText();
         String txtEmail = email.getText();
         String txtCuil = cuil.getText();
+        String txtPais = pais.getText();
+        String txtProvincia = provincia.getText();
+        String txtCiudad = localidad.getText();
+        String txtIva = splitIva.getText();
 
-        if (txtNombre.isEmpty() || txtCuil.isEmpty()
-                 || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarInformacion("Campos vacios", "Falta completar informacion. Por favor, complete los campos faltantes y vuelva a intentarlo.");
-
-
+        if (txtNombre.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        if (txtIva.equals("--")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Menú sin seleccionar.", "Por favor, elige la Condición de IVA.", Alert.AlertType.INFORMATION);
+            return;
+        }
+        if (txtCuil.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de CUIT, Email o Nombre.", Alert.AlertType.INFORMATION);
             return;
         }
 
-
+        try {
+            Long.parseLong(txtCuil);
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("Datos inválidos", "CUIT / CUIL", "Por favor, corrija el número de identificación sin puntos ni letras.", Alert.AlertType.INFORMATION);
+            return;
+        }
         String mensaje = String.format(
-                "¿Confirmas los datos del proveedor?\n\n" +
-                        "Nombre: %s\n" +
-                        "Teléfono: %s\n" +
-                        "Email: %s\n" +
-                        "CUIL: %s",
-                txtNombre, txtTelefono, txtEmail, txtCuil
+                "¿Confirmas los datos del proveedor?\n\nNombre: %s\nCUIT: %s\nTeléfono: %s\nEmail: %s\nIVA: %s\nUbicación: %s, %s",
+                txtNombre, txtCuil, txtTelefono, txtEmail, txtIva, txtProvincia, txtPais
         );
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
@@ -119,17 +136,31 @@ public class controladorProovedor {
         Optional<ButtonType> resultado = alerta.showAndWait();
 
         if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-            // Aquí agregas el objeto correspondiente a tu lista observable de proveedores
-            proovedorClase proveedor = new proovedorClase(1, txtNombre, txtTelefono, txtEmail, txtCuil);
-            ProveedorDAO.insertar(proveedor);
+            try {
+                proovedorClase nuevoProveedor = new proovedorClase();
 
-            listaProveedoresObs.setAll(ProveedorDAO.listar()); // Recarga limpia desde la base de datos
-            limpiarCampos();
-            System.out.println("Cliente agregado con éxito.");
-        } else {
-            System.out.println("El usuario decidió corregir los datos.");
+                nuevoProveedor.setNombreEntidad(txtNombre);
+                nuevoProveedor.setTelefonoEntidad(txtTelefono);
+                nuevoProveedor.setEmailEntidad(txtEmail);
+                nuevoProveedor.setCuitcuilEntidad(txtCuil);
+                nuevoProveedor.setCondicionIva(txtIva);
+                nuevoProveedor.setPais(txtPais);
+                nuevoProveedor.setProvincia(txtProvincia);
+                nuevoProveedor.setCiudad(txtCiudad);
+
+                ProveedorDAO.insertar(nuevoProveedor);
+
+                // Limpieza de interfaz y actualización
+                limpiarCampos();
+                System.out.println("Proveedor agregado con éxito.");
+
+            } catch (Exception e) {
+                System.out.println("Error al intentar procesar e insertar el proveedor.");
+                e.printStackTrace();
+            }
         }
     }
+
 
     @FXML
     void botonModificar(ActionEvent event) {
@@ -145,21 +176,25 @@ public class controladorProovedor {
         String nuevotelefono = telefono.getText();
         String nuevoemail = email.getText();
         String nuevocuil = cuil.getText();
+        String nuevopais = pais.getText();
+        String nuevaprov = provincia.getText();
+        String nuevaciudad = localidad.getText();
 
         // 4. Validar que no dejen ningún campo vacío
         if (nuevonombre.isEmpty() || nuevocuil.isEmpty() ||
-                 nuevoemail.isEmpty() || nuevotelefono.isEmpty()) {
+                 nuevoemail.isEmpty() || nuevotelefono.isEmpty()|| nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
             System.out.println("Error: No puedes dejar campos vacíos.");
             return;
         }
 
-        // 5. Modificar las propiedades usando los setters que me mostraste
         proveedorSeleccionado.setNombreEntidad(nuevonombre);
         proveedorSeleccionado.setTelefonoEntidad((nuevotelefono));
         proveedorSeleccionado.setEmailEntidad(nuevoemail);
         proveedorSeleccionado.setCuitcuilEntidad(nuevocuil);
+        proveedorSeleccionado.setCiudad(nuevaciudad);
+        proveedorSeleccionado.setPais(nuevopais);
+        proveedorSeleccionado.setProvincia(nuevaprov);
 
-        // 6. Refrescar la tabla para actualizar la pantalla de inmediato
         tablaProovedores.refresh();
 
         // 7. Limpiar la selección de la tabla y los campos de texto
@@ -199,20 +234,16 @@ public class controladorProovedor {
                     return coincideNombre;
 
                 });
-
-
-
-
-
     }
-
-
 
     private void limpiarCampos() {
         nombre.clear();
         telefono.clear();
         email.clear();
         cuil.clear();
+        pais.clear();
+        provincia.clear();
+        localidad.clear();
     }
 }
 

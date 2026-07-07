@@ -19,23 +19,34 @@ public class ClienteDAO {
 
             while (rs.next()) {
                 clienteClase p = new clienteClase();
-                p.setId(rs.getInt("idCliente"));
+
+                p.setId(rs.getInt("idcliente"));
                 p.setNombreEntidad(rs.getString("nombre"));
                 p.setDniEntidad(rs.getString("dni"));
                 p.setTelefonoEntidad(rs.getString("telefono"));
                 p.setEmailEntidad(rs.getString("email"));
                 p.setCuitcuilEntidad(rs.getString("cuitcuil"));
+                p.setTipoIdentificacion(rs.getString("tipo_identificacion"));
+                p.setCondicionIva(rs.getString("condicion_iva"));
+                p.setPais(rs.getString("pais"));
+                p.setProvincia(rs.getString("provincia"));
+                p.setCiudad(rs.getString("ciudad"));
 
                 lista.add(p);
             }
         } catch (Exception e) {
+            System.out.println("Error al listar clientes desde la base de datos:");
             e.printStackTrace();
         }
         return lista;
     }
 
+
     public static void insertar(clienteClase p) {
-        String sql = "INSERT INTO Cliente(nombre, dni, telefono, email, cuitcuil) VALUES(?,?,?,?,?)";
+        String sql = """
+        INSERT INTO Cliente(nombre, dni, telefono, email, cuitcuil, tipo_identificacion, condicion_iva, pais, provincia, ciudad) 
+        VALUES(?,?,?,?,?,?,?,?,?,?)
+    """;
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -44,12 +55,21 @@ public class ClienteDAO {
             ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());
+            ps.setString(6, p.getTipoIdentificacion());
+            ps.setString(7, p.getCondicionIva());
+            ps.setString(8, p.getPais());
+            ps.setString(9, p.getProvincia());
+            ps.setString(10, p.getCiudad());
+
             ps.executeUpdate();
+            System.out.println("Cliente insertado con éxito en la BD.");
 
         } catch (Exception e) {
+            System.out.println("Error al insertar cliente:");
             e.printStackTrace();
         }
     }
+
     public static clienteClase buscarNombre(String nombre) {
         String sql = "SELECT * FROM paciente WHERE nombre=?";
         try (Connection c = Database.getConnection();
@@ -60,13 +80,17 @@ public class ClienteDAO {
 
             if (rs.next()) {
                 return new clienteClase(
-                        rs.getInt("idCliente"),
+                        rs.getInt("idcliente"),
                         rs.getString("nombre"),
                         rs.getString("dni"),
                         rs.getString("telefono"),
                         rs.getString("email"),
-                        rs.getString("direccion"),
-                        rs.getString("cuitcuil")
+                        rs.getString("cuitcuil"),
+                        rs.getString("tipo_identificacion"),
+                        rs.getString("condicion_iva"),
+                        rs.getString("pais"),
+                        rs.getString("provincia"),
+                        rs.getString("ciudad")
                 );
             }
 
@@ -79,20 +103,28 @@ public class ClienteDAO {
     public static void actualizar(clienteClase p) throws SQLException {
         String sql = """
         UPDATE Cliente
-        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?
+        SET nombre=?, dni=?, telefono=?, email=?, cuitcuil=?,
+            tipo_identificacion=?, condicion_iva=?, pais=?, provincia=?, ciudad=?
         WHERE idCliente=?;
     """;
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
+
             ps.setString(1, p.getNombreEntidad());
             ps.setString(2, p.getDniEntidad());
             ps.setString(3, p.getTelefonoEntidad());
             ps.setString(4, p.getEmailEntidad());
             ps.setString(5, p.getCuitcuilEntidad());
-            ps.setInt(6,p.getId());
+            ps.setString(6, p.getTipoIdentificacion());
+            ps.setString(7, p.getCondicionIva());
+            ps.setString(8, p.getPais());
+            ps.setString(9, p.getProvincia());
+            ps.setString(10, p.getCiudad());
 
+            // 11: El ID de la condición WHERE
+            ps.setInt(11, p.getId());
 
             int filasAfectadas = ps.executeUpdate();
             System.out.println("Filas actualizadas en la base de datos: " + filasAfectadas);

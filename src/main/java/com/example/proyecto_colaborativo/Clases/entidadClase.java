@@ -1,60 +1,50 @@
 package com.example.proyecto_colaborativo.Clases;
 
-public class entidadClase {
- //CLASE ENTIDAD GENERAL
+
+public abstract class entidadClase {
+
     private String nombreEntidad;
     private String telefonoEntidad;
     private String dniEntidad;
     private String emailEntidad;
-    private String direccionEntidad;
     private String cuitcuilEntidad;
+    private String tipoIdentificacion;
+    private String condicionIva;
+    private String pais;
+    private String provincia;
+    private String ciudad;
 
-    public String getNombreEntidad() {
-        return nombreEntidad;
+    public entidadClase() {
     }
 
-    public void setNombreEntidad(String nombreEntidad) {
-        this.nombreEntidad = nombreEntidad;
-    }
+    // GETTERS Y SETTERS EXISTENTES
+    public String getNombreEntidad() { return nombreEntidad; }
+    public void setNombreEntidad(String nombreEntidad) { this.nombreEntidad = nombreEntidad; }
 
-    public String getTelefonoEntidad() {
-        return telefonoEntidad;
-    }
+    public String getTelefonoEntidad() { return telefonoEntidad; }
+    public void setTelefonoEntidad(String telefonoEntidad) { this.telefonoEntidad = telefonoEntidad; }
 
-    public void setTelefonoEntidad(String telefonoEntidad) {
-        this.telefonoEntidad = telefonoEntidad;
-    }
+    public String getDniEntidad() { return dniEntidad; }
+    public void setDniEntidad(String dniEntidad) { this.dniEntidad = dniEntidad; }
 
-    public String getDniEntidad() {
-        return dniEntidad;
-    }
+    public String getEmailEntidad() { return emailEntidad; }
+    public void setEmailEntidad(String emailEntidad) { this.emailEntidad = emailEntidad; }
 
-    public void setDniEntidad(String dniEntidad) {
-        this.dniEntidad = dniEntidad;
-    }
+    public String getCuitcuilEntidad() { return cuitcuilEntidad; }
+    public void setCuitcuilEntidad(String cuitcuilEntidad) { this.cuitcuilEntidad = cuitcuilEntidad; }
 
-    public String getEmailEntidad() {
-        return emailEntidad;
-    }
+    public String getTipoIdentificacion() { return tipoIdentificacion; }
+    public void setTipoIdentificacion(String tipoIdentificacion) { this.tipoIdentificacion = tipoIdentificacion; }
 
-    public void setEmailEntidad(String emailEntidad) {
-        this.emailEntidad = emailEntidad;
-    }
+    public String getCondicionIva() { return condicionIva; }
+    public void setCondicionIva(String condicionIva) { this.condicionIva = condicionIva; }
 
-    public String getDireccionEntidad() {
-        return direccionEntidad;
-    }
+    public String getPais() { return pais; }
+    public void setPais(String pais) { this.pais = pais; }
 
-    public void setDireccionEntidad(String direccionEntidad) {
-        this.direccionEntidad = direccionEntidad;
-    }
+    public String getProvincia() { return provincia; }
+    public void setProvincia(String provincia) { this.provincia = provincia; }
 
-    public String getCuitcuilEntidad() {
-        return cuitcuilEntidad;
-    }
-
-    public void setCuitcuilEntidad(String cuitcuilEntidad) {
-        this.cuitcuilEntidad = cuitcuilEntidad;
-    }
-
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
 }
