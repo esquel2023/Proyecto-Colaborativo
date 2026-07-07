@@ -128,9 +128,9 @@ public class controladorProveedorSelec {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador DESPUÉS de cargar el root
-            ControladorProducto controller = loader.getController();
-            controller.setProveedorSelec(this);
+//            // 2. Obtener el controlador DESPUÉS de cargar el root
+//            ControladorProducto controller = loader.getController();
+//            controller.setProveedorSelec(this);
 
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
@@ -169,5 +169,23 @@ public class controladorProveedorSelec {
             listaProductosObs.remove(producto);
             ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
         }
+    }
+
+    public void botonModificarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void buscarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonAgregarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonModificarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminarProducto(ActionEvent actionEvent) {
     }
 }

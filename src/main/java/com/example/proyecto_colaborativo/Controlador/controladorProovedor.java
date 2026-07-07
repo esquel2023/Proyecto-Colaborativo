@@ -241,6 +241,12 @@ public class controladorProovedor {
         provincia.clear();
         localidad.clear();
     }
+
+    public void buscarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminar(ActionEvent actionEvent) {
+    }
 }
 
 
