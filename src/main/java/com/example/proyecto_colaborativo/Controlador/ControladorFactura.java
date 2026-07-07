@@ -295,7 +295,7 @@ public class ControladorFactura implements Initializable {
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ingresoDePago.fxml"));
         Parent root = loader.load();
 
-        controladorIngresoDePago controller = loader.getController();
+        //controladorIngresoDePago controller = loader.getController();
 
         Stage stage = new Stage();
         stage.setTitle("ingresoDePago");

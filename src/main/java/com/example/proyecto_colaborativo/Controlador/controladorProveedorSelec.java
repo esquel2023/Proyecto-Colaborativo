@@ -170,4 +170,22 @@ public class controladorProveedorSelec {
             ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
         }
     }
+
+    public void botonModificarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void buscarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonAgregarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonModificarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminarProducto(ActionEvent actionEvent) {
+    }
 }
