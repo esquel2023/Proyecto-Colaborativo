@@ -32,7 +32,7 @@
             <Region VBox.vgrow="ALWAYS"/>
 
             <Button text="⚙  Configuración" styleClass="sidebar-button"/>
-            <Button text="🚪  Cerrar sesión" styleClass="sidebar-button"/>
+            <Button  fx:id="cerrarSesion" onAction="#cerrarSesion" text="🚪  Cerrar sesión" styleClass="sidebar-button"/>
         </VBox>
     </left>
 

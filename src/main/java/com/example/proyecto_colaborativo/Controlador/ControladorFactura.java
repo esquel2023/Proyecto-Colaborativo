@@ -224,12 +224,7 @@ public class ControladorFactura implements Initializable {
             stage.setScene(new Scene(root, 440, 540));
 
             stage.showAndWait();
-//
-//            controladorAgregarCliente clienteSeleccionado = controller.tablaClientes.getSelectionModel().getSelectedItem();
-//
-//            if (clienteSeleccionado != null) {
-//                cliente.setText(clienteSeleccionado.getNombreEntidad());
-//            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -243,28 +238,38 @@ public class ControladorFactura implements Initializable {
     // >>> CORRECCIÓN ABSOLUTA: El método que faltaba para procesar el Doble Clic sin duplicar filas <<<
     public void recibirProducto(Producto producto) {
 
-            // Tu código original validaba con contains
-            if (!listaUsuarios.contains(producto)) {
-                // Inicializar cantidades de manera explícita para la primera inserción
-                producto.setCantidad(1);
-                if (producto.cantidadProperty() != null) {
-                    producto.cantidadProperty().set(1);
-                }
-
-                listaUsuarios.add(producto);
-            } else {
-                // Si el objeto ya existía (según el contains), se incrementaba su cantidad en +1
-                int nuevaCantidad = producto.getCantidad() + 1;
-                producto.setCantidad(nuevaCantidad);
-                if (producto.cantidadProperty() != null) {
-                    producto.cantidadProperty().set(nuevaCantidad);
-                }
+        Producto productoExistente = null;
+        for (Producto p : listaUsuarios) {
+            // CORRECCIÓN: Usar .get() para comparar los valores numéricos de las propiedades
+            if (p.idProductoProperty().get() == producto.idProductoProperty().get()) {
+                productoExistente = p;
+                break; // Lo encontramos, salimos del bucle
             }
-
-            // Refrescar la vista de la tabla y calcular el total de la factura
-            TablaProductos.refresh();
-            Calcular();
         }
+
+        // 2. Evaluamos el resultado de la búsqueda
+        if (productoExistente != null) {
+            // CASO A: El producto ya estaba en la tabla, aumentamos su cantidad
+            int nuevaCantidad = productoExistente.getCantidad() + 1;
+            productoExistente.setCantidad(nuevaCantidad);
+
+            if (productoExistente.cantidadProperty() != null) {
+                productoExistente.cantidadProperty().set(nuevaCantidad);
+            }
+        } else {
+            // CASO B: Es un producto nuevo en la factura, lo agregamos por primera vez
+            producto.setCantidad(1);
+            if (producto.cantidadProperty() != null) {
+                producto.cantidadProperty().set(1);
+            }
+            listaUsuarios.add(producto);
+        }
+
+        // 3. Refrescar los componentes visuales
+        TablaProductos.refresh();
+        Calcular();
+    }
+
 
     public void botonA(ActionEvent actionEvent) {
         tipoFactura.setText("A");
@@ -287,7 +292,6 @@ public class ControladorFactura implements Initializable {
     }
 
     public void IngresarPago(ActionEvent actionEvent) throws IOException {
-
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ingresoDePago.fxml"));
         Parent root = loader.load();
 
