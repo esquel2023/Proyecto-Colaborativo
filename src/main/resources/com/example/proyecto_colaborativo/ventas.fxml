@@ -8,7 +8,7 @@
 <AnchorPane prefHeight="520.0" prefWidth="900.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorFactura"
+            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorVenta"
             stylesheets="@style.css">
 
     <children>
@@ -49,15 +49,9 @@
                                        styleClass="input"/>
 
                             <Button fx:id="agregarCliente"
-                                    onAction="#buscarCliente"
                                     text="+ Agregar"
                                     minWidth="105"
                                     styleClass="btn-cliente"/>
-
-                            <Button fx:id="buscarCliente"
-                                    text="🔍 Buscar"
-                                    minWidth="105"
-                                    styleClass="btn-toolbar"/>
 
                             <Button fx:id="eliminarCliente"
                                     text="🗑 Eliminar"
@@ -72,10 +66,10 @@
 
                         <GridPane hgap="10" vgap="4">
                             <columnConstraints>
-                                <ColumnConstraints percentWidth="23"/>
-                                <ColumnConstraints percentWidth="31"/>
                                 <ColumnConstraints percentWidth="22"/>
-                                <ColumnConstraints percentWidth="24"/>
+                                <ColumnConstraints percentWidth="34"/>
+                                <ColumnConstraints percentWidth="22"/>
+                                <ColumnConstraints percentWidth="22"/>
                             </columnConstraints>
 
                             <Label text="Código" styleClass="label-resumen"
@@ -84,12 +78,10 @@
                             <Label text="Código de barras" styleClass="label-resumen"
                                    GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                            <Label text="Precio final" styleClass="label-resumen"
-                                   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-
+                            <Region GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                             <Region GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
-                            <TextField fx:id="codigo1"
+                            <TextField fx:id="codigo"
                                        promptText="Ej: 00123"
                                        GridPane.columnIndex="0"
                                        GridPane.rowIndex="1"
@@ -101,19 +93,20 @@
                                        GridPane.rowIndex="1"
                                        styleClass="input"/>
 
-                            <Label fx:id="Total"
+                            <Button fx:id="botonAgregar"
+                                    text="＋ Agregar"
+                                    onAction="#clickAgregarVentaProducto"
+                                    maxWidth="Infinity"
+                                    GridPane.columnIndex="2"
+                                    GridPane.rowIndex="1"
+                                    styleClass="btn-agregar"/>
 
-                                       GridPane.columnIndex="2"
-                                       GridPane.rowIndex="1"
-                                       styleClass="input"/>
-
-                            <Button fx:id="agregarProducto"
-                                    text="＋ Agregar producto"
-                                    onAction="#agregarProducto"
+                            <Button fx:id="botonEliminar"
+                                    text="🗑 Quitar"
                                     maxWidth="Infinity"
                                     GridPane.columnIndex="3"
                                     GridPane.rowIndex="1"
-                                    styleClass="btn-agregar"/>
+                                    styleClass="btn-toolbar"/>
                         </GridPane>
 
                         <TableView fx:id="TablaProductos"
@@ -132,22 +125,6 @@
                                 <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="80"/>
                             </columns>
                         </TableView>
-
-                        <HBox alignment="CENTER_LEFT" spacing="8">
-                            <Button fx:id="eliminarProducto"
-                                    onAction="#eliminarProducto"
-                                    text="🗑 Quitar producto"
-                                    styleClass="btn-toolbar"/>
-
-                            <Button fx:id="botonModificar"
-                                    text="✏ Modificar"
-                                    styleClass="btn-toolbar"/>
-
-                            <Region HBox.hgrow="ALWAYS"/>
-
-                            <Button text="✖ Cancelar venta"
-                                    styleClass="btn-cancelar"/>
-                        </HBox>
                     </VBox>
                 </VBox>
 
@@ -193,6 +170,10 @@
                     <Button text="✓  Finalizar venta"
                             maxWidth="Infinity"
                             styleClass="btn-finalizar"/>
+
+                    <Button text="✖ Cancelar venta"
+                            maxWidth="Infinity"
+                            styleClass="btn-cancelar"/>
                 </VBox>
 
             </HBox>
