@@ -139,14 +139,14 @@
                        prefWidth="120"
                        prefHeight="40"
                        styleClass="btn-primary"
-                       onAction="#botonAgregar"/>
+                       onAction="#botonAgrega"/>
 
                <Button fx:id="botonModificar"
                        text="Modificar"
                        prefWidth="120"
                        prefHeight="40"
                        styleClass="btn-warning"
-                       onAction="#botonModificar"/>
+                       onAction="#botonModifica"/>
 
                <Button fx:id="botonEliminar"
                        text="Eliminar"
@@ -177,7 +177,7 @@
 
                <Pane HBox.hgrow="ALWAYS"/>
 
-               <TextField fx:id="txtBuscar"
+               <TextField fx:id="buscadorProovedores"
                           promptText="Buscar proveedor..."
                           prefWidth="240"
                           styleClass="form-field"/>
@@ -188,19 +188,25 @@
                        prefHeight="38"
                        styleClass="btn-primary"
                        onAction="#buscarProveedor"/>
+               <Button fx:id="botonProducto"
+                       text="Ver Productos"
+                       prefWidth="110"
+                       prefHeight="34"
+                       styleClass="btn-primary"
+                       onAction="#buscarProductos"/>
 
             </HBox>
 
-            <TableView fx:id="tablaProveedores"
+            <TableView fx:id="tablaProovedores"
                        VBox.vgrow="ALWAYS">
 
                <columns>
 
-                  <TableColumn fx:id="colNombre"
+                  <TableColumn fx:id="nombreTabla"
                                text="Nombre"
                                prefWidth="180"/>
 
-                  <TableColumn fx:id="colTelefono"
+                  <TableColumn fx:id="telefonoTabla"
                                text="Teléfono"
                                prefWidth="150"/>
 

@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class controladorProovedor {
+import static com.example.proyecto_colaborativo.Utilits.NavegacionUtils.abrirPantalla;
 
+public class controladorProovedor {
+/*
 
     public TextField buscadorProovedores;
     @FXML public TableView<proovedorClase> tablaProovedores;
@@ -27,6 +29,7 @@ public class controladorProovedor {
     @FXML public TableColumn<proovedorClase, String> nombreTabla;
     @FXML public TableColumn<proovedorClase, String> telefonoTabla;
     @FXML public SplitMenuButton splitIva;
+    public ComboBox condicionIVA;
 
 
     @FXML private TextField cuil;
@@ -37,19 +40,45 @@ public class controladorProovedor {
     public TextField provincia;
     public TextField localidad;
 
+ */
+
     private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
     private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
 
-    public void initialize() {
-        if (tablaProovedores != null && tablaProductosProovedor != null) {
-            tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
-            tablaProductosProovedor.setPlaceholder(new Label("Este proveedor no tiene productos"));
+    public TextField nombre;
+    public TextField cuit;
+    public TextField email;
+    public TextField telefono;
+    public TextField pais;
+    public TextField provincia;
+    public TextField localidad;
 
-            // 1. Configuración de mapeo de columnas de las tablas
+    public TableView<proovedorClase> tablaProovedores;
+    public TableColumn<proovedorClase,String> nombreTabla;
+    public TableColumn<proovedorClase,String> telefonoTabla;
+    public TableColumn<proovedorClase,String> colEmail;
+
+    public ComboBox<String> condicionIVA;
+    
+    public TextField buscadorProovedores;
+    public Button botonAgregar;
+    public Button botonProducto;
+
+    proovedorClase proveedorSelec;
+
+    public void initialize() {
+        condicionIVA.getItems().addAll(
+                "Responsable Inscripto",
+                "Monotributista"
+
+        );
+        if (tablaProovedores != null) {
+            tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
+
             nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
             telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
-            prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
-            precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
+
+
 
             listaProveedoresObs.setAll(ProveedorDAO.listar());
 
@@ -64,12 +93,13 @@ public class controladorProovedor {
                     nombre.setText(newValue.getNombreEntidad());
                     telefono.setText(newValue.getTelefonoEntidad());
                     email.setText(newValue.getEmailEntidad());
-                    cuil.setText(newValue.getCuitcuilEntidad());
+                    cuit.setText(newValue.getCuitcuilEntidad());
                     pais.setText(newValue.getPais());
                     provincia.setText(newValue.getProvincia());
                     localidad.setText(newValue.getCiudad());
-                    splitIva.setText(newValue.getCondicionIva());
+                    condicionIVA.setValue(newValue.getCondicionIva());
                     cargarProductosDelProveedor(newValue);
+                    this.proveedorSelec = newValue;
                 }
             });
         }
@@ -78,32 +108,74 @@ public class controladorProovedor {
     public void cambiarIva(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
         String nuevoIva = item.getText();
-        splitIva.setText(nuevoIva);
+        condicionIVA.setValue(nuevoIva);
 
     }
     private void cargarProductosDelProveedor(Object proveedor) {
         // Lógica para filtrar o cargar productos del proveedor seleccionado
     }
 
-    @FXML
-    void botonAgregar(ActionEvent event) throws IOException {
+
+
+    private void limpiarCampos() {
+        nombre.clear();
+        telefono.clear();
+        email.clear();
+        cuit.clear();
+        pais.clear();
+        provincia.clear();
+        localidad.clear();
+    }
+
+    public void buscarProveedor(ActionEvent actionEvent) {
+
+        BuscadorUtils.configuradorBuscador(
+                buscadorProovedores,
+                tablaProovedores,
+                listaProveedoresObs,
+                (proveedor, texto) -> {
+                    // Validación segura contra valores nulos
+                    boolean coincideNombre = proveedor.getNombreEntidad() != null &&
+                            proveedor.getNombreEntidad().toLowerCase().contains(texto);
+
+                    return coincideNombre;
+
+                });
+    }
+
+    public void botonEliminar(ActionEvent actionEvent) {
+        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
+        if (proveedorSeleccionado != null) {
+            try{
+                ProveedorDAO.eliminar(proveedorSeleccionado.getNombreEntidad());
+                listaProveedoresObs.remove(proveedorSeleccionado);
+                limpiarCampos();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
+    public void botonAgrega(ActionEvent actionEvent) {
         String txtNombre = nombre.getText();
         String txtTelefono = telefono.getText();
         String txtEmail = email.getText();
-        String txtCuil = cuil.getText();
+        String txtCuil = cuit.getText();
         String txtPais = pais.getText();
         String txtProvincia = provincia.getText();
         String txtCiudad = localidad.getText();
-        String txtIva = splitIva.getText();
+        String txtIva = condicionIVA.getValue();
 
         if (txtNombre.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
             return;
         }
-        if (txtIva.equals("--")) {
+        if (txtIva == null || txtIva.isEmpty() || txtIva.equals("--")) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "Menú sin seleccionar.", "Por favor, elige la Condición de IVA.", Alert.AlertType.INFORMATION);
             return;
         }
+
         if (txtCuil.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de CUIT, Email o Nombre.", Alert.AlertType.INFORMATION);
             return;
@@ -157,10 +229,7 @@ public class controladorProovedor {
         }
     }
 
-
-    @FXML
-    void botonModificar(ActionEvent event) {
-        // 1. Obtener el proveedor seleccionado de la tabla
+    public void botonModifica(ActionEvent actionEvent) {
         proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
 
         if (proveedorSeleccionado == null) {
@@ -171,14 +240,14 @@ public class controladorProovedor {
         String nuevonombre = nombre.getText();
         String nuevotelefono = telefono.getText();
         String nuevoemail = email.getText();
-        String nuevocuil = cuil.getText();
+        String nuevocuil = cuit.getText();
         String nuevopais = pais.getText();
         String nuevaprov = provincia.getText();
         String nuevaciudad = localidad.getText();
 
         // 4. Validar que no dejen ningún campo vacío
         if (nuevonombre.isEmpty() || nuevocuil.isEmpty() ||
-                 nuevoemail.isEmpty() || nuevotelefono.isEmpty()|| nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
+                nuevoemail.isEmpty() || nuevotelefono.isEmpty()|| nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
             System.out.println("Error: No puedes dejar campos vacíos.");
             return;
         }
@@ -199,53 +268,11 @@ public class controladorProovedor {
         System.out.println("¡Proveedor modificado con éxito!");
     }
 
-    @FXML
-    void botonElimina(ActionEvent event) {
-        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
-        if (proveedorSeleccionado != null) {
-            try{
-                ProveedorDAO.eliminar(proveedorSeleccionado.getNombreEntidad());
-                listaProveedoresObs.remove(proveedorSeleccionado);
-                limpiarCampos();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
 
-        }
+    public void buscarProductos(ActionEvent actionEvent) {
+        abrirPantalla("proveedorSeleccionado.fxml", "Proveedor Seleccionado", false);
+        controladorProveedorSelec.setProveedorSelec(proveedorSelec);
 
-    }
-
-    @FXML
-    void botonLupa(ActionEvent event) {
-
-        BuscadorUtils.configuradorBuscador(
-                buscadorProovedores,
-                tablaProovedores,
-                listaProveedoresObs,
-                (proveedor, texto) -> {
-                    // Validación segura contra valores nulos
-                    boolean coincideNombre = proveedor.getNombreEntidad() != null &&
-                            proveedor.getNombreEntidad().toLowerCase().contains(texto);
-
-                    return coincideNombre;
-
-                });
-    }
-
-    private void limpiarCampos() {
-        nombre.clear();
-        telefono.clear();
-        email.clear();
-        cuil.clear();
-        pais.clear();
-        provincia.clear();
-        localidad.clear();
-    }
-
-    public void buscarProveedor(ActionEvent actionEvent) {
-    }
-
-    public void botonEliminar(ActionEvent actionEvent) {
     }
 }
 
