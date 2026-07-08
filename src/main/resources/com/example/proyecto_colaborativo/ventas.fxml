@@ -8,7 +8,7 @@
 <AnchorPane prefHeight="520.0" prefWidth="900.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorVenta"
+            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorFactura"
             stylesheets="@style.css">
 
     <children>
@@ -49,6 +49,7 @@
                                        styleClass="input"/>
 
                             <Button fx:id="agregarCliente"
+                                    onAction="#buscarCliente"
                                     text="+ Agregar"
                                     minWidth="105"
                                     styleClass="btn-cliente"/>
@@ -88,7 +89,7 @@
 
                             <Region GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
-                            <TextField fx:id="codigo"
+                            <TextField fx:id="codigo1"
                                        promptText="Ej: 00123"
                                        GridPane.columnIndex="0"
                                        GridPane.rowIndex="1"
@@ -100,15 +101,15 @@
                                        GridPane.rowIndex="1"
                                        styleClass="input"/>
 
-                            <TextField fx:id="precioFinal"
-                                       promptText="Ej: 0.00"
+                            <Label fx:id="Total"
+
                                        GridPane.columnIndex="2"
                                        GridPane.rowIndex="1"
                                        styleClass="input"/>
 
-                            <Button fx:id="botonAgregar"
+                            <Button fx:id="agregarProducto"
                                     text="＋ Agregar producto"
-                                    onAction="#clickAgregarVentaProducto"
+                                    onAction="#agregarProducto"
                                     maxWidth="Infinity"
                                     GridPane.columnIndex="3"
                                     GridPane.rowIndex="1"
@@ -133,7 +134,8 @@
                         </TableView>
 
                         <HBox alignment="CENTER_LEFT" spacing="8">
-                            <Button fx:id="botonEliminar"
+                            <Button fx:id="eliminarProducto"
+                                    onAction="#eliminarProducto"
                                     text="🗑 Quitar producto"
                                     styleClass="btn-toolbar"/>
 
