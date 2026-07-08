@@ -451,3 +451,185 @@
     -fx-font-weight: bold;
     -fx-text-fill: #2E7D50;
 }
+/* ===========================
+        PRODUCTOS
+=========================== */
+
+.root-productos{
+    -fx-background-color:#FAFAFA;
+}
+
+/* BUSCADOR */
+
+.buscador-card{
+    -fx-background-color:#FFFFFF;
+    -fx-background-radius:16;
+    -fx-border-radius:16;
+    -fx-border-color:#E8EDF2;
+    -fx-padding:14;
+}
+
+.input-busqueda{
+    -fx-background-color:#FAFAFA;
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+    -fx-border-color:#E8EDF2;
+    -fx-font-size:14px;
+    -fx-pref-height:40;
+    -fx-padding:0 14;
+}
+
+.input-busqueda:focused{
+    -fx-border-color:#324A5F;
+    -fx-background-color:white;
+}
+
+/* PANEL PRECIO */
+
+.panel-precio{
+    -fx-background-color:white;
+    -fx-background-radius:18;
+    -fx-border-radius:18;
+    -fx-border-color:#E8EDF2;
+    -fx-padding:18;
+}
+
+.precio-final-card{
+    -fx-background-color:#F8FAFC;
+    -fx-background-radius:14;
+    -fx-border-radius:14;
+    -fx-border-color:#E8EDF2;
+    -fx-padding:14;
+}
+
+.precio-final-texto{
+    -fx-font-size:13px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#6C757D;
+}
+
+.precio-final{
+    -fx-font-size:34px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#324A5F;
+}
+
+/* TITULOS */
+
+.titulo-seccion{
+
+    -fx-font-size:16px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#263238;
+
+}
+
+/* TABLA PRODUCTOS */
+
+.tabla-productos{
+
+    -fx-background-color:white;
+    -fx-background-radius:14;
+    -fx-border-radius:14;
+    -fx-border-color:#E8EDF2;
+
+}
+
+/* BOTON BUSCAR */
+
+.btn-buscar{
+
+    -fx-background-color:#324A5F;
+    -fx-background-radius:12;
+    -fx-text-fill:white;
+    -fx-font-size:16px;
+    -fx-font-weight:bold;
+    -fx-pref-width:50;
+    -fx-pref-height:40;
+    -fx-cursor:hand;
+
+}
+
+.btn-buscar:hover{
+
+    -fx-background-color:#6F8FAF;
+
+}
+
+/* BOTON AGREGAR */
+
+.btn-agregar{
+
+    -fx-background-color:#324A5F;
+    -fx-text-fill:white;
+    -fx-font-weight:bold;
+    -fx-background-radius:12;
+    -fx-pref-height:40;
+
+}
+
+.btn-agregar:hover{
+
+    -fx-background-color:#45627D;
+
+}
+
+/* MODIFICAR */
+
+.btn-modificar{
+
+    -fx-background-color:#E8F1FF;
+    -fx-text-fill:#324A5F;
+    -fx-font-weight:bold;
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+    -fx-border-color:#BFD7FF;
+    -fx-pref-height:40;
+
+}
+
+.btn-modificar:hover{
+
+    -fx-background-color:#D8E8FF;
+
+}
+
+/* ELIMINAR */
+
+.btn-eliminar{
+
+    -fx-background-color:#FFF5F5;
+    -fx-text-fill:#C55252;
+    -fx-font-weight:bold;
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+    -fx-border-color:#F5B5B5;
+    -fx-pref-height:40;
+
+}
+
+.btn-eliminar:hover{
+
+    -fx-background-color:#FDECEC;
+
+}
+
+/* SALIR */
+
+.btn-salir{
+
+    -fx-background-color:white;
+    -fx-text-fill:#324A5F;
+    -fx-font-weight:bold;
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+    -fx-border-color:#E8EDF2;
+    -fx-pref-height:40;
+
+}
+
+.btn-salir:hover{
+
+    -fx-background-color:#F5F7FA;
+
+}

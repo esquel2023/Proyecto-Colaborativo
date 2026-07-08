@@ -11,7 +11,7 @@ public class ProductoDAO {
 
     public static List<Producto> listar() {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Producto ORDER BY idProducto DESC";
+        String sql = "SELECT * FROM Productos ORDER BY idProducto DESC";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
@@ -36,7 +36,7 @@ public class ProductoDAO {
     }
 
     public static void insertar(Producto p) {
-        String sql = "INSERT INTO Producto(Nombre, Precio, CodigoDeBarra, cantidad) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Productos(Nombre, Precio, CodigoDeBarra, cantidad) VALUES(?,?,?,?)";
 
         // Añadimos Statement.RETURN_GENERATED_KEYS para capturar el ID que cree la base de datos
         try (Connection c = Database.getConnection();
@@ -63,7 +63,7 @@ public class ProductoDAO {
         }
     }
     public static Producto buscarPorId(int id) {
-        String sql = "SELECT * FROM Producto WHERE idProducto = ?";
+        String sql = "SELECT * FROM Productos WHERE idProducto = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
 
@@ -93,7 +93,7 @@ public class ProductoDAO {
 
     public static void actualizar(Producto p) throws SQLException {
         String sql = """
-            UPDATE Producto
+            UPDATE Productos
             SET Nombre=?, Precio=?,codigoDeBarra=? ,cantidad=?
             WHERE idProducto=? ;
         """;
@@ -113,7 +113,7 @@ public class ProductoDAO {
     }
 
     public static void eliminar(int idProducto) throws SQLException {
-        String sql = "DELETE FROM Producto WHERE idProducto =?";
+        String sql = "DELETE FROM Productos WHERE idProducto =?";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
