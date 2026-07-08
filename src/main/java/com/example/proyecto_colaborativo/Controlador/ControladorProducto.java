@@ -71,9 +71,12 @@ public class ControladorProducto {
         }
 
         Producto.productoSeleccionadoParaEditar = ControladorProducto.productoseleccionado;
+
+        // Al ser modal, el código se detiene acá hasta que el usuario cierra la ventana "ProductoAgregar"
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
 
-        tablaProductos.refresh(); // Refresca cambios visuales en el acto
+        // ✅ REFRECO POST-EDICIÓN: Trae los cambios que el usuario guardó en la otra pantalla
+        cargarDatosDesdeBD();
         limpiarSeleccion();
     }
 
@@ -88,29 +91,39 @@ public class ControladorProducto {
 
     @FXML
     public void clickEliminar(ActionEvent event) {
-        if (productoseleccionado == null) {
-            AlertasUtils.mostrarInformacion("Producto no Seleccionado", "Debes seleccionar un producto de la tabla para eliminarlo.");
+        if (ControladorProducto.productoseleccionado == null) {
+            AlertasUtils.mostrarInformacion("Producto no Seleccionado", "Debes seleccionar un producto de la tabla para desactivarlo.");
             return;
         }
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Confirmar Eliminación");
-        alerta.setHeaderText("¿Estás seguro de que querés eliminar este producto?");
-        alerta.setContentText("Producto: " + productoseleccionado.getNombre() + "\nEsta acción no se puede deshacer.");
+        alerta.setTitle("Confirmar Desactivación");
+        alerta.setHeaderText("¿Estás seguro de que querés desactivar este producto?");
+        alerta.setContentText("Producto: " + ControladorProducto.productoseleccionado.getNombre() + "\nPasará a la lista de productos inactivos.");
 
         Optional<ButtonType> resultado = alerta.showAndWait();
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             try {
-                ProductoDAO.eliminar(productoseleccionado.getidProducto());
-                listaProductos.remove(productoseleccionado); // Remueve directo de la vista reactiva
-                AlertasUtils.mostrarInformacion("Éxito", "El producto se eliminó correctamente.");
+                // 1. Cambiamos la propiedad del objeto a false
+                ControladorProducto.productoseleccionado.setActivado(false);
+
+                // 2. Impactamos el cambio en la Base de Datos
+                ProductoDAO.actualizar(ControladorProducto.productoseleccionado);
+
+                // 3. ✅ LA CLAVE: Forzamos la recarga fresca desde la BD.
+                // Esto reinyecta los datos en listaProductos usando .setAll(), lo cual obliga
+                // a BuscadorUtils a redibujar la tabla de inmediato sin el producto inactivo.
+                cargarDatosDesdeBD();
+
+                AlertasUtils.mostrarInformacion("Éxito", "El producto se desactivó correctamente.");
             } catch (SQLException e) {
-                AlertasUtils.mostrarError("Error de BD", "No se pudo eliminar el producto de la base de datos.");
+                AlertasUtils.mostrarError("Error de BD", "No se pudo actualizar el estado del producto en la base de datos.");
                 e.printStackTrace();
             } finally {
                 limpiarSeleccion();
             }
         }
+
     }
 
     @FXML

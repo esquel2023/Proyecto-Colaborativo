@@ -7,16 +7,40 @@ import java.util.List;
 
 public class ProductoDAO {
 
+    // ✅ CORREGIDO: Ahora recupera los productos ACTIVOS (activado = 1) para tu pantalla principal
     public static List<Producto> listar() throws SQLException {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Producto ORDER BY idProducto DESC";
+        String sql = "SELECT * FROM Producto WHERE activado = 1 ORDER BY idProducto DESC";
 
         try (Connection c = Database.getConnection();
              Statement st = c.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                // Orden de parámetros alineado exactamente con el constructor de Producto
+                Producto p = new Producto(
+                        rs.getInt("idProducto"),
+                        rs.getString("Nombre"),
+                        rs.getInt("cantidad"),
+                        rs.getDouble("Precio"),
+                        rs.getString("CodigoDeBarra"),
+                        rs.getBoolean("activado")
+                );
+                lista.add(p);
+            }
+        }
+        return lista;
+    }
+
+    // ✅ NUEVO: Carga estrictamente los productos INACTIVOS (activado = 0) para tu nueva pantalla
+    public static List<Producto> listarInactivos() throws SQLException {
+        List<Producto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Producto WHERE activado = 0 ORDER BY idProducto DESC";
+
+        try (Connection c = Database.getConnection();
+             Statement st = c.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
                 Producto p = new Producto(
                         rs.getInt("idProducto"),
                         rs.getString("Nombre"),
@@ -32,7 +56,7 @@ public class ProductoDAO {
     }
 
     public static void insertar(Producto p) throws SQLException {
-        String sql = "INSERT INTO Producto(Nombre, Precio, CodigoDeBarra, cantidad,activado) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Producto(Nombre, Precio, CodigoDeBarra, cantidad, activado) VALUES(?,?,?,?,?)";
 
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -45,7 +69,6 @@ public class ProductoDAO {
 
             ps.executeUpdate();
 
-            // Recuperamos el ID asignado por el motor de la base de datos
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     p.setidProducto(rs.getInt(1));
@@ -76,6 +99,7 @@ public class ProductoDAO {
         return null;
     }
 
+    // ✅ OPTIMIZADO: Este es tu método oficial y seguro para guardar cambios
     public static void actualizar(Producto p) throws SQLException {
         String sql = """
             UPDATE Producto

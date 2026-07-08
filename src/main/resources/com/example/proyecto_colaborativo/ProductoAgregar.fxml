@@ -43,5 +43,6 @@
       <Button fx:id="guardar" layoutX="494.0" layoutY="324.0" mnemonicParsing="false" onAction="#Clickguardar" text="Guardar" />
       <TextField fx:id="precioCosto" layoutX="179.0" layoutY="255.0" prefHeight="25.0" prefWidth="385.0" promptText="Precio Costo" />
       <Label layoutX="48.0" layoutY="256.0" text="PRECIO COSTO : " />
+      <Button fx:id="AgregarProductoInactivo" layoutX="405.0" layoutY="71.0" mnemonicParsing="false" onAction="#OnButtonClick" text="Agregar Producto Inactivo" />
    </children>
 </AnchorPane>

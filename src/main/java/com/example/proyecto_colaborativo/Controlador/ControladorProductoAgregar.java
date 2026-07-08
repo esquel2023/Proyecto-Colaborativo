@@ -2,9 +2,11 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +15,7 @@ import java.sql.SQLException;
 
 public class ControladorProductoAgregar {
 
+    @FXML private Button AgregarProductoInactivo;
     @FXML private AnchorPane productoActiva;
     @FXML private TextField nombre;
     @FXML private TextField codigoBarras;
@@ -139,5 +142,10 @@ public class ControladorProductoAgregar {
     private void cerrarVentana() {
         Stage stage = (Stage) nombre.getScene().getWindow();
         stage.close();
+    }
+
+//Agregar producto Inactivo
+    public void OnButtonClick(ActionEvent event) {
+        NavegacionUtils.abrirPantalla("ProductosInactivos.fxml", "Productos Inactivos", false);
     }
 }
