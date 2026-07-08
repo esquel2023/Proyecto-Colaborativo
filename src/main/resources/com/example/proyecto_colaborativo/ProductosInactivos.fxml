@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://fxml.com" fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorProductosInactivos">
+    <children>
+        <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Venta" />
+                <Menu mnemonicParsing="false" text="Producto" />
+                <Menu mnemonicParsing="false" text="Historial">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Registro">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Cliente" />
+                <Menu mnemonicParsing="false" text="Proveedor" />
+            </menus>
+        </MenuBar>
+        <Button layoutX="365.0" layoutY="203.0" mnemonicParsing="false" text="🔍" />
+
+        <!-- Botones adaptados manteniendo las mismas posiciones exactas -->
+        <Button fx:id="botonReactivar" layoutX="20.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickReactivar" text="Reactivar" />
+        <Button fx:id="botonEliminar" layoutX="100.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickEliminar" text="Eliminar" />
+        <Button fx:id="botonSalir" layoutX="180.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickSalir" text="Salir" />
+
+        <TextField fx:id="txtbuscadorProductos" layoutX="12.0" layoutY="203.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos inactivos" />
+
+        <TableView fx:id="tablaProductos" layoutX="12.0" layoutY="240.0" prefHeight="162.0" prefWidth="391.0">
+            <columns>
+                <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Codigo" />
+                <TableColumn fx:id="colNombre" prefWidth="109.0" text="Nombre" />
+                <TableColumn fx:id="colCantidad" prefWidth="84.0" text="Cantidad" />
+                <TableColumn fx:id="colPrecio" prefWidth="97.0" text="Precio" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

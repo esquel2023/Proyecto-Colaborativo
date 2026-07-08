@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
 
-    public Button cerrarSesion;
     @FXML
     private Button caja;
 
@@ -133,13 +132,12 @@ public class HelloController implements Initializable {
 
     @FXML
     public void botonClientes(ActionEvent actionEvent) throws IOException {
-        NavegacionUtils.abrirPantalla("bifurcacionCliente.fxml", "Cliente", false);
+        NavegacionUtils.abrirPantalla("BifurcacionCliente.fxml", "Cliente", false);
     }
 
     @FXML
     public void botonFactura(ActionEvent actionEvent) throws IOException {
         NavegacionUtils.abrirPantalla("factura.fxml", "Factura", false);
-
     }
 
     @FXML
@@ -182,13 +180,7 @@ public class HelloController implements Initializable {
         } else {
             System.err.println("No se encontró el archivo: " + rutaRecurso);
         }
-
-    }
-    public void cerrarSesion(ActionEvent actionEvent)throws IOException {
-        javafx.stage.Stage ventana =   (javafx.stage.Stage)  ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
-        ventana.close();
     }
 }
-
 
 

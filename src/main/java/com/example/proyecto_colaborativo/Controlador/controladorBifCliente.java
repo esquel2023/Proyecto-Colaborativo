@@ -14,12 +14,13 @@ public class controladorBifCliente {
 
 
     public void botonAgregar(javafx.event.ActionEvent actionEvent) {
-        NavegacionUtils.abrirPantalla("agregarCliente.fxml", "Nuevo Cliente", false);
+        controladorAgregarCliente ctrlAC = NavegacionUtils.abrirPantalla("agregarCliente.fxml", "Nuevo Cliente", false);
+
 
     }
 
     public void botonListado(ActionEvent actionEvent) {
-        NavegacionUtils.abrirPantalla("clienteGeneral.fxml", "Nuevo Cliente", false);
+      controladorCliente ctrlC =  NavegacionUtils.abrirPantalla("clienteGeneral.fxml", "Nuevo Cliente", false);
 
     }
 }
