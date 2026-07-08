@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProovedor">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorAgregarCliente">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -42,9 +42,7 @@
             <!-- Botones de Acción Distribuidos -->
             <HBox spacing="10.0">
                <children>
-                  <Button fx:id="botonAgregar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonAgregar" text="Agregar" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="botonModificar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonModificar" text="Modificar" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="botonEliminar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonElimina" text="Eliminar" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="botonModificar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonAgregar" text="Modificar" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />

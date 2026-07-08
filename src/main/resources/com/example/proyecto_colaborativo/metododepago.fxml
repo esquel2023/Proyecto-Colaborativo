@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField alignment="CENTER" layoutX="33.0" layoutY="42.0" prefHeight="25.0" prefWidth="100.0" text="Efectivo" />
+      <TextField layoutX="33.0" layoutY="161.0" prefHeight="25.0" prefWidth="100.0" text="Tarjeta Débito" />
+      <TextField layoutX="33.0" layoutY="105.0" prefHeight="25.0" prefWidth="100.0" text="Tarjeta Crédito" />
+      <MenuButton layoutX="273.0" layoutY="180.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Cuotas">
+        <items>
+          <MenuItem mnemonicParsing="false" text="1" />
+          <MenuItem mnemonicParsing="false" text="3" />
+            <MenuItem mnemonicParsing="false" text="6" />
+            <MenuItem mnemonicParsing="false" text="12" />
+            <MenuItem mnemonicParsing="false" text="18" />
+        </items>
+      </MenuButton>
+      <Text layoutX="115.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOTAL" />
+      <Label layoutX="181.0" layoutY="249.0" text="Label" />
+      <TextField alignment="CENTER" layoutX="159.0" layoutY="42.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField alignment="CENTER" layoutX="160.0" layoutY="161.0" prefHeight="25.0" prefWidth="100.0" />
+      <TextField alignment="CENTER" layoutX="159.0" layoutY="105.0" prefHeight="25.0" prefWidth="100.0" />
+   </children>
+</AnchorPane>

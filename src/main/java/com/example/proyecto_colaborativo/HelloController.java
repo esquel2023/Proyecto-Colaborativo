@@ -1,75 +1,186 @@
 package com.example.proyecto_colaborativo;
 
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-public class HelloController {
+public class HelloController implements Initializable {
+
     @FXML
-    Button caja;
+    private Button caja;
+
     @FXML
-    Button ventas;
+    private Button ventas;
+
     @FXML
-    Button productos;
+    private Button productos;
+
     @FXML
-    Button proveedores;
+    private Button proveedores;
+
     @FXML
-    Button stock;
+    private Button stock;
+
     @FXML
-    Button clientes;
+    private Button clientes;
+
     @FXML
-    Button factura;
+    private Button factura;
+
     @FXML
+    private Label fechaHoraLabel;
+
+    @FXML
+    private Label saludoLabel;
+
+    @FXML
+    private Label lblCaja;
+
+    @FXML
+    private Button btnOjoCaja;
+
+    @FXML
+    private boolean cajaVisible = true;
+    @FXML
+    private double montoCaja = 0.00;
+    @FXML
+    private void actualizarFechaHora() {
+
+        LocalDateTime ahora = LocalDateTime.now();
+
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern(
+                "EEEE d 'de' MMMM · HH:mm",
+                new Locale("es", "AR")
+        );
+
+        int hora = ahora.getHour();
+        String saludo;
+
+        if (hora < 12) {
+            saludo = "☀ Buenos días";
+        } else if (hora < 19) {
+            saludo = "🌤 Buenas tardes";
+        } else {
+            saludo = "🌙 Buenas noches";
+        }
+
+        saludoLabel.setText(saludo + "");
+        fechaHoraLabel.setText(capitalizar(ahora.format(formato)));
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Timeline reloj = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> actualizarFechaHora()),
+                new KeyFrame(Duration.seconds(1))
+        );
+
+        reloj.setCycleCount(Animation.INDEFINITE);
+        reloj.play();
+        lblCaja.setText(String.format("$ %,.2f", montoCaja));
+        asignarImagen(btnOjoCaja, "/ImagenesBilletes/openn.png");
+    }
 
 
+
+    private String capitalizar(String format) {
+
+        return format;
+    }
+
+    @FXML
     public void botonCaja(ActionEvent actionEvent) throws IOException {
-       // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
         NavegacionUtils.abrirPantalla("aperturaycierrecaja.fxml", "Caja", false);
     }
 
-
+    @FXML
     public void botonVentas(ActionEvent actionEvent) throws IOException {
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("ventas.fxml", "ventas", false);
-
+        NavegacionUtils.abrirPantalla("ventas.fxml", "Ventas", false);
     }
 
-    public void botonProductos (ActionEvent actionEvent) throws IOException {
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
+    @FXML
+    public void botonProductos(ActionEvent actionEvent) throws IOException {
         NavegacionUtils.abrirPantalla("Producto.fxml", "Producto", false);
     }
 
-    public void botonProveedores (ActionEvent actionEvent) throws IOException {
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("bifurcacionProveedor.fxml", "proveedores", false);
+    @FXML
+    public void botonProveedores(ActionEvent actionEvent) throws IOException {
+        NavegacionUtils.abrirPantalla("bifurcacionProveedor.fxml", "Proveedores", false);
     }
-    public void botonStock (ActionEvent actionEvent){
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
+
+    @FXML
+    public void botonStock(ActionEvent actionEvent) {
         NavegacionUtils.abrirPantalla("stock.fxml", "Stock", false);
-
     }
 
-    public void botonClientes (ActionEvent actionEvent) throws IOException {
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("bifurcacionCliente.fxml", "Cliente", false);
+    @FXML
+    public void botonClientes(ActionEvent actionEvent) throws IOException {
+        NavegacionUtils.abrirPantalla("cliente.fxml", "Cliente", false);
     }
 
-    public void botonFactura (ActionEvent actionEvent) throws IOException {
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
+    @FXML
+    public void botonFactura(ActionEvent actionEvent) throws IOException {
         NavegacionUtils.abrirPantalla("factura.fxml", "Factura", false);
+    }
+
+    @FXML
+    public void toggleCaja(ActionEvent actionEvent) {
+
+            cajaVisible = !cajaVisible;
+
+            if (cajaVisible) {
+
+                lblCaja.setText(String.format("$ %,.2f", montoCaja));
+
+
+                asignarImagen(btnOjoCaja, "/ImagenesBilletes/openn.png");
+
+
+
+            } else {
+
+                lblCaja.setText("••••••••");
+
+                asignarImagen(btnOjoCaja, "/ImagenesBilletes/closee.png");
+
+
+
+            }
+
         }
+    private void asignarImagen(Button boton, String rutaRecurso) {
+        InputStream stream = getClass().getResourceAsStream(rutaRecurso);
 
+        if (stream != null) {
+            Image imagen = new Image(stream);
+            ImageView imageView = new ImageView(imagen);
 
-//    holas 12345
+            imageView.setFitWidth(20);   // ancho
+            imageView.setFitHeight(20);  // alto
+            imageView.setPreserveRatio(true);
 
-
-//    soy Oscar
-
+            boton.setGraphic(imageView);
+        } else {
+            System.err.println("No se encontró el archivo: " + rutaRecurso);
         }
+    }
+}
+
+

@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class controladorProveedorSelec {
@@ -71,20 +70,31 @@ public class controladorProveedorSelec {
         // 1. Permitir que la tabla acepte edición
         tablaProductosProovedor.setEditable(true);
 
-        // 3. Hacer editable la columna Precio (usa DoubleStringConverter)
+        // 2. Hacer editable la columna Precio
         precioProovedor.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         precioProovedor.setOnEditCommit(event -> {
             Producto p = event.getRowValue();
-            Double nuevoPrecio = event.getNewValue();
-            if (nuevoPrecio != null && nuevoPrecio > 0) {
-                p.setPrecio(nuevoPrecio);
-                p.precioProperty().set(nuevoPrecio);
+            Double nuevoPrecioCosto = event.getNewValue();
+
+            if (nuevoPrecioCosto != null && nuevoPrecioCosto >= 0) {
+                // Esto actualiza el objeto en memoria (Pantalla)
+                p.setPrecio(nuevoPrecioCosto);
+                p.precioProperty().set(nuevoPrecioCosto);
+
+                // =========================================================================
+                // ¡NUEVO!: Guardamos el nuevo precio de costo editado en la base de datos
+                // Para esto, puedes usar el mismo método 'asociar' (ya que tu SQL usa INSERT o puedes crear un UPDATE)
+                // La forma más limpia es crear un método 'actualizarPrecioCosto' en tu DAO.
+                // =========================================================================
+                ProductoProveedorDAO.actualizarPrecioCosto(p.getidProducto(), proveedorActual.getId(), nuevoPrecioCosto);
+                // =========================================================================
 
             } else {
                 tablaProductosProovedor.refresh(); // Revierte el cambio visual si es inválido
             }
         });
     }
+
 
     public static void setProveedorSelec(proovedorClase proveedor) {
         if (instanciaActiva != null && proveedor != null) {
@@ -111,19 +121,16 @@ public class controladorProveedorSelec {
         if (proveedorActual == null) return;
 
         // 1. Listamos todos los productos de la base de datos
-      //  List<Producto> todosLosProductos = ProductoDAO.listar();
+        List<Producto> todosLosProductos = ProductoDAO.listar();
 
         try {
-
-            // 1. Listamos todos los productos de la base de datos
-            List<Producto> todosLosProductos = ProductoDAO.listar();
             // 1. Cargar el FXML una sola vez
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
             Parent root = loader.load();
 
-            // 2. Obtener el controlador DESPUÉS de cargar el root
-            ControladorProducto controller = loader.getController();
-            controller.setProveedorSelec(this);
+//            // 2. Obtener el controlador DESPUÉS de cargar el root
+//            ControladorProducto controller = loader.getController();
+//            controller.setProveedorSelec(this);
 
 
             // 3. Configurar y mostrar la nueva ventana (Stage)
@@ -133,8 +140,6 @@ public class controladorProveedorSelec {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
     }
@@ -148,11 +153,16 @@ public class controladorProveedorSelec {
 
     public void recibirProducto(Producto producto) {
         if (producto != null) {
-            listaProductosObs.add(producto);
-            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId());
+                listaProductosObs.add(producto);
+
+                ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId(), 0.0);
+
+                // 3. Refrescamos la tabla para asegurar que todo se vea alineado
+                tablaProductosProovedor.refresh();
 
         }
     }
+
 
     public void desasociarProducto(Producto producto) {
         if (producto != null) {
@@ -161,5 +171,21 @@ public class controladorProveedorSelec {
         }
     }
 
+    public void botonModificarProveedor(ActionEvent actionEvent) {
+    }
 
+    public void botonEliminarProveedor(ActionEvent actionEvent) {
+    }
+
+    public void buscarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonAgregarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonModificarProducto(ActionEvent actionEvent) {
+    }
+
+    public void botonEliminarProducto(ActionEvent actionEvent) {
+    }
 }
