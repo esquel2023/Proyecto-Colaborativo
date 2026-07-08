@@ -113,5 +113,10 @@ public class controladorCliente {
             }
         }
     }
+
+    public void agregarCliente(ActionEvent actionEvent) {
+        controladorAgregarCliente ctrlAC = NavegacionUtils.abrirPantalla("agregarCliente.fxml", "Nuevo Cliente", false);
+
+    }
 }
 

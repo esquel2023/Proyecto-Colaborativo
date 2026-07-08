@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com"
-            xmlns:fx="http://javafx.com"
-            fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProovedor"
-            stylesheets="@stylo.css">
+<BorderPane stylesheets="@stylo.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorProovedor">
 
    <!-- ================= HEADER ================= -->
 
    <top>
-      <HBox alignment="CENTER_LEFT"
-            spacing="20"
-            styleClass="header">
+      <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
 
          <padding>
-            <Insets top="20" bottom="20" left="30" right="30"/>
+            <Insets bottom="20" left="30" right="30" top="20" />
          </padding>
 
-         <Label text="Proveedores"
-                styleClass="titulo"/>
+         <Label styleClass="titulo" text="Proveedores" />
 
       </HBox>
    </top>
@@ -30,130 +24,82 @@
 
    <center>
 
-      <HBox spacing="25"
-            styleClass="content">
+      <HBox spacing="25" styleClass="content">
 
          <padding>
-            <Insets top="25" left="25" right="25" bottom="25"/>
+            <Insets bottom="25" left="25" right="25" top="25" />
          </padding>
 
          <!-- ================= FORMULARIO ================= -->
 
-         <VBox spacing="20"
-               prefWidth="420"
-               styleClass="panel">
+         <VBox prefWidth="420" spacing="20" styleClass="panel">
 
             <padding>
-               <Insets top="20" bottom="20" left="20" right="20"/>
+               <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
-            <GridPane hgap="15"
-                      vgap="15">
+            <GridPane hgap="15" vgap="15">
 
                <columnConstraints>
-                  <ColumnConstraints prefWidth="120"/>
-                  <ColumnConstraints hgrow="ALWAYS"/>
+                  <ColumnConstraints prefWidth="120" />
+                  <ColumnConstraints hgrow="ALWAYS" />
                </columnConstraints>
 
-               <Label text="Nombre"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Nombre" />
 
-               <TextField fx:id="nombre"
-                          GridPane.columnIndex="1"
-                          styleClass="form-field"/>
+               <TextField fx:id="nombre" styleClass="form-field" GridPane.columnIndex="1" />
 
-               <Label text="CUIT"
-                      GridPane.rowIndex="1"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="CUIT" GridPane.rowIndex="1" />
 
-               <TextField fx:id="cuit"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="1"
-                          styleClass="form-field"/>
+               <TextField fx:id="cuit" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-               <Label text="Correo"
-                      GridPane.rowIndex="2"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Correo" GridPane.rowIndex="2" />
 
-               <TextField fx:id="email"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="2"
-                          styleClass="form-field"/>
+               <TextField fx:id="email" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-               <Label text="Teléfono"
-                      GridPane.rowIndex="3"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Teléfono" GridPane.rowIndex="3" />
 
-               <TextField fx:id="telefono"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="3"
-                          styleClass="form-field"/>
+               <TextField fx:id="telefono" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-               <Label text="Condición IVA"
-                      GridPane.rowIndex="4"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Condición IVA" GridPane.rowIndex="4" />
 
-               <ComboBox fx:id="condicionIVA"
-                         GridPane.columnIndex="1"
-                         GridPane.rowIndex="4"
-                         styleClass="form-field"/>
+               <ComboBox fx:id="condicionIVA" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-               <Label text="País"
-                      GridPane.rowIndex="5"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="País" GridPane.rowIndex="5" />
 
-               <TextField fx:id="pais"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="5"
-                          styleClass="form-field"/>
+               <TextField fx:id="pais" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-               <Label text="Provincia"
-                      GridPane.rowIndex="6"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Provincia" GridPane.rowIndex="6" />
 
-               <TextField fx:id="provincia"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="6"
-                          styleClass="form-field"/>
+               <TextField fx:id="provincia" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-               <Label text="Localidad"
-                      GridPane.rowIndex="7"
-                      styleClass="form-label"/>
+               <Label styleClass="form-label" text="Localidad" GridPane.rowIndex="7" />
 
-               <TextField fx:id="localidad"
-                          GridPane.columnIndex="1"
-                          GridPane.rowIndex="7"
-                          styleClass="form-field"/>
+               <TextField fx:id="localidad" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
 
             </GridPane>
 
-            <Region VBox.vgrow="ALWAYS"/>
+            <Region VBox.vgrow="ALWAYS" />
 
             <!-- BOTONES -->
 
-            <HBox alignment="CENTER"
-                  spacing="15">
+            <HBox alignment="CENTER" spacing="15">
 
-               <Button fx:id="botonAgregar"
-                       text="Agregar"
-                       prefWidth="120"
-                       prefHeight="40"
-                       styleClass="btn-primary"
-                       onAction="#botonAgrega"/>
+               <Button fx:id="botonAgregar" onAction="#botonAgrega" prefHeight="40" prefWidth="120" styleClass="btn-primary" text="Agregar" />
 
-               <Button fx:id="botonModificar"
-                       text="Modificar"
-                       prefWidth="120"
-                       prefHeight="40"
-                       styleClass="btn-warning"
-                       onAction="#botonModifica"/>
+               <Button fx:id="botonModificar" onAction="#botonModifica" prefHeight="40" prefWidth="120" styleClass="btn-warning" text="Modificar" />
 
-               <Button fx:id="botonEliminar"
-                       text="Eliminar"
-                       prefWidth="120"
-                       prefHeight="40"
-                       styleClass="btn-danger"
-                       onAction="#botonEliminar"/>
+               <Button fx:id="botonEliminar" onAction="#botonEliminar" prefHeight="40" prefWidth="120" styleClass="btn-danger" text="Eliminar" />
 
             </HBox>
 
@@ -161,58 +107,34 @@
 
          <!-- ================= TABLA ================= -->
 
-         <VBox spacing="15"
-               HBox.hgrow="ALWAYS"
-               styleClass="panel">
+         <VBox spacing="15" styleClass="panel" HBox.hgrow="ALWAYS">
 
             <padding>
-               <Insets top="20" bottom="20" left="20" right="20"/>
+               <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
 
-            <HBox alignment="CENTER_LEFT"
-                  spacing="10">
+            <HBox alignment="CENTER_LEFT" spacing="10">
 
-               <Label text="Lista de proveedores"
-                      styleClass="panel-title"/>
+               <Label styleClass="panel-title" text="Lista de proveedores" />
 
-               <Pane HBox.hgrow="ALWAYS"/>
+               <Pane HBox.hgrow="ALWAYS" />
 
-               <TextField fx:id="buscadorProovedores"
-                          promptText="Buscar proveedor..."
-                          prefWidth="240"
-                          styleClass="form-field"/>
+               <TextField fx:id="buscadorProovedores" prefWidth="240" promptText="Buscar proveedor..." styleClass="form-field" />
 
-               <Button fx:id="botonBuscar"
-                       text="🔍 Buscar"
-                       prefWidth="110"
-                       prefHeight="38"
-                       styleClass="btn-primary"
-                       onAction="#buscarProveedor"/>
-               <Button fx:id="botonProducto"
-                       text="Ver Productos"
-                       prefWidth="110"
-                       prefHeight="34"
-                       styleClass="btn-primary"
-                       onAction="#buscarProductos"/>
+               <Button fx:id="botonBuscar" onAction="#buscarProveedor" prefHeight="38" prefWidth="106.0" styleClass="btn-primary" text="🔍 Buscar" />
+               <Button fx:id="botonProducto" onAction="#buscarProductos" prefHeight="87.0" prefWidth="110" styleClass="btn-warning" text="Ver Productos" textAlignment="CENTER" wrapText="true" />
 
             </HBox>
 
-            <TableView fx:id="tablaProovedores"
-                       VBox.vgrow="ALWAYS">
+            <TableView fx:id="tablaProovedores" VBox.vgrow="ALWAYS">
 
                <columns>
 
-                  <TableColumn fx:id="nombreTabla"
-                               text="Nombre"
-                               prefWidth="180"/>
+                  <TableColumn fx:id="nombreTabla" prefWidth="180" text="Nombre" />
 
-                  <TableColumn fx:id="telefonoTabla"
-                               text="Teléfono"
-                               prefWidth="150"/>
+                  <TableColumn fx:id="telefonoTabla" prefWidth="150" text="Teléfono" />
 
-                  <TableColumn fx:id="colEmail"
-                               text="Correo"
-                               prefWidth="220"/>
+                  <TableColumn fx:id="colEmail" prefWidth="220" text="Correo" />
 
                </columns>
 

@@ -4,9 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- ... -->
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorAgregarCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorModifCliente">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -33,7 +31,7 @@
             <!-- Botones de Acción Distribuidos -->
             <HBox spacing="10.0">
                <children>
-                  <Button fx:id="botonAgregar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonAgregar" text="Agregar" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="botonAgregar" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonAgregar" text="Modificar" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
@@ -61,9 +59,11 @@
                   <!-- Fila 0: Nombre -->
                   <Label prefHeight="25.0" text="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                   <TextField fx:id="nombre" prefHeight="25.0" promptText="Nombre " GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
                   <!-- Fila 1: Tipo Identificación (CORREGIDO Y ALINEADO) -->
                   <Label prefHeight="25.0" text="Tipo de identificacion" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                   <ComboBox fx:id="comboTipoDoc" maxWidth="1.1797693134862315E308" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
 
                   <!-- Fila 2: Número Identificación -->
                   <Label prefHeight="25.0" text="Número de identificación" GridPane.columnIndex="0" GridPane.rowIndex="2" />
@@ -77,10 +77,9 @@
                   <Label prefHeight="25.0" text="Teléfono" GridPane.rowIndex="4" />
                   <TextField fx:id="telefono" prefHeight="25.0" promptText="Telefono" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                  <!-- Fila 5: Condición IVA (ACTUALIZADO A COMBOBOX) -->
+                  <!-- Fila 5: Condición IVA -->
                   <Label prefHeight="25.0" text="Condición I.V.A" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                   <ComboBox fx:id="comboIva" maxWidth="1.1797693134862315E308" prefHeight="25.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
 
                   <!-- Fila 6: País -->
                   <Label prefHeight="25.0" text="País" GridPane.columnIndex="0" GridPane.rowIndex="6" />

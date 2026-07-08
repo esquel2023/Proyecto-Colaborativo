@@ -24,26 +24,21 @@ public class controladorAgregarCliente {
     @FXML public TextField pais;
     @FXML public TextField provincia;
     @FXML public TextField ciudad;
-    @FXML public SplitMenuButton splitTipoDoc;
-    @FXML public SplitMenuButton splitIva;
+
+    @FXML public ComboBox<String> comboTipoDoc; // ACTUALIZADO
+    @FXML public ComboBox<String> comboIva;
 
     @FXML
     public void initialize() {
-        // Inicialización libre para configuraciones al arrancar la pantalla
-    }
-
-    @FXML
-    void cambiarTipoDoc(ActionEvent event) {
-        // Obtiene el MenuItem que presionó el usuario y actualiza el texto del SplitMenuButton
-        MenuItem item = (MenuItem) event.getSource();
-        splitTipoDoc.setText(item.getText());
-    }
-
-    @FXML
-    void cambiarIva(ActionEvent event) {
-        // Obtiene la opción de IVA elegida y actualiza el texto del SplitMenuButton
-        MenuItem item = (MenuItem) event.getSource();
-        splitIva.setText(item.getText());
+        if (comboIva != null) {
+            comboIva.getItems().addAll(
+                    "Consumidor Final", "Exento", "Exterior",
+                    "IVA No Alcanzado", "Monotributista", "Responsable Inscripto"
+            );
+        }
+        if (comboTipoDoc != null) {
+            comboTipoDoc.getItems().addAll("D.N.I", "C.U.I.T", "Pasaporte", "Otros"); // ACTUALIZADO
+        }
     }
 
     @FXML
@@ -56,35 +51,32 @@ public class controladorAgregarCliente {
         String txtProvincia = provincia.getText();
         String txtCiudad = ciudad.getText();
 
-        String txtTipoDoc = splitTipoDoc.getText();
-        String txtIva = splitIva.getText();
+        // Obtención de datos adaptada a ComboBox
+        String txtTipoDoc = (comboTipoDoc != null && comboTipoDoc.getValue() != null) ? comboTipoDoc.getValue() : "";
+        String txtIva = (comboIva != null && comboIva.getValue() != null) ? comboIva.getValue() : "";
 
-        // 1. Validaciones de campos de texto vacíos obligatorios
         if (txtNombre.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
             return;
         }
 
-        // 2. Validaciones de los SplitMenuButton (No deben quedarse con el valor por defecto "--")
-        if (txtTipoDoc.equals("--") || txtIva.equals("--")) {
+        if (txtTipoDoc.isEmpty() || txtIva.isEmpty()) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "Menús sin seleccionar.", "Por favor, elige el Tipo de Documento y la Condición de IVA.", Alert.AlertType.INFORMATION);
             return;
         }
 
-        // 3. Validaciones de formatos básicos
         if (txtCuil.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
             AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de DNI, Email o Nombre.", Alert.AlertType.INFORMATION);
             return;
         }
 
         try {
-            Integer.parseInt(txtCuil);
+            Long.parseLong(txtCuil);
         } catch (NumberFormatException e) {
             AlertasUtils.mostrarAlerta("Datos inválidos", "Dni / CUIT", "Por favor, corrija el número de identificación sin puntos ni letras.", Alert.AlertType.INFORMATION);
             return;
         }
 
-        // 4. Mensaje de confirmación en la Alerta visual
         String mensaje = String.format(
                 "¿Confirmas los datos del cliente?\n\nNombre: %s\n%s: %s\nTeléfono: %s\nEmail: %s\nIVA: %s\nUbicación: %s, %s",
                 txtNombre, txtTipoDoc, txtCuil, txtTelefono, txtEmail, txtIva, txtProvincia, txtPais
@@ -105,32 +97,26 @@ public class controladorAgregarCliente {
             try {
                 clienteClase nuevoCliente = new clienteClase();
 
-                // Carga de campos comunes heredados
                 nuevoCliente.setNombreEntidad(txtNombre);
                 nuevoCliente.setTelefonoEntidad(txtTelefono);
                 nuevoCliente.setEmailEntidad(txtEmail);
                 nuevoCliente.setCuitcuilEntidad(txtCuil);
 
-                // Mapeo condicional: Si seleccionó DNI, se inyecta también en la columna DNI del objeto
                 if (txtTipoDoc.equalsIgnoreCase("D.N.I")) {
                     nuevoCliente.setDniEntidad(txtCuil);
                 }
 
-                // Carga de los 5 nuevos campos del formulario
                 nuevoCliente.setTipoIdentificacion(txtTipoDoc);
                 nuevoCliente.setCondicionIva(txtIva);
                 nuevoCliente.setPais(txtPais);
                 nuevoCliente.setProvincia(txtProvincia);
                 nuevoCliente.setCiudad(txtCiudad);
 
-                // Persistencia en SQLite a través del DAO
                 ClienteDAO.insertar(nuevoCliente);
 
-                // Limpieza de interfaz y cierre de ventana automático
                 limpiarCampos();
                 System.out.println("Cliente agregado con éxito.");
 
-                // Cierra la ventana actual tras guardar con éxito
                 Stage stage = (Stage) botonAgregar.getScene().getWindow();
                 stage.close();
 
@@ -149,7 +135,7 @@ public class controladorAgregarCliente {
         pais.clear();
         provincia.clear();
         ciudad.clear();
-        splitTipoDoc.setText("--");
-        splitIva.setText("--");
+        if (comboTipoDoc != null) comboTipoDoc.setValue(null);
+        if (comboIva != null) comboIva.setValue(null);
     }
 }

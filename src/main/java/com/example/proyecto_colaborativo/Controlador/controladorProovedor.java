@@ -100,6 +100,8 @@ public class controladorProovedor {
                     condicionIVA.setValue(newValue.getCondicionIva());
                     cargarProductosDelProveedor(newValue);
                     this.proveedorSelec = newValue;
+                    botonProducto.getStyleClass().remove("btn-warning");
+                    botonProducto.getStyleClass().add("btn-danger");
                 }
             });
         }
@@ -272,6 +274,8 @@ public class controladorProovedor {
     public void buscarProductos(ActionEvent actionEvent) {
         abrirPantalla("proveedorSeleccionado.fxml", "Proveedor Seleccionado", false);
         controladorProveedorSelec.setProveedorSelec(proveedorSelec);
+
+
 
     }
 }

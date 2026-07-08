@@ -122,8 +122,7 @@ public class HelloController implements Initializable {
 
     @FXML
     public void botonProveedores(ActionEvent actionEvent) throws IOException {
-        NavegacionUtils.abrirPantalla("bifurcacionProveedor.fxml", "Proveedores", false);
-    }
+        NavegacionUtils.abrirPantalla("proveedores.fxml", "Nuevo Proveedor", false);    }
 
     @FXML
     public void botonStock(ActionEvent actionEvent) {
