@@ -53,11 +53,6 @@
                                     minWidth="105"
                                     styleClass="btn-cliente"/>
 
-                            <Button fx:id="buscarCliente"
-                                    text="🔍 Buscar"
-                                    minWidth="105"
-                                    styleClass="btn-toolbar"/>
-
                             <Button fx:id="eliminarCliente"
                                     text="🗑 Eliminar"
                                     minWidth="105"
@@ -71,10 +66,10 @@
 
                         <GridPane hgap="10" vgap="4">
                             <columnConstraints>
-                                <ColumnConstraints percentWidth="23"/>
-                                <ColumnConstraints percentWidth="31"/>
                                 <ColumnConstraints percentWidth="22"/>
-                                <ColumnConstraints percentWidth="24"/>
+                                <ColumnConstraints percentWidth="34"/>
+                                <ColumnConstraints percentWidth="22"/>
+                                <ColumnConstraints percentWidth="22"/>
                             </columnConstraints>
 
                             <Label text="Código" styleClass="label-resumen"
@@ -83,9 +78,7 @@
                             <Label text="Código de barras" styleClass="label-resumen"
                                    GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                            <Label text="Precio final" styleClass="label-resumen"
-                                   GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-
+                            <Region GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                             <Region GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
                             <TextField fx:id="codigo"
@@ -100,19 +93,20 @@
                                        GridPane.rowIndex="1"
                                        styleClass="input"/>
 
-                            <TextField fx:id="precioFinal"
-                                       promptText="Ej: 0.00"
-                                       GridPane.columnIndex="2"
-                                       GridPane.rowIndex="1"
-                                       styleClass="input"/>
-
                             <Button fx:id="botonAgregar"
-                                    text="＋ Agregar producto"
+                                    text="＋ Agregar"
                                     onAction="#clickAgregarVentaProducto"
+                                    maxWidth="Infinity"
+                                    GridPane.columnIndex="2"
+                                    GridPane.rowIndex="1"
+                                    styleClass="btn-agregar"/>
+
+                            <Button fx:id="botonEliminar"
+                                    text="🗑 Quitar"
                                     maxWidth="Infinity"
                                     GridPane.columnIndex="3"
                                     GridPane.rowIndex="1"
-                                    styleClass="btn-agregar"/>
+                                    styleClass="btn-toolbar"/>
                         </GridPane>
 
                         <TableView fx:id="TablaProductos"
@@ -131,21 +125,6 @@
                                 <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="80"/>
                             </columns>
                         </TableView>
-
-                        <HBox alignment="CENTER_LEFT" spacing="8">
-                            <Button fx:id="botonEliminar"
-                                    text="🗑 Quitar producto"
-                                    styleClass="btn-toolbar"/>
-
-                            <Button fx:id="botonModificar"
-                                    text="✏ Modificar"
-                                    styleClass="btn-toolbar"/>
-
-                            <Region HBox.hgrow="ALWAYS"/>
-
-                            <Button text="✖ Cancelar venta"
-                                    styleClass="btn-cancelar"/>
-                        </HBox>
                     </VBox>
                 </VBox>
 
@@ -191,6 +170,10 @@
                     <Button text="✓  Finalizar venta"
                             maxWidth="Infinity"
                             styleClass="btn-finalizar"/>
+
+                    <Button text="✖ Cancelar venta"
+                            maxWidth="Infinity"
+                            styleClass="btn-cancelar"/>
                 </VBox>
 
             </HBox>
