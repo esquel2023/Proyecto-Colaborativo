@@ -184,20 +184,20 @@
                        onAction="#buscarProducto"/>
 
             </HBox>
-            <TableView fx:id="tablaProductosProveedor"
+            <TableView fx:id="tablaProductosProovedor"
                        VBox.vgrow="ALWAYS">
 
                <columns>
 
-                  <TableColumn fx:id="colProducto"
+                  <TableColumn fx:id="prooductosProovedor"
                                text="Producto"
                                prefWidth="260"/>
 
-                  <TableColumn fx:id="colPrecioCosto"
+                  <TableColumn fx:id="precioProovedor"
                                text="Precio costo"
                                prefWidth="150"/>
 
-                  <TableColumn fx:id="colPrecioVenta"
+                  <TableColumn fx:id="prooductosProovedor1"
                                text="Precio venta"
                                prefWidth="150"/>
 

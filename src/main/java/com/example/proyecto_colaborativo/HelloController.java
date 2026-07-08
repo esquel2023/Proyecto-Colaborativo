@@ -132,7 +132,7 @@ public class HelloController implements Initializable {
 
     @FXML
     public void botonClientes(ActionEvent actionEvent) throws IOException {
-        NavegacionUtils.abrirPantalla("cliente.fxml", "Cliente", false);
+        NavegacionUtils.abrirPantalla("BifurcacionCliente.fxml", "Cliente", false);
     }
 
     @FXML

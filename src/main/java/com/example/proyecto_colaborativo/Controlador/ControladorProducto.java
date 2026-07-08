@@ -57,6 +57,11 @@ public class ControladorProducto {
     // VARIABLE NUEVA: Guarda el objeto seleccionado para poder modificarlo después
     public static Producto productoseleccionado;
     private ControladorFactura controladorFactura;
+    private controladorProveedorSelec controladorProveedorSelec;
+
+    public void setControladorProveedorSelec(controladorProveedorSelec controladorProveedorSelec){
+        this.controladorProveedorSelec = controladorProveedorSelec;
+    }
 
     public void setControladorProducto(ControladorFactura controladorFactura) {
         this.controladorFactura = controladorFactura;
@@ -121,7 +126,9 @@ public class ControladorProducto {
                 if (event.getClickCount() == 2 && (!fila.isEmpty())) {
                     Producto productoSeleccionado = fila.getItem();
 
-                    // Si el enlace con la factura existe, le mandamos el producto
+                    if (controladorProveedorSelec != null){
+                        controladorProveedorSelec.recibirProducto(productoSeleccionado);
+                    }
                     if (controladorFactura != null) {
                         controladorFactura.recibirProducto(productoSeleccionado);
 

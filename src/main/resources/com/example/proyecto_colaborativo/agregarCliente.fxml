@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<!-- ... -->
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorAgregarCliente">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="440.0" xmlns="http://javafx.com" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorAgregarCliente">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -71,13 +72,13 @@
                   <Label prefHeight="25.0" text="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                   <TextField fx:id="nombre" prefHeight="25.0" promptText="Nombre " GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                  <!-- Fila 1: Tipo Identificación -->
+                  <!-- Fila 1: Tipo Identificación (CORREGIDO CON FX:ID Y ON_ACTION) -->
                   <Label prefHeight="25.0" text="Tipo de identificacion" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                  <SplitMenuButton maxWidth="1.1797693134862315E308" mnemonicParsing="false" prefHeight="25.0" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <SplitMenuButton fx:id="splitTipoDoc" maxWidth="1.1797693134862315E308" mnemonicParsing="false" prefHeight="25.0" text="--" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="D.N.I" />
-                        <MenuItem mnemonicParsing="false" text="C.U.I.T" />
-                        <MenuItem mnemonicParsing="false" text="C.U.I.L" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarTipoDoc" text="D.N.I" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarTipoDoc" text="C.U.I.T" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarTipoDoc" text="C.U.I.L" />
                      </items>
                   </SplitMenuButton>
 
@@ -93,16 +94,16 @@
                   <Label prefHeight="25.0" text="Teléfono" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                   <TextField fx:id="telefono" prefHeight="25.0" promptText="Telefono" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                  <!-- Fila 5: Condición IVA -->
+                  <!-- Fila 5: Condición IVA (CORREGIDO CON FX:ID Y ON_ACTION) -->
                   <Label prefHeight="25.0" text="Condición I.V.A" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                  <SplitMenuButton maxWidth="1.1797693134862315E308" mnemonicParsing="false" prefHeight="25.0" text="--" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <SplitMenuButton fx:id="splitIva" maxWidth="1.1797693134862315E308" mnemonicParsing="false" prefHeight="25.0" text="--" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Consumidor Final" />
-                        <MenuItem mnemonicParsing="false" text="Exento" />
-                        <MenuItem mnemonicParsing="false" text="Exterior" />
-                        <MenuItem mnemonicParsing="false" text="IVA No Alcanzado" />
-                        <MenuItem mnemonicParsing="false" text="Monotributista" />
-                        <MenuItem mnemonicParsing="false" text="Responsable Inscripto" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="Consumidor Final" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="Exento" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="Exterior" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="IVA No Alcanzado" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="Monotributista" />
+                        <MenuItem mnemonicParsing="false" onAction="#cambiarIva" text="Responsable Inscripto" />
                      </items>
                   </SplitMenuButton>
 

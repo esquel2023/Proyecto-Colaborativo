@@ -12,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
@@ -28,164 +25,138 @@ public class controladorProveedorSelec {
 
     private static controladorProveedorSelec instanciaActiva;
 
-    @FXML
-    public Button botonAgregar;
-    @FXML
-    public Button botonEliminar;
-    @FXML
-    public TableView<Producto> tablaProductosProovedor;
-    @FXML
-    public TableColumn<Producto, String> prooductosProovedor;
-    @FXML
-    public TableColumn<Producto, Double> precioProovedor;
-    @FXML
-    public TableColumn<Producto, String> prooductosProovedor1;
+    @FXML public TableView<Producto> tablaProductosProovedor;
+    @FXML public TableColumn<Producto, String> prooductosProovedor;
+    @FXML public TableColumn<Producto, Double> precioProovedor;
+    @FXML public TableColumn<Producto, String> prooductosProovedor1;
 
-    @FXML
-    private Label proveedorSelec;
+    @FXML public TextField nombreProveedor;
+    @FXML public TextField cuitProveedor;
+    @FXML public TextField correoProveedor;
+    @FXML public TextField telefonoProveedor;
+    @FXML public TextField paisProveedor;
+    @FXML public TextField provinciaProveedor;
+    @FXML public TextField localidadProveedor;
+    @FXML public TextField txtBuscar;
+
+    @FXML private Label proveedorSelec;
 
     private final ObservableList<Producto> listaProductosObs = FXCollections.observableArrayList();
     private proovedorClase proveedorActual;
     private Producto productoseleccionado;
 
-
     @FXML
     public void initialize() {
         instanciaActiva = this;
 
-        // CORREGIDO: Deben mapear las variables reales de tu objeto Producto (ver tu ProductoDAO)
-        prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        prooductosProovedor1.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        // 1. Configuración segura de la estructura de la tabla al arrancar
+        if (prooductosProovedor != null && precioProovedor != null && prooductosProovedor1 != null) {
+            prooductosProovedor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            precioProovedor.setCellValueFactory(new PropertyValueFactory<>("precio"));
+            prooductosProovedor1.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
 
+            tablaProductosProovedor.setItems(listaProductosObs);
 
-        tablaProductosProovedor.setItems(listaProductosObs);
-        tablaProductosProovedor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.productoseleccionado = newValue;
-            configurarTablaEditable();
-        });
+            tablaProductosProovedor.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                this.productoseleccionado = newValue;
+                configurarTablaEditable();
+            });
+        }
+    }
+    public void setProveedorActual(proovedorClase proveedor) {
+        if (proveedor == null) return;
+
+        this.proveedorActual = proveedor;
+
+        if (this.proveedorSelec != null) {
+            this.proveedorSelec.setText(proveedor.getNombreEntidad());
+        }
+
+        if (nombreProveedor != null) nombreProveedor.setText(proveedor.getNombreEntidad());
+        if (cuitProveedor != null) cuitProveedor.setText(proveedor.getCuitcuilEntidad());
+        if (correoProveedor != null) correoProveedor.setText(proveedor.getEmailEntidad());
+        if (telefonoProveedor != null) telefonoProveedor.setText(proveedor.getTelefonoEntidad());
+        if (paisProveedor != null) paisProveedor.setText(proveedor.getPais());
+        if (provinciaProveedor != null) provinciaProveedor.setText(proveedor.getProvincia());
+        if (localidadProveedor != null) localidadProveedor.setText(proveedor.getCiudad());
+
+        // Cargar los productos de este proveedor directo desde la Base de Datos
+        actualizarTabla(proveedor.getId());
+    }
+
+    // Mantiene compatibilidad con tu llamado alternativo anterior
+    public static void setProveedorSelec(proovedorClase proveedor) {
+        if (instanciaActiva != null && proveedor != null) {
+            instanciaActiva.setProveedorActual(proveedor);
+        }
+    }
+
+    private void actualizarTabla(int idProveedor) {
+        List<Producto> listaBD = ProductoProveedorDAO.listar(idProveedor);
+        listaProductosObs.setAll(listaBD);
     }
 
     private void configurarTablaEditable() {
-        // 1. Permitir que la tabla acepte edición
         tablaProductosProovedor.setEditable(true);
-
-        // 2. Hacer editable la columna Precio
         precioProovedor.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         precioProovedor.setOnEditCommit(event -> {
             Producto p = event.getRowValue();
             Double nuevoPrecioCosto = event.getNewValue();
 
-            if (nuevoPrecioCosto != null && nuevoPrecioCosto >= 0) {
-                // Esto actualiza el objeto en memoria (Pantalla)
+            if (nuevoPrecioCosto != null && nuevoPrecioCosto >= 0 && p != null && proveedorActual != null) {
                 p.setPrecio(nuevoPrecioCosto);
                 p.precioProperty().set(nuevoPrecioCosto);
-
-                // =========================================================================
-                // ¡NUEVO!: Guardamos el nuevo precio de costo editado en la base de datos
-                // Para esto, puedes usar el mismo método 'asociar' (ya que tu SQL usa INSERT o puedes crear un UPDATE)
-                // La forma más limpia es crear un método 'actualizarPrecioCosto' en tu DAO.
-                // =========================================================================
                 ProductoProveedorDAO.actualizarPrecioCosto(p.getidProducto(), proveedorActual.getId(), nuevoPrecioCosto);
-                // =========================================================================
-
             } else {
-                tablaProductosProovedor.refresh(); // Revierte el cambio visual si es inválido
+                tablaProductosProovedor.refresh();
             }
         });
     }
 
-
-    public static void setProveedorSelec(proovedorClase proveedor) {
-        if (instanciaActiva != null && proveedor != null) {
-            instanciaActiva.proveedorActual = proveedor;
-
-            if (instanciaActiva.proveedorSelec != null) {
-                instanciaActiva.proveedorSelec.setText(proveedor.getNombreEntidad());
-            }
-
-            // Refrescamos la tabla automáticamente con el ID real del proveedor
-            instanciaActiva.actualizarTabla(proveedor.getId());
-        }
-    }
-
-    private void actualizarTabla(int idProveedor) {
-        // Buscamos la lista en la base de datos usando el método del DAO
-        List<Producto> listaBD = ProductoProveedorDAO.listar(idProveedor);
-        // Actualizamos la lista observable de JavaFX
-        listaProductosObs.setAll(listaBD);
-    }
-
-    @FXML
-    public void botonAgregar(ActionEvent actionEvent) {
-        if (proveedorActual == null) return;
-
-        // 1. Listamos todos los productos de la base de datos
-        List<Producto> todosLosProductos = ProductoDAO.listar();
-
-        try {
-            // 1. Cargar el FXML una sola vez
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
-            Parent root = loader.load();
-
-//            // 2. Obtener el controlador DESPUÉS de cargar el root
-//            ControladorProducto controller = loader.getController();
-//            controller.setProveedorSelec(this);
-
-
-            // 3. Configurar y mostrar la nueva ventana (Stage)
-            Stage stage = new Stage();
-            stage.setTitle("buscadorCliente");
-            stage.setScene(new Scene(root, 440, 540));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    @FXML
-    public void botonElimina(ActionEvent actionEvent) {
-        desasociarProducto(productoseleccionado);
-
-    }
-
     public void recibirProducto(Producto producto) {
         if (producto != null) {
-                listaProductosObs.add(producto);
-
-                ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId(), 0.0);
-
-                // 3. Refrescamos la tabla para asegurar que todo se vea alineado
-                tablaProductosProovedor.refresh();
-
+            listaProductosObs.add(producto);
+            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId(), 0.0);
+            tablaProductosProovedor.refresh();
         }
     }
 
-
     public void desasociarProducto(Producto producto) {
-        if (producto != null) {
+        if (producto != null && proveedorActual != null) {
             listaProductosObs.remove(producto);
             ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
         }
     }
 
-    public void botonModificarProveedor(ActionEvent actionEvent) {
-    }
-
-    public void botonEliminarProveedor(ActionEvent actionEvent) {
-    }
-
-    public void buscarProducto(ActionEvent actionEvent) {
-    }
-
+    @FXML
     public void botonAgregarProducto(ActionEvent actionEvent) {
+        if (proveedorActual == null) return;
+        List<Producto> todosLosProductos = ProductoDAO.listar();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
+            Parent root = loader.load();
+            ControladorProducto controller = loader.getController();
+            controller.setControladorProveedorSelec(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Buscador de Productos");
+            stage.setScene(new Scene(root, 440, 540));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void botonModificarProducto(ActionEvent actionEvent) {
-    }
+    @FXML public void botonModificarProveedor(ActionEvent actionEvent) {}
+    @FXML public void botonEliminarProveedor(ActionEvent actionEvent) {}
+    @FXML public void buscarProducto(ActionEvent actionEvent) {}
+    @FXML public void botonModificarProducto(ActionEvent actionEvent) {}
 
+    @FXML
     public void botonEliminarProducto(ActionEvent actionEvent) {
+        if (productoseleccionado != null) {
+            desasociarProducto(productoseleccionado);
+        }
     }
 }
