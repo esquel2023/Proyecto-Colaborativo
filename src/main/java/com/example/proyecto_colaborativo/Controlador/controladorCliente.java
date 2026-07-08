@@ -255,4 +255,9 @@ public class controladorCliente {
         cuil.clear();
     }
 
+    public void modificarCliente(ActionEvent actionEvent) {
+    }
+
+    public void eliminarCliente(ActionEvent actionEvent) {
+    }
 }

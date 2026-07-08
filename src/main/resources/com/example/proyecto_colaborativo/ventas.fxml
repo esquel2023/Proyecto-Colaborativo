@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import java.lang.String?>
 
-<AnchorPane prefHeight="520.0" prefWidth="900.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorVenta"
-            stylesheets="@style.css">
+<AnchorPane prefHeight="520.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorFactura">
 
     <children>
-        <VBox spacing="14"
-              AnchorPane.topAnchor="16"
-              AnchorPane.rightAnchor="16"
-              AnchorPane.bottomAnchor="16"
-              AnchorPane.leftAnchor="16"
-              styleClass="root-ventas">
+        <VBox spacing="14" styleClass="root-ventas" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" AnchorPane.rightAnchor="16" AnchorPane.topAnchor="16">
 
             <HBox alignment="CENTER_LEFT" spacing="14" styleClass="header-simple">
-                <Label text="🛒" styleClass="icono-header"/>
+                <Label styleClass="icono-header" text="🛒" />
 
                 <VBox spacing="2">
-                    <Label text="Ventas" styleClass="titulo-oscuro"/>
-                    <Label text="Realizar nueva venta" styleClass="subtitulo-oscuro"/>
+                    <Label styleClass="titulo-oscuro" text="Ventas" />
+                    <Label styleClass="subtitulo-oscuro" text="Realizar nueva venta" />
                 </VBox>
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
 
                 <VBox alignment="CENTER_RIGHT" spacing="2">
-                    <Label fx:id="labelFecha" styleClass="fecha-texto"/>
-                    <Label fx:id="labelHora" styleClass="hora-texto"/>
+                    <Label fx:id="labelFecha" styleClass="fecha-texto" />
+                    <Label fx:id="labelHora" styleClass="hora-texto" />
                 </VBox>
             </HBox>
 
@@ -41,145 +32,114 @@
 
                     <!-- CLIENTE -->
                     <VBox spacing="8" styleClass="barra-acciones">
-                        <Label text="👤 Cliente" styleClass="label-seccion"/>
+                        <Label styleClass="label-seccion" text="👤 Cliente" />
 
                         <HBox alignment="CENTER_LEFT" spacing="8">
-                            <TextField promptText="Sin cliente seleccionado"
-                                       HBox.hgrow="ALWAYS"
-                                       styleClass="input"/>
+                            <Label fx:id="cliente" styleClass="label-seccion" text="Sin cliente seleccionado" HBox.hgrow="ALWAYS" />
 
-                            <Button fx:id="agregarCliente"
-                                    text="+ Agregar"
-                                    minWidth="105"
-                                    styleClass="btn-cliente"/>
+                            <Button fx:id="agregarCliente" minWidth="105" onAction="#buscarCliente" styleClass="btn-cliente" text="+ Agregar" />
 
-                            <Button fx:id="eliminarCliente"
-                                    text="🗑 Eliminar"
-                                    minWidth="105"
-                                    styleClass="btn-eliminar-cliente"/>
+                            <Button fx:id="eliminarCliente" minWidth="105" onAction="#eliminarCliente" styleClass="btn-eliminar-cliente" text="🗑 Eliminar" />
                         </HBox>
                     </VBox>
 
                     <!-- PRODUCTO -->
                     <VBox spacing="8" styleClass="barra-acciones" VBox.vgrow="ALWAYS">
-                        <Label text="📦 Producto" styleClass="label-seccion"/>
+                        <Label styleClass="label-seccion" text="📦 Producto" />
 
                         <GridPane hgap="10" vgap="4">
                             <columnConstraints>
-                                <ColumnConstraints percentWidth="22"/>
-                                <ColumnConstraints percentWidth="34"/>
-                                <ColumnConstraints percentWidth="22"/>
-                                <ColumnConstraints percentWidth="22"/>
+                                <ColumnConstraints percentWidth="22" />
+                                <ColumnConstraints percentWidth="34" />
+                                <ColumnConstraints percentWidth="22" />
+                                <ColumnConstraints percentWidth="22" />
                             </columnConstraints>
 
-                            <Label text="Código" styleClass="label-resumen"
-                                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <Label styleClass="label-resumen" text="Código" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-                            <Label text="Código de barras" styleClass="label-resumen"
-                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <Label styleClass="label-resumen" text="Código de barras" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                            <Region GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                            <Region GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                            <Region GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Region GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                            <TextField fx:id="codigo"
-                                       promptText="Ej: 00123"
-                                       GridPane.columnIndex="0"
-                                       GridPane.rowIndex="1"
-                                       styleClass="input"/>
+                            <TextField fx:id="codigo2" promptText="Ej: 00123" styleClass="input" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-                            <TextField fx:id="codigoBarras"
-                                       promptText="Ej: 7791234567890"
-                                       GridPane.columnIndex="1"
-                                       GridPane.rowIndex="1"
-                                       styleClass="input"/>
+                            <TextField fx:id="codigoBarras" promptText="Ej: 7791234567890" styleClass="input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                            <Button fx:id="botonAgregar"
-                                    text="＋ Agregar"
-                                    onAction="#clickAgregarVentaProducto"
-                                    maxWidth="Infinity"
-                                    GridPane.columnIndex="2"
-                                    GridPane.rowIndex="1"
-                                    styleClass="btn-agregar"/>
+                            <Button fx:id="agregarProducto" maxWidth="Infinity" onAction="#agregarProducto" styleClass="btn-agregar" text="＋ Agregar" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
-                            <Button fx:id="botonEliminar"
-                                    text="🗑 Quitar"
-                                    maxWidth="Infinity"
-                                    GridPane.columnIndex="3"
-                                    GridPane.rowIndex="1"
-                                    styleClass="btn-toolbar"/>
+                            <Button fx:id="eliminarProducto" maxWidth="Infinity" onAction="#eliminarProducto" styleClass="btn-toolbar" text="🗑 Quitar" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
                         </GridPane>
 
-                        <TableView fx:id="TablaProductos"
-                                   styleClass="tabla"
-                                   VBox.vgrow="ALWAYS">
+                        <TableView fx:id="TablaProductos" styleClass="tabla" VBox.vgrow="ALWAYS">
 
                             <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
 
                             <columns>
-                                <TableColumn fx:id="colCodigoDeBarra" text="Código" prefWidth="90"/>
-                                <TableColumn fx:id="colNombre" text="Producto" prefWidth="260"/>
-                                <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="80"/>
-                                <TableColumn fx:id="colPrecio" text="Precio" prefWidth="120"/>
-                                <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="80"/>
+                                <TableColumn fx:id="colCodigoDeBarra" prefWidth="90" text="Código" />
+                                <TableColumn fx:id="colNombre" prefWidth="260" text="Producto" />
+                                <TableColumn fx:id="colCantidad" prefWidth="80" text="Cantidad" />
+                                <TableColumn fx:id="colPrecio" prefWidth="120" text="Precio" />
+                                <TableColumn fx:id="colSubtotal" prefWidth="80" text="Subtotal" />
                             </columns>
                         </TableView>
                     </VBox>
                 </VBox>
 
                 <!-- RESUMEN -->
-                <VBox spacing="16" styleClass="resumen-card" prefWidth="320">
+                <VBox prefWidth="320" spacing="16" styleClass="resumen-card">
                     <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="🧾" styleClass="icono-resumen"/>
-                        <Label text="Resumen de venta" styleClass="resumen-titulo"/>
+                        <Label styleClass="icono-resumen" text="🧾" />
+                        <Label styleClass="resumen-titulo" text="Resumen de venta" />
                     </HBox>
 
                     <VBox spacing="6">
-                        <Label text="Total a pagar" styleClass="label-resumen"/>
-                        <Label fx:id="labelVentasTotal" text="0.00" styleClass="total-grande"/>
+                        <Label styleClass="label-resumen" text="Total a pagar" />
+                        <Label fx:id="Total" styleClass="total-grande" text="0.00" />
                     </VBox>
 
-                    <Separator/>
+                    <Separator />
 
                     <VBox spacing="6">
-                        <Label text="Método de pago" styleClass="label-resumen"/>
-                        <ComboBox promptText="Efectivo" maxWidth="Infinity" styleClass="combo">
+                        <Label styleClass="label-resumen" text="Método de pago" />
+                        <ComboBox maxWidth="Infinity" promptText="Efectivo" styleClass="combo">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Efectivo"/>
-                                    <String fx:value="Tarjeta débito"/>
-                                    <String fx:value="Tarjeta crédito"/>
+                                    <String fx:value="Efectivo" />
+                                    <String fx:value="Tarjeta débito" />
+                                    <String fx:value="Tarjeta crédito" />
                                 </FXCollections>
                             </items>
                         </ComboBox>
                     </VBox>
 
                     <VBox spacing="6">
-                        <Label text="Dinero recibido" styleClass="label-resumen"/>
-                        <TextField promptText="0.00" styleClass="input"/>
+                        <Label styleClass="label-resumen" text="Dinero recibido" />
+                        <TextField promptText="0.00" styleClass="input" />
                     </VBox>
 
                     <VBox spacing="6">
-                        <Label text="Vuelto" styleClass="label-resumen"/>
-                        <Label text="0.00" styleClass="vuelto"/>
+                        <Label styleClass="label-resumen" text="Vuelto" />
+                        <Label styleClass="vuelto" text="0.00" />
                     </VBox>
 
-                    <Region VBox.vgrow="ALWAYS"/>
+                    <Region VBox.vgrow="ALWAYS" />
 
-                    <Button text="✓  Finalizar venta"
-                            maxWidth="Infinity"
-                            styleClass="btn-finalizar"/>
+                    <Button maxWidth="Infinity" styleClass="btn-finalizar" text="✓  Finalizar venta" />
 
-                    <Button text="✖ Cancelar venta"
-                            maxWidth="Infinity"
-                            styleClass="btn-cancelar"/>
+                    <Button maxWidth="Infinity" styleClass="btn-cancelar" text="✖ Cancelar venta" />
                 </VBox>
 
             </HBox>
         </VBox>
 
-        <Button fx:id="buttonAgregarVentaProducto" visible="false" managed="false"/>
+        <Button fx:id="buttonAgregarVentaProducto" managed="false" visible="false" />
 
     </children>
 </AnchorPane>

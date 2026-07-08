@@ -182,7 +182,7 @@ public class ControladorFactura implements Initializable {
     }
     public void buscarCliente(ActionEvent actionEvent) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("buscadorCliente.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("clienteGeneral.fxml"));
             Parent root = loader.load();
 
             controladorBuscadorCliente controller = loader.getController();
