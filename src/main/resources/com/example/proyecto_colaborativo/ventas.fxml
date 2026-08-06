@@ -126,14 +126,14 @@
 
                     <VBox spacing="6">
                         <Label styleClass="label-resumen" text="Vuelto" />
-                        <Label styleClass="vuelto" text="0.00" />
+                        <Label fx:id="Vuelto" styleClass="vuelto" text="0.00" />
                     </VBox>
 
                     <Region VBox.vgrow="ALWAYS" />
 
                     <Button maxWidth="Infinity" styleClass="btn-finalizar" text="✓  Finalizar venta" />
 
-                    <Button maxWidth="Infinity" styleClass="btn-cancelar" text="✖ Cancelar venta" />
+                    <Button fx:id="cancelarVenta" maxWidth="Infinity" onAction="#cancelarVenta" styleClass="btn-cancelar" text="✖ Cancelar venta" />
                 </VBox>
 
             </HBox>

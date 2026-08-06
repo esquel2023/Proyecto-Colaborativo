@@ -181,6 +181,14 @@ public class HelloController implements Initializable {
             System.err.println("No se encontró el archivo: " + rutaRecurso);
         }
     }
-}
+
+    public void cerrarSesion(ActionEvent actionEvent) {
+            javafx.stage.Stage ventana = (javafx.stage.Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
+
+            ventana.close();
+        }
+
+    }
+
 
 

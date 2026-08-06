@@ -1,28 +1,37 @@
 package com.example.proyecto_colaborativo.Clases;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import javafx.beans.property.*;
 
 public class Producto {
 
+    // 1. CORRECCIÓN: El constructor vacío DEBE inicializar las propiedades de JavaFX
+    public Producto() {
+        this.idProducto = new SimpleIntegerProperty();
+        this.nombre = new SimpleStringProperty();
+        this.cantidad = new SimpleIntegerProperty();
+        this.precio = new SimpleDoubleProperty();
+        this.codigoBarra = new SimpleStringProperty();
+    }
+
     public static Integer idProveedorParaAsociar = null;
     public static boolean debeAsociarProveedor = false;
 
+    // 2. CORRECCIÓN: Mapeamos los nombres que vienen de la API de Spring Boot
+    @JsonAlias({"id", "idProducto"})
     private final IntegerProperty idProducto;
+
     private final StringProperty nombre;
-    private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
+
+    @JsonAlias({"stock", "cantidad"})
+    private final IntegerProperty cantidad;
+
     private final DoubleProperty precio;
+
+    @JsonAlias({"codigoBarra", "codigoBarras"})
     private final StringProperty codigoBarra;
 
-    // Este es el puente estático que guardará el producto temporalmente en memoria
     public static Producto productoSeleccionadoParaEditar = null;
-
-    public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty();
-        this.cantidad = new SimpleIntegerProperty();
-        this.precio = new SimpleDoubleProperty();
-        this.nombre = new SimpleStringProperty();
-        this.codigoBarra = new SimpleStringProperty();
-    }
 
     // Constructor
     public Producto(int idProducto, String nombre, Integer cantidad, double precio, String codigoBarra) {
@@ -76,4 +85,6 @@ public class Producto {
     public void setCodigoBarra(String codigoBarra) { this.codigoBarra.set(codigoBarra); }
 
 }
+
+
 

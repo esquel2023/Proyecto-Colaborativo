@@ -1,6 +1,7 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.*;
+import com.example.proyecto_colaborativo.API.ApiService;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
@@ -41,6 +42,7 @@ public class ControladorFactura implements Initializable {
     public Button agregarProducto;
     public Button eliminarProducto;
     public SplitMenuButton codigo;
+    public Label Vuelto;
 
     @FXML
     private Button buscarCliente;
@@ -74,7 +76,14 @@ public class ControladorFactura implements Initializable {
         obtenerProducto();
         configurarTablaEditable();
         Calcular();
+        CalcularVuelto();
         TablaProductos.setItems(listaUsuarios);
+//        ApiService.API();
+    }
+
+    private void CalcularVuelto() {
+
+
     }
 
     private void configurarTablaEditable() {
@@ -185,8 +194,8 @@ public class ControladorFactura implements Initializable {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("clienteGeneral.fxml"));
             Parent root = loader.load();
 
-            controladorBuscadorCliente controller = loader.getController();
-            controller.setControladorFactura(this);
+            controladorCliente controller = loader.getController();
+            controller.setcontroladorcliente(this);
 
             Stage stage = new Stage();
             stage.setTitle("buscadorCliente");
@@ -303,6 +312,10 @@ public class ControladorFactura implements Initializable {
 
         stage.showAndWait();
 
+
+    }
+
+    public void cancelarVenta(ActionEvent actionEvent) {
 
     }
 }

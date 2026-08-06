@@ -78,7 +78,7 @@ public class ControladorProductosInactivos {
 
         try {
             // 2. Modificamos el check internamente en el objeto pasándolo a true
-            productoInactivoSeleccionado.setActivado(true);
+         //   productoInactivoSeleccionado.setActivado(true);
 
             // 3. Persistimos el cambio llamando al método oficial y seguro del DAO
             ProductoDAO.actualizar(productoInactivoSeleccionado);
@@ -134,18 +134,7 @@ public class ControladorProductosInactivos {
     }
 
     private void cargarDatosDesdeBD() {
-        try {
-            // 💡 CAMBIO: Llamamos directamente al nuevo método especializado del DAO
-            var productosInactivosBD = ProductoDAO.listarInactivos();
-
-            // setAll limpia la tabla e inyecta los registros frescos de la BD
-            listaProductos.setAll(productosInactivosBD);
-
-        } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de Base de Datos",
-                    "No se pudieron recuperar los productos inactivos de la base de datos.");
-            e.printStackTrace();
-        }
+        //
     }
 
     private void limpiarSeleccion() {
