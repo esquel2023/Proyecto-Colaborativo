@@ -26,7 +26,7 @@
       </MenuBar>
       <Label layoutX="20.0" layoutY="56.0" text="Fecha" />
       <Text layoutX="312.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cod Comprob." />
-      <SplitMenuButton fx:id="tipoFactura" layoutX="81.0" layoutY="52.0" mnemonicParsing="false" text="Factura Electronica">
+      <SplitMenuButton fx:id="tipoFactura" layoutX="81.0" layoutY="52.0" mnemonicParsing="false" onAction="#tipoFactura" text="Factura Electronica">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#botonA" text="A" />
             <MenuItem mnemonicParsing="false" onAction="#botonB" text="B" />
@@ -87,7 +87,7 @@
             <Font size="10.0" />
          </font>
       </Button>
-      <Button fx:id="IngresarPago" layoutX="182.0" layoutY="481.0" mnemonicParsing="false" onAction="#IngresarPago" prefHeight="25.0" prefWidth="105.0" text="Ingresar Pago">
+      <Button layoutX="182.0" layoutY="481.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Ingresar Pago">
          <font>
             <Font size="10.0" />
          </font>

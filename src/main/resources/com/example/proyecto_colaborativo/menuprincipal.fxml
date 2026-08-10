@@ -3,146 +3,72 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<?import java.lang.String?>
-<?import javafx.scene.control.Tooltip?>
-<BorderPane prefHeight="620.0" prefWidth="980.0"
-            styleClass="root"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.proyecto_colaborativo.HelloController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-    <left>
-        <VBox prefWidth="220.0" spacing="12.0" styleClass="sidebar">
-            <padding>
-                <Insets top="25" right="18" bottom="25" left="18"/>
-            </padding>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="540.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.HelloController">
+    <children>
+        <VBox alignment="TOP_CENTER" prefHeight="420.0" prefWidth="540.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <!-- Título Principal Moderno -->
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="540.0" style="-fx-text-fill: #212529; -fx-font-weight: bold;" text="Menú Principal">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                </Label>
 
-            <Label text="AXYRA" styleClass="sidebar-title"/>
+                <!-- Grilla de Botones Estilizada -->
+                <GridPane alignment="CENTER" hgap="15.0" vgap="15.0" VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <!-- Fila 1 -->
+                        <Button fx:id="caja" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonCaja" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="CAJA">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
+                        <Button fx:id="ventas" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonVentas" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="VENTAS" GridPane.columnIndex="1">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
+                        <Button fx:id="clientes" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonClientes" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="CLIENTES" GridPane.columnIndex="2">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
 
-            <Button text="🏠  Inicio" styleClass="sidebar-button"/>
-            <Button fx:id="caja" text="💰  Caja" onAction="#botonCaja" styleClass="sidebar-button"/>
-            <Button fx:id="ventas" text="🛒  Ventas" onAction="#botonVentas" styleClass="sidebar-button"/>
-            <Button fx:id="productos" text="📦  Productos" onAction="#botonProductos" styleClass="sidebar-button"/>
-            <Button fx:id="proveedores" text="🚚  Proveedores" onAction="#botonProveedores" styleClass="sidebar-button"/>
-            <Button fx:id="stock" text="📚  Stock" onAction="#botonStock" styleClass="sidebar-button"/>
-            <Button fx:id="clientes" text="👥  Clientes" onAction="#botonClientes" styleClass="sidebar-button"/>
-            <Button fx:id="factura" text="🧾  Facturas" onAction="#botonFactura" styleClass="sidebar-button"/>
+                        <!-- Fila 2 -->
+                        <Button fx:id="productos" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonProductos" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="PRODUCTOS" GridPane.rowIndex="1">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
+                        <Button fx:id="proveedores" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonProveedores" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="PROVEEDORES" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
+                        <Button fx:id="factura" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonFactura" style="-fx-background-color: #0d6efd; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="FACTURA" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
 
-            <Region VBox.vgrow="ALWAYS"/>
-
-            <Button text="⚙  Configuración" styleClass="sidebar-button"/>
-            <Button text="🚪  Cerrar sesión" styleClass="sidebar-button"/>
+                        <!-- Fila 3 (Centrado del botón Stock) -->
+                        <Button fx:id="stock" maxHeight="1.1797693134862315E308" maxWidth="1.1797693134862315E308" mnemonicParsing="false" onAction="#botonStock" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;" text="STOCK" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font> <Font size="14.0" /> </font>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" />
+                    </padding>
+                </GridPane>
+            </children>
         </VBox>
-    </left>
-
-    <center>
-        <VBox spacing="25.0" styleClass="content">
-            <padding>
-                <Insets top="35" right="40" bottom="35" left="40"/>
-            </padding>
-
-            <HBox alignment="CENTER_LEFT">
-
-                <VBox HBox.hgrow="ALWAYS" spacing="5">
-                    <Label fx:id="saludoLabel"
-                           text="¡Bienvenida a Axyra!"
-                           styleClass="titulo"/>
-
-                    <Label text="Te deseamos una excelente jornada de ventas."
-                           styleClass="subtitulo"/>
-                </VBox>
-
-                <Label fx:id="fechaHoraLabel"
-                       text="Fecha y hora"
-                       styleClass="fecha"/>
-
-            </HBox>
-
-            <GridPane hgap="25" vgap="25">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
-                </columnConstraints>
-
-                <rowConstraints>
-                    <RowConstraints minHeight="160" prefHeight="170"/>
-                    <RowConstraints minHeight="160" prefHeight="170"/>
-                </rowConstraints>
-
-                <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                    <styleClass>
-                        <String fx:value="card"/>
-                        <String fx:value="card-caja"/>
-                    </styleClass>
-
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="💰 Caja" styleClass="card-title" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="btnOjoCaja"  onAction="#toggleCaja" styleClass="eye-button"/>
-                    </HBox>
-
-                    <Label fx:id="lblCaja" text="0,00" styleClass="card-number"/>
-                    <Label text="Total disponible" styleClass="card-subtitle"/>
-                </VBox>
-
-                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
-
-                    <styleClass>
-                        <String fx:value="card"/>
-                        <String fx:value="card-ventas"/>
-                    </styleClass>
-
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-
-                    <Label text="🛒 Ventas de hoy" styleClass="card-title"/>
-                    <Label text="0" styleClass="card-number"/>
-                    <Label text="Operaciones realizadas" styleClass="card-subtitle"/>
-
-                </VBox>
-
-                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <styleClass>
-                        <String fx:value="card"/>
-                        <String fx:value="card-clientes"/>
-                    </styleClass>
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-                    <Label text="👥 Clientes" styleClass="card-title"/>
-                    <Label text="0" styleClass="card-number"/>
-                    <Label text="Clientes registrados" styleClass="card-subtitle"/>
-                </VBox>
-
-                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <styleClass>
-                        <String fx:value="card"/>
-                        <String fx:value="card-stock"/>
-                    </styleClass>
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-                    <Label text="⚠ Stock bajo" styleClass="card-title"/>
-                    <Label text="0" styleClass="card-number"/>
-                    <Label text="Productos por reponer" styleClass="card-subtitle"/>
-                </VBox>
-            </GridPane>
-
-            <VBox spacing="12" styleClass="panel">
-                <padding>
-                    <Insets top="20" right="20" bottom="20" left="20"/>
-                </padding>
-
-                <Label text="Últimas ventas realizadas" styleClass="panel-title"/>
-                <Label text="Todavía no hay ventas cargadas." styleClass="subtitulo"/>
-            </VBox>
-        </VBox>
-    </center>
-
-</BorderPane>
-
+    </children>
+</AnchorPane>

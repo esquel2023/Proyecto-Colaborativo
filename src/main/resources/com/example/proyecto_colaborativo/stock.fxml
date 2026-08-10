@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.controladorStock">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
          <menus>
@@ -23,22 +23,21 @@
             <Menu mnemonicParsing="false" text="Proveedor" />
          </menus>
       </MenuBar>
-      <Button fx:id="lupa" layoutX="373.0" layoutY="158.0" mnemonicParsing="false" onAction="#ClickLupa" text="🔍" />
-      <Button fx:id="botonAgregar" layoutX="19.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickAgregar" text="Agregar" />
-      <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickModificar" text="Modificar" />
-      <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickEliminar" text="Eliminar" />
+      <Button layoutX="373.0" layoutY="158.0" mnemonicParsing="false" text="🔍" />
+      <Button fx:id="botonAgregar" layoutX="20.0" layoutY="79.0" mnemonicParsing="false" text="Agregar" />
+      <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" text="Modificar" />
+      <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" text="Eliminar" />
       <TextField fx:id="codigo" layoutX="21.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Codigo" />
       <TextField fx:id="buscadorProductos" layoutX="20.0" layoutY="158.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos" />
       <TextField fx:id="codigoBarras" layoutX="159.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Codigo de barras" />
-      <TableView layoutX="21.0" layoutY="200.0" prefHeight="162.0" prefWidth="551.0">
+      <TableView layoutX="21.0" layoutY="200.0" prefHeight="162.0" prefWidth="562.0">
          <columns>
-            <TableColumn fx:id="Codigo" prefWidth="62.0" text="Codigo" />
-            <TableColumn fx:id="Producto" prefWidth="101.0" text="Producto" />
-            <TableColumn fx:id="Cantidad" prefWidth="98.0" text="Cantidad" />
-            <TableColumn fx:id="Descripcion" prefWidth="105.0" text="Descripcion" />
-            <TableColumn fx:id="Fecha" prefWidth="272.0" text="Fecha" />
+            <TableColumn fx:id="nombre11" prefWidth="129.0" text="Codigo" />
+            <TableColumn fx:id="nombre" prefWidth="129.0" text="Producto" />
+            <TableColumn fx:id="cantidad" prefWidth="62.0" text="Cantidad" />
+            <TableColumn fx:id="precio" prefWidth="189.0" text="Descripcion" />
+            <TableColumn fx:id="nombre1" prefWidth="129.0" text="Fecha" />
          </columns>
       </TableView>
-      <DatePicker fx:id="date" layoutX="387.0" layoutY="79.0" onAction="#clickdate" />
    </children>
 </AnchorPane>

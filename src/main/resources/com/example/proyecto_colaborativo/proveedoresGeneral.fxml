@@ -23,7 +23,7 @@
             <Menu mnemonicParsing="false" text="Proveedor" />
          </menus>
       </MenuBar>
-      <TextField fx:id="buscadorProovedores" layoutX="19.0" layoutY="63.0" prefHeight="25.0" prefWidth="381.0" promptText="Buscador de proveedores" />
+      <TextField fx:id="buscadorProovedores" layoutX="19.0" layoutY="63.0" prefHeight="25.0" prefWidth="381.0" promptText="Buscador de clientes" />
       <TableView fx:id="tablaProovedores" layoutX="19.0" layoutY="94.0" prefHeight="301.0" prefWidth="381.0">
          <columns>
             <TableColumn fx:id="nombreTabla" prefWidth="158.0" text="Nombre" />

@@ -46,5 +46,9 @@
                 <TableColumn fx:id="colPrecio" prefWidth="97.0" text="Precio" />
             </columns>
         </TableView>
+
+        <!-- Manteniendo los campos auxiliares del lateral derecho -->
+        <TextField fx:id="porcentaje" layoutX="433.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="\%" />
+        <TextField fx:id="precioCosto" layoutX="427.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Precio costo" />
     </children>
 </AnchorPane>

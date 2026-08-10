@@ -43,5 +43,7 @@
         </columns>
       </TableView>
       <Button fx:id="botonSalir" layoutX="247.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickSalir" text="Salir" />
+      <TextField fx:id="porcentaje" layoutX="433.0" layoutY="159.0" prefHeight="25.0" prefWidth="115.0" promptText="\%" />
+      <TextField fx:id="precioCosto" layoutX="427.0" layoutY="126.0" prefHeight="25.0" prefWidth="115.0" promptText="Precio costo" />
    </children>
 </AnchorPane>

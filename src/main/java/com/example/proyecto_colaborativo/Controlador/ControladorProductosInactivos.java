@@ -1,7 +1,6 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.bd.ProductoDAO; // Ajustá según tu paquete de DAO
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils; // Ajustá tus clases útiles
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
@@ -34,70 +33,51 @@ public class ControladorProductosInactivos {
 
     @FXML
     public void initialize() {
-        // 1. Enlace de columnas usando propiedades nativas
+        // Enlace de columnas usando las propiedades nativas de tu modelo
         colCodigo.setCellValueFactory(cellData -> cellData.getValue().codigoBarraProperty());
         colNombre.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         colCantidad.setCellValueFactory(cellData -> cellData.getValue().cantidadProperty().asObject());
         colPrecio.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
 
-        // 2. Cargar los datos iniciales desde la BD (Llena listaProductos con los inactivos)
-        cargarDatosDesdeBD();
-
-        // 3. ✅ ACTIVAR EL BUSCADO EN TIEMPO REAL:
-        // Pasamos tu campo txtbuscadorProductos, tu tabla y la lista de inactivos
-        BuscadorUtils.configuradorBuscador(
-                txtbuscadorProductos,
-                tablaProductos,
-                listaProductos,
-                (producto, texto) -> {
-                    boolean coincideNombre = producto.getNombre() != null &&
-                            producto.getNombre().toLowerCase().contains(texto);
-                    boolean coincideCodigo = producto.getCodigoBarra() != null &&
-                            producto.getCodigoBarra().toLowerCase().contains(texto);
-                    return coincideNombre || coincideCodigo;
-                }
-        );
-
-        // 4. Listener de Selección de Filas
+        // Listener de Selección de Filas idéntico a tu lógica
         tablaProductos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 ControladorProductosInactivos.productoInactivoSeleccionado = newValue;
                 System.out.println("Seleccionaste inactivo: " + newValue.getNombre());
             }
         });
-    }
 
+        // Aplicamos el filtro reactivo para ver SOLO los desactivados
+        FilteredList<Producto> listaFiltrada = new FilteredList<>(listaProductos, p -> !p.isActivado());
+
+        // Si usás BuscadorUtils como en tu otra pantalla, podés pasarle listaFiltrada aquí.
+        // De lo contrario, vinculamos directo a la tabla:
+        tablaProductos.setItems(listaFiltrada);
+
+        cargarDatosDesdeBD();
+    }
 
     @FXML
     private void clickReactivar(ActionEvent event) {
-        // 1. Validamos que el usuario haya seleccionado una fila de la tabla
         if (productoInactivoSeleccionado == null) {
             AlertasUtils.mostrarAdvertencia("Sin selección", "Debes seleccionar un producto para reactivarlo.");
             return;
         }
 
         try {
-            // 2. Modificamos el check internamente en el objeto pasándolo a true
+            // Cambiamos el estado en el objeto y actualizamos en la BD
             productoInactivoSeleccionado.setActivado(true);
+            ProductoDAO.modificar(productoInactivoSeleccionado); // Asegúrate de tener este método en tu DAO
 
-            // 3. Persistimos el cambio llamando al método oficial y seguro del DAO
-            ProductoDAO.actualizar(productoInactivoSeleccionado);
-
-            // 4. Avisamos al usuario del éxito de la operación
-            AlertasUtils.mostrarInformacion("Éxito", "El producto '" + productoInactivoSeleccionado.getNombre() + "' se ha reactivado correctamente.");
-
-            // 5. Volvemos a leer de la BD (como ahora es 'true', desaparecerá automáticamente de esta tabla)
-            cargarDatosDesdeBD();
-
+            AlertasUtils.mostrarInformacion("Éxito", "El producto se ha reactivado correctamente.");
+            cargarDatosDesdeBD(); // Recarga y la FilteredList lo quitará de la vista automáticamente
         } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de BD", "No se pudo reactivar el producto en la base de datos.");
+            AlertasUtils.mostrarError("Error de BD", "No se pudo reactivar el producto.");
             e.printStackTrace();
         } finally {
-            // 6. Limpiamos la selección de la tabla por seguridad
             limpiarSeleccion();
         }
     }
-
 
     @FXML
     public void clickEliminar(ActionEvent event) {
@@ -135,15 +115,10 @@ public class ControladorProductosInactivos {
 
     private void cargarDatosDesdeBD() {
         try {
-            // 💡 CAMBIO: Llamamos directamente al nuevo método especializado del DAO
-            var productosInactivosBD = ProductoDAO.listarInactivos();
-
-            // setAll limpia la tabla e inyecta los registros frescos de la BD
-            listaProductos.setAll(productosInactivosBD);
-
+            var productosBD = ProductoDAO.listar();
+            listaProductos.setAll(productosBD);
         } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de Base de Datos",
-                    "No se pudieron recuperar los productos inactivos de la base de datos.");
+            AlertasUtils.mostrarError("Error de Base de Datos", "No se pudieron recuperar los productos.");
             e.printStackTrace();
         }
     }
