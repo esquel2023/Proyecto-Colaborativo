@@ -3,6 +3,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 public class controladorModifCliente {
@@ -28,6 +33,10 @@ public class controladorModifCliente {
     @FXML public ComboBox<String> comboTipoDoc; // ACTUALIZADO
     @FXML public ComboBox<String> comboIva;
 
+
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String API_URL = "http://localhost:8080/tienda/api/v1/clientes";
 
     private clienteClase clienteSeleccionado;
 
@@ -135,7 +144,8 @@ public class controladorModifCliente {
                 clienteSeleccionado.setProvincia(txtProvincia);
                 clienteSeleccionado.setCiudad(txtCiudad);
 
-                ClienteDAO.actualizar(clienteSeleccionado);
+              //  ClienteDAO.actualizar(clienteSeleccionado);
+                modificarClienteApi(clienteSeleccionado);
 
                 System.out.println("Cliente modificado con éxito.");
                 limpiarCampos();
@@ -160,5 +170,54 @@ public class controladorModifCliente {
         ciudad.clear();
         if (comboTipoDoc != null) comboTipoDoc.setValue(null);
         if (comboIva != null) comboIva.setValue(null);
+    }
+    private void modificarClienteApi(clienteClase clienteModificado) {
+        if (clienteModificado == null) return;
+
+        Thread putThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 1. Convertir el objeto Java actualizado a un texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(clienteModificado);
+
+                // 2. Construir la petición PUT incluyendo el JSON en el cuerpo
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Obligatorio para indicarle a Spring Boot que mandas un JSON
+                        .PUT(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo PUT con su Body
+                        .build();
+
+                // 3. Enviar la solicitud
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 4. Tu API responde con 200 OK y devuelve el cliente modificado
+                if (response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+                    clienteClase clienteActualizadoApi = objectMapper.readValue(jsonRespuesta, clienteClase[].class != null ? clienteClase.class : clienteClase.class);
+
+                    System.out.println("[INFO] Cliente modificado en la API con éxito.");
+
+                    // 5. Refrescar la interfaz visual de JavaFX de forma segura
+                    javafx.application.Platform.runLater(() -> {
+                        // Buscamos el índice actual en la lista y lo reemplazamos por el actualizado de la API
+                        int index = listaClientesObs.indexOf(clienteModificado);
+                        if (index >= 0) {
+                            listaClientesObs.set(index, clienteActualizadoApi);
+                        }
+                         // Fuerza el redibujado de las celdas
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo modificar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de modificación.");
+                e.printStackTrace();
+            }
+        });
+
+        putThread.setDaemon(true);
+        putThread.start();
     }
 }

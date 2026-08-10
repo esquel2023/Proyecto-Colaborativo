@@ -3,6 +3,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 public class controladorAgregarCliente {
@@ -27,6 +32,9 @@ public class controladorAgregarCliente {
 
     @FXML public ComboBox<String> comboTipoDoc; // ACTUALIZADO
     @FXML public ComboBox<String> comboIva;
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String API_URL = "http://localhost:8080/tienda/api/v1/clientes";
 
     @FXML
     public void initialize() {
@@ -112,7 +120,8 @@ public class controladorAgregarCliente {
                 nuevoCliente.setProvincia(txtProvincia);
                 nuevoCliente.setCiudad(txtCiudad);
 
-                ClienteDAO.insertar(nuevoCliente);
+              //  ClienteDAO.insertar(nuevoCliente);
+                agregarClienteApi(nuevoCliente);
 
                 limpiarCampos();
                 System.out.println("Cliente agregado con éxito.");
@@ -138,4 +147,53 @@ public class controladorAgregarCliente {
         if (comboTipoDoc != null) comboTipoDoc.setValue(null);
         if (comboIva != null) comboIva.setValue(null);
     }
+    private void agregarClienteApi(clienteClase nuevoCliente) {
+        if (nuevoCliente == null) return;
+
+        // 1. Crear el hilo para no congelar la pantalla
+        Thread postThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 2. Convertir tu objeto Java a texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(nuevoCliente);
+
+                // 3. Construir la petición POST
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Avisamos a Spring Boot que va un JSON
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo POST con el body
+                        .build();
+
+                // 4. Enviar los datos a la API
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 5. Tu API responde con 201 (Created) si el alta fue exitosa
+                if (response.statusCode() == 201 || response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+
+                    // Parseamos el cliente definitivo devuelto por la API
+                    clienteClase clienteCreadoApi = objectMapper.readValue(jsonRespuesta, clienteClase.class);
+
+                    System.out.println("[INFO] Cliente agregado a la API con éxito.");
+
+                    // 6. Impactar el cambio de forma segura en la interfaz visual de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaClientesObs.add(clienteCreadoApi); // Se dibuja solo en la TableView
+                    });
+
+                } else {
+                    System.out.println("[ERROR] No se pudo agregar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de alta.");
+                e.printStackTrace();
+            }
+        });
+
+        postThread.setDaemon(true);
+        postThread.start();
+    }
+
 }
