@@ -87,6 +87,7 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         Timeline reloj = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> actualizarFechaHora()),
                 new KeyFrame(Duration.seconds(1))

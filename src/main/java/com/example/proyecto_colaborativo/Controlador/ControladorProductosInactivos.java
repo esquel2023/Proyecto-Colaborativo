@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class ControladorProductosInactivos {
+    /*
 
     @FXML private Button botonSalir;
     @FXML private TextField txtbuscadorProductos;
@@ -78,7 +79,7 @@ public class ControladorProductosInactivos {
 
         try {
             // 2. Modificamos el check internamente en el objeto pasándolo a true
-            productoInactivoSeleccionado.setActivado(true);
+            //productoInactivoSeleccionado.setActivado(true);
 
             // 3. Persistimos el cambio llamando al método oficial y seguro del DAO
             ProductoDAO.actualizar(productoInactivoSeleccionado);
@@ -152,4 +153,6 @@ public class ControladorProductosInactivos {
         tablaProductos.getSelectionModel().clearSelection();
         ControladorProductosInactivos.productoInactivoSeleccionado = null;
     }
+
+     */
 }
