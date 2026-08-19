@@ -8,14 +8,29 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menuprincipal.fxml"));
+
+        FXMLLoader fxmlLoader =
+                new FXMLLoader(HelloApplication.class.getResource("menuprincipal.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load());
-        System.out.println(getClass().getResource("style.css"));
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        stage.setTitle("Productos");
+
+        scene.getStylesheets().add(
+                getClass().getResource("style.css").toExternalForm()
+        );
+
+        stage.setTitle(":)");
         stage.setScene(scene);
+
+        // Tamaño mínimo de la ventana
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
+
+        // Abrir ocupando toda la pantalla
+        stage.setMaximized(true);
+
         stage.show();
     }
 }

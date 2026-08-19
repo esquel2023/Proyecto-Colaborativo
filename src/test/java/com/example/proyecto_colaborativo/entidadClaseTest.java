@@ -1,5 +1,6 @@
 package com.example.proyecto_colaborativo;
 
+import com.example.proyecto_colaborativo.Clases.clienteClase;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

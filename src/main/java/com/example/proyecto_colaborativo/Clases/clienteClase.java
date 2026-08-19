@@ -7,6 +7,10 @@ public class clienteClase extends entidadClase {
     public clienteClase() {
 
     }
+
+    public clienteClase(String s, String number, String number1, String eqrq, String number2, String number3) {
+
+    }
     // Constructor por defecto
 
 
