@@ -4,7 +4,6 @@ import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -198,7 +197,7 @@ public class ControladorProducto {
         try {
             listaProductos.clear();
             //listaProductos.addAll(ProductoDAO.listar());
-            listaProductos.setAll(ProductoDAO.listar());
+       //     listaProductos.setAll(ProductoDAO.listar());
             //tablaProductos.setItems(listaProductos);
         } catch (Exception e) {
             AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
@@ -231,7 +230,7 @@ public class ControladorProducto {
         // 4. Si el usuario hace clic en OK, se procede a la eliminación
         if (resultado.isPresent() && resultado.get() == javafx.scene.control.ButtonType.OK) {
 
-            ProductoDAO.eliminar(productoseleccionado.getidProducto());
+      //      ProductoDAO.eliminar(productoseleccionado.getidProducto());
             // Elimina físicamente el ítem de la lista de datos
             listaProductos.remove(productoseleccionado);
 

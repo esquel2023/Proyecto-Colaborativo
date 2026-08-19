@@ -3,7 +3,6 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -47,7 +46,7 @@ public class controladorBuscadorCliente {
         dniTabla.setCellValueFactory(new PropertyValueFactory<>("dniEntidad"));
         telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
-        listaClientesObs.setAll(ClienteDAO.listar());
+   //     listaClientesObs.setAll(ClienteDAO.listar());
         tablaClientes.setItems(listaClientesObs);
 
         // 2. UNIFICADO: Un solo listener de selección sin duplicados

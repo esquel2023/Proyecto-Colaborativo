@@ -2,8 +2,6 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import com.example.proyecto_colaborativo.bd.ProveedorDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
@@ -32,7 +30,7 @@ public class controladorProveedoresGeneral {
             emailTabla.setCellValueFactory(new PropertyValueFactory<>("emailEntidad"));
 
             // 2. Cargamos los datos desde el DAO
-            listaProveedoresObs.setAll(ProveedorDAO.listar());
+     //       listaProveedoresObs.setAll(ProveedorDAO.listar());
             tablaProovedores.setItems(listaProveedoresObs);
 
             // SOLUCIÓN CLAVE: Activamos el método del buscador para que configure la lista filtrada

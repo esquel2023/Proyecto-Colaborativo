@@ -263,6 +263,11 @@
 .btn-secondary:hover{
 
     -fx-background-color: #5A6268;
+    .btn-icon{
+        -fx-pref-width: 40px;
+        -fx-pref-height: 40px;
+        -fx-padding: 0;
+    }
 
 }
 

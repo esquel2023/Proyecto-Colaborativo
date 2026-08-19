@@ -1,14 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.io.IOException;
 
 public class controladorStock {
 

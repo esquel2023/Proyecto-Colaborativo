@@ -3,8 +3,6 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import com.example.proyecto_colaborativo.HelloApplication;
-import com.example.proyecto_colaborativo.bd.ProductoDAO;
-import com.example.proyecto_colaborativo.bd.ProductoProveedorDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +19,15 @@ import javafx.util.converter.DoubleStringConverter;
 import java.io.IOException;
 import java.util.List;
 
+
+
 public class controladorProveedorSelec {
+
+    private final java.net.http.HttpClient httpClient = java.net.http.HttpClient.newHttpClient();
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+
+    // Ajusta esta URL base según los endpoints reales de tu backend para ProductoProveedor
+    private final String API_PRODUCTO_PROVEEDOR = "http://localhost:8080/tienda/api/v1/producto-proveedor";
 
     private static controladorProveedorSelec instanciaActiva;
 
@@ -81,7 +87,7 @@ public class controladorProveedorSelec {
         if (localidadProveedor != null) localidadProveedor.setText(proveedor.getCiudad());
 
         // Cargar los productos de este proveedor directo desde la Base de Datos
-        actualizarTabla(proveedor.getId());
+        actualizarTabla(Math.toIntExact(proveedor.getId()));
     }
 
     // Mantiene compatibilidad con tu llamado alternativo anterior
@@ -91,10 +97,7 @@ public class controladorProveedorSelec {
         }
     }
 
-    private void actualizarTabla(int idProveedor) {
-        List<Producto> listaBD = ProductoProveedorDAO.listar(idProveedor);
-        listaProductosObs.setAll(listaBD);
-    }
+
 
     private void configurarTablaEditable() {
         tablaProductosProovedor.setEditable(true);
@@ -106,7 +109,7 @@ public class controladorProveedorSelec {
             if (nuevoPrecioCosto != null && nuevoPrecioCosto >= 0 && p != null && proveedorActual != null) {
                 p.setPrecio(nuevoPrecioCosto);
                 p.precioProperty().set(nuevoPrecioCosto);
-                ProductoProveedorDAO.actualizarPrecioCosto(p.getidProducto(), proveedorActual.getId(), nuevoPrecioCosto);
+
             } else {
                 tablaProductosProovedor.refresh();
             }
@@ -114,24 +117,81 @@ public class controladorProveedorSelec {
     }
 
     public void recibirProducto(Producto producto) {
-        if (producto != null) {
-            listaProductosObs.add(producto);
-            ProductoProveedorDAO.asociar(producto.getidProducto(), proveedorActual.getId(), 0.0);
-            tablaProductosProovedor.refresh();
-        }
+        if (producto == null || proveedorActual == null) return;
+
+        Thread postThread = new Thread(() -> {
+            try {
+                // Creamos un DTO o mapa con los datos requeridos por la tabla relacional
+                java.util.Map<String, Object> requestBody = new java.util.HashMap<>();
+                requestBody.put("idProducto", producto.getidProducto());
+                requestBody.put("idProveedor", proveedorActual.getId());
+                requestBody.put("precioCosto", 0.0); // Valor inicial predeterminado
+
+                String json = objectMapper.writeValueAsString(requestBody);
+
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(API_PRODUCTO_PROVEEDOR))
+                        .header("Content-Type", "application/json")
+                        .POST(java.net.http.HttpRequest.BodyPublishers.ofString(json))
+                        .build();
+
+                java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 201 || response.statusCode() == 200) {
+                    System.out.println("[INFO] Asociación creada en API con éxito.");
+                    javafx.application.Platform.runLater(() -> {
+                        listaProductosObs.add(producto);
+                        tablaProductosProovedor.refresh();
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo asociar en la API. Código: " + response.statusCode());
+                }
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico al asociar producto.");
+                e.printStackTrace();
+            }
+        });
+        postThread.setDaemon(true);
+        postThread.start();
     }
 
+    // 4. DELETE - Reemplaza tu método desasociarProducto(Producto producto)
     public void desasociarProducto(Producto producto) {
-        if (producto != null && proveedorActual != null) {
-            listaProductosObs.remove(producto);
-            ProductoProveedorDAO.desasociar(producto.getidProducto(), proveedorActual.getId());
-        }
+        if (producto == null || proveedorActual == null) return;
+
+        Thread deleteThread = new Thread(() -> {
+            try {
+                // Construimos la URL pasando ambas llaves si es una relación compuesta (ej: /producto/X/proveedor/Y)
+                String urlDelete = API_PRODUCTO_PROVEEDOR + "/producto/" + producto.getidProducto() + "/proveedor/" + proveedorActual.getId();
+
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(urlDelete))
+                        .DELETE()
+                        .build();
+
+                java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 204 || response.statusCode() == 200) {
+                    System.out.println("[INFO] Desasociación exitosa en la API.");
+                    javafx.application.Platform.runLater(() -> {
+                        listaProductosObs.remove(producto);
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo desasociar en la API. Código: " + response.statusCode());
+                }
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico al desasociar producto.");
+                e.printStackTrace();
+            }
+        });
+        deleteThread.setDaemon(true);
+        deleteThread.start();
     }
 
     @FXML
     public void botonAgregarProducto(ActionEvent actionEvent) {
         if (proveedorActual == null) return;
-        List<Producto> todosLosProductos = ProductoDAO.listar();
+
 
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Producto.fxml"));
@@ -158,5 +218,63 @@ public class controladorProveedorSelec {
         if (productoseleccionado != null) {
             desasociarProducto(productoseleccionado);
         }
+    }
+    private void actualizarPrecioEnApi(int idProducto, long idProveedor, double nuevoPrecio) {
+        Thread putThread = new Thread(() -> {
+            try {
+                java.util.Map<String, Object> requestBody = new java.util.HashMap<>();
+                requestBody.put("idProducto", idProducto);
+                requestBody.put("idProveedor", idProveedor);
+                requestBody.put("precioCosto", nuevoPrecio);
+
+                String json = objectMapper.writeValueAsString(requestBody);
+
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(API_PRODUCTO_PROVEEDOR))
+                        .header("Content-Type", "application/json")
+                        .PUT(java.net.http.HttpRequest.BodyPublishers.ofString(json))
+                        .build();
+
+                java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    System.out.println("[INFO] Precio actualizado en API con éxito.");
+                } else {
+                    System.out.println("[ERROR] No se pudo actualizar el precio. Código: " + response.statusCode());
+                    javafx.application.Platform.runLater(() -> tablaProductosProovedor.refresh());
+                }
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico al actualizar precio.");
+                e.printStackTrace();
+            }
+        });
+        putThread.setDaemon(true);
+        putThread.start();
+    }
+    private void actualizarTabla(int idProveedor) {
+        Thread apiThread = new Thread(() -> {
+            try {
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(API_PRODUCTO_PROVEEDOR + "/proveedor/" + idProveedor))
+                        .GET()
+                        .build();
+
+                java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    // Mapea el JSON recibido a un array de tu clase Producto
+                    Producto[] productosArray = objectMapper.readValue(response.body(), Producto[].class);
+
+                    javafx.application.Platform.runLater(() -> {
+                        listaProductosObs.setAll(productosArray);
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudieron obtener productos. Código: " + response.statusCode());
+                }
+            } catch (Exception e) {
+                System.out.println("[ERROR] Falló la conexión al listar productos.");
+                e.printStackTrace();
+            }
+        });
     }
 }

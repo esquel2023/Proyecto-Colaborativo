@@ -2,15 +2,10 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.sql.SQLException;
 
 public class ControladorProductoAgregar {
     @FXML
@@ -123,7 +118,7 @@ public class ControladorProductoAgregar {
                 Producto nuevoProducto = new Producto(textoNombre, nuevacantidad, nuevoPrecio, nuevocodigo);
 
                 // Guardar el nuevo producto en la Base de Datos
-                ProductoDAO.insertar(nuevoProducto);
+         //       ProductoDAO.insertar(nuevoProducto);
 
                 // Opcional: Si manejás una lista observable global para la tabla, podrías agregar aquí:
                 // listadoProductosGlobal.add(nuevoProducto);

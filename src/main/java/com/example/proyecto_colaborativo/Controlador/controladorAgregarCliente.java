@@ -2,7 +2,6 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

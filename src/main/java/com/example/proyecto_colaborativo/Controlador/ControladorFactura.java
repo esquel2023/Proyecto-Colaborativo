@@ -4,8 +4,6 @@ import com.example.proyecto_colaborativo.*;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.bd.ClienteDAO;
-import com.example.proyecto_colaborativo.bd.ProductoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,8 +64,8 @@ public class ControladorFactura implements Initializable {
 
     private final ObservableList<Producto> listaUsuarios = FXCollections.observableArrayList();
 
-    private final ProductoDAO usuarioDAO = new ProductoDAO();
-    private final ClienteDAO clienteDAO = new ClienteDAO();
+  //  private final ProductoDAO usuarioDAO = new ProductoDAO();
+//private final ClienteDAO clienteDAO = new ClienteDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,7 +126,7 @@ public class ControladorFactura implements Initializable {
 
     private void obtenerProducto() {
         try {
-            List<Producto> datosBD = usuarioDAO.listar();
+        //    List<Producto> datosBD = usuarioDAO.listar();
         } catch (Exception e) {
             e.printStackTrace();
         }

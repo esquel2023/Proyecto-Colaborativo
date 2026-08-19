@@ -5,7 +5,6 @@ import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,15 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.util.Optional;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 
 
 public class controladorCliente {
@@ -43,11 +37,6 @@ public class controladorCliente {
     TableView<clienteClase> tablaClientes;
     @FXML private TableColumn<clienteClase, String> nombreTabla;
     @FXML private TableColumn<clienteClase, String> telefonoTabla;
-
-    // Cambia tu lista observable para que guarde objetos <Cliente>
-
-
-
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final String API_URL = "http://localhost:8080/tienda/api/v1/clientes";

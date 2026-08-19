@@ -1,19 +1,5 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ProductoDAO; // Ajustá según tu paquete de DAO
-import com.example.proyecto_colaborativo.Utilits.AlertasUtils; // Ajustá tus clases útiles
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import java.sql.SQLException;
-import java.util.Optional;
-
 public class ControladorProductosInactivos {
     /*
 

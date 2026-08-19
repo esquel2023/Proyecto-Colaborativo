@@ -1,7 +1,7 @@
 package com.example.proyecto_colaborativo.Clases;
 
 public class proovedorClase extends entidadClase {
-    private int id;
+    private Long id;
 
     // Constructor por defecto (Obligatorio para JavaFX y el DAO)
     public proovedorClase() {
@@ -9,7 +9,7 @@ public class proovedorClase extends entidadClase {
     }
 
     // Constructor completo adaptado a los campos generales de entidadClase
-    public proovedorClase(int idproveedor, String nombre, String cuitcuil, String telefono,
+    public proovedorClase(Long idproveedor, String nombre, String cuitcuil, String telefono,
                           String email, String condicionIva, String pais, String provincia, String ciudad) {
         super();
         this.setId(idproveedor);
@@ -26,11 +26,11 @@ public class proovedorClase extends entidadClase {
     }
 
     // GETTER Y SETTER DEL ID ÚNICO
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

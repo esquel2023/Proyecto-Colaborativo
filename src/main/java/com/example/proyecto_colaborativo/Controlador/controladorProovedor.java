@@ -1,10 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ProveedorDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,35 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
 
 import static com.example.proyecto_colaborativo.Utilits.NavegacionUtils.abrirPantalla;
 
 public class controladorProovedor {
-/*
 
-    public TextField buscadorProovedores;
-    @FXML public TableView<proovedorClase> tablaProovedores;
-    @FXML public TableView<proovedorClase> tablaProductosProovedor;
-    @FXML public TableColumn<proovedorClase, String> prooductosProovedor;
-    @FXML public TableColumn<proovedorClase, String> precioProovedor;
-    @FXML public TableColumn<proovedorClase, String> nombreTabla;
-    @FXML public TableColumn<proovedorClase, String> telefonoTabla;
-    @FXML public SplitMenuButton splitIva;
-    public ComboBox condicionIVA;
-
-
-    @FXML private TextField cuil;
-    @FXML private TextField telefono;
-    @FXML private TextField nombre;
-    @FXML private TextField email;
-    public TextField pais;
-    public TextField provincia;
-    public TextField localidad;
-
- */
 
     private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
     private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
@@ -54,17 +34,20 @@ public class controladorProovedor {
     public TextField localidad;
 
     public TableView<proovedorClase> tablaProovedores;
-    public TableColumn<proovedorClase,String> nombreTabla;
-    public TableColumn<proovedorClase,String> telefonoTabla;
-    public TableColumn<proovedorClase,String> colEmail;
+    public TableColumn<proovedorClase, String> nombreTabla;
+    public TableColumn<proovedorClase, String> telefonoTabla;
+    public TableColumn<proovedorClase, String> colEmail;
 
     public ComboBox<String> condicionIVA;
-    
+
     public TextField buscadorProovedores;
     public Button botonAgregar;
     public Button botonProducto;
 
     proovedorClase proveedorSelec;
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String API_URL = "http://localhost:8080/tienda/api/v1/proveedores";
 
     public void initialize() {
         condicionIVA.getItems().addAll(
@@ -79,13 +62,12 @@ public class controladorProovedor {
             telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
 
 
-
-            listaProveedoresObs.setAll(ProveedorDAO.listar());
+            obtenerProveedoresApi();
 
             tablaProovedores.setItems(listaProveedoresObs);
 
 
-            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((_, _, newValue) -> {
                 if (newValue == null) {
                     listaProductosProveedorObs.clear();
                     limpiarCampos();
@@ -106,6 +88,7 @@ public class controladorProovedor {
             });
         }
     }
+
     @FXML
     public void cambiarIva(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
@@ -113,10 +96,10 @@ public class controladorProovedor {
         condicionIVA.setValue(nuevoIva);
 
     }
+
     private void cargarProductosDelProveedor(Object proveedor) {
         // Lógica para filtrar o cargar productos del proveedor seleccionado
     }
-
 
 
     private void limpiarCampos() {
@@ -148,13 +131,9 @@ public class controladorProovedor {
     public void botonEliminar(ActionEvent actionEvent) {
         proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
         if (proveedorSeleccionado != null) {
-            try{
-                ProveedorDAO.eliminar(proveedorSeleccionado.getNombreEntidad());
-                listaProveedoresObs.remove(proveedorSeleccionado);
-                limpiarCampos();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            eliminarProveedorApi(proveedorSeleccionado);
+            listaProveedoresObs.remove(proveedorSeleccionado);
+            limpiarCampos();
 
         }
     }
@@ -218,7 +197,7 @@ public class controladorProovedor {
                 nuevoProveedor.setProvincia(txtProvincia);
                 nuevoProveedor.setCiudad(txtCiudad);
 
-                ProveedorDAO.insertar(nuevoProveedor);
+                agregarProveeodorApi(nuevoProveedor);
 
                 // Limpieza de interfaz y actualización
                 limpiarCampos();
@@ -249,7 +228,7 @@ public class controladorProovedor {
 
         // 4. Validar que no dejen ningún campo vacío
         if (nuevonombre.isEmpty() || nuevocuil.isEmpty() ||
-                nuevoemail.isEmpty() || nuevotelefono.isEmpty()|| nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
+                nuevoemail.isEmpty() || nuevotelefono.isEmpty() || nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
             System.out.println("Error: No puedes dejar campos vacíos.");
             return;
         }
@@ -261,6 +240,8 @@ public class controladorProovedor {
         proveedorSeleccionado.setCiudad(nuevaciudad);
         proveedorSeleccionado.setPais(nuevopais);
         proveedorSeleccionado.setProvincia(nuevaprov);
+
+        modificarProveedorApi(proveedorSeleccionado);
 
         tablaProovedores.refresh();
 
@@ -276,7 +257,200 @@ public class controladorProovedor {
         controladorProveedorSelec.setProveedorSelec(proveedorSelec);
 
 
+    }
 
+    /*
+
+            API
+
+
+     */
+    private void obtenerProveedoresApi() {
+        Thread apiThread = new Thread(() -> {
+            try {
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String json = response.body();
+
+                    // Transformamos el JSON directo a tu clase Cliente con Lombok
+                    proovedorClase[] proveedorArray = objectMapper.readValue(json, proovedorClase[].class);
+
+                    // Refrescamos de manera segura la interfaz de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaProveedoresObs.clear();
+                        listaProveedoresObs.addAll(proveedorArray);
+                        System.out.println("[INFO] ¡Tabla JavaFX actualizada con " + proveedorArray.length + " clientes reales!");
+                    });
+
+                    System.out.println("JSON Puro Recibido: " + json);
+
+                } else {
+                    System.out.println("[ERROR] La API respondió con código: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] No se pudo conectar o parsear la data de la API.");
+                e.printStackTrace();
+            }
+
+        });
+        apiThread.setDaemon(true);
+
+        // 6. Iniciamos la ejecución del hilo
+        apiThread.start();
+
+    }
+
+
+    private void eliminarProveedorApi(proovedorClase proveedorAeliminar) {
+        if (proveedorAeliminar == null) return;
+
+        Thread deleteThread = new Thread(() -> {
+            try {
+
+
+                Long idProveedor = proveedorAeliminar.getId();
+
+                String urlEliminar = API_URL + "/" + idProveedor;
+
+                System.out.println("[DEBUG] Intentando eliminar en: " + urlEliminar);
+
+
+                // 2. Construir la petición DELETE
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(urlEliminar))
+                        .DELETE()
+                        .build();
+
+                // 3. Enviar la solicitud
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 4. Tu API de Spring Boot responde con 24 (No Content) al eliminar con éxito
+                if (response.statusCode() == 204 || response.statusCode() == 200) {
+                    System.out.println("[INFO] Proveedor eliminado de la API con éxito.");
+
+                    // 5. Remover el cliente visualmente de la tabla en el hilo de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaProveedoresObs.remove(proveedorAeliminar);
+                        tablaProovedores.getSelectionModel().clearSelection();
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo eliminar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de eliminación.");
+                e.printStackTrace();
+            }
+        });
+
+        deleteThread.setDaemon(true);
+        deleteThread.start();
+    }
+
+    private void modificarProveedorApi(proovedorClase proveedorModificado) {
+        if (proveedorModificado == null) return;
+
+        Thread putThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 1. Convertir el objeto Java actualizado a un texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(proveedorModificado);
+
+                // 2. Construir la petición PUT incluyendo el JSON en el cuerpo
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Obligatorio para indicarle a Spring Boot que mandas un JSON
+                        .PUT(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo PUT con su Body
+                        .build();
+
+                // 3. Enviar la solicitud
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 4. Tu API responde con 200 OK y devuelve el cliente modificado
+                if (response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+                    proovedorClase proveedorActualizadoApi = objectMapper.readValue(jsonRespuesta, proovedorClase[].class != null ? proovedorClase.class : proovedorClase.class);
+
+                    System.out.println("[INFO] Cliente modificado en la API con éxito.");
+
+                    // 5. Refrescar la interfaz visual de JavaFX de forma segura
+                    javafx.application.Platform.runLater(() -> {
+                        // Buscamos el índice actual en la lista y lo reemplazamos por el actualizado de la API
+                        int index = listaProveedoresObs.indexOf(proveedorModificado);
+                        if (index >= 0) {
+                            listaProveedoresObs.set(index, proveedorActualizadoApi);
+                        }
+                        // Fuerza el redibujado de las celdas
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo modificar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de modificación.");
+                e.printStackTrace();
+            }
+        });
+
+        putThread.setDaemon(true);
+        putThread.start();
+    }
+    private void agregarProveeodorApi(proovedorClase nuevoProveedor) {
+        if (nuevoProveedor == null) return;
+
+        // 1. Crear el hilo para no congelar la pantalla
+        Thread postThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 2. Convertir tu objeto Java a texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(nuevoProveedor);
+
+                // 3. Construir la petición POST
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Avisamos a Spring Boot que va un JSON
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo POST con el body
+                        .build();
+
+                // 4. Enviar los datos a la API
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 5. Tu API responde con 201 (Created) si el alta fue exitosa
+                if (response.statusCode() == 201 || response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+
+                    // Parseamos el cliente definitivo devuelto por la API
+                    proovedorClase proveedorCreadoApi = objectMapper.readValue(jsonRespuesta, proovedorClase.class);
+
+                    System.out.println("[INFO] Cliente agregado a la API con éxito.");
+
+                    // 6. Impactar el cambio de forma segura en la interfaz visual de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaProveedoresObs.add(proveedorCreadoApi); // Se dibuja solo en la TableView
+                    });
+
+                } else {
+                    System.out.println("[ERROR] No se pudo agregar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de alta.");
+                e.printStackTrace();
+            }
+        });
+
+        postThread.setDaemon(true);
+        postThread.start();
     }
 }
 
