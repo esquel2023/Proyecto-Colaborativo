@@ -12,7 +12,7 @@ public class Producto {
     private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
     private final DoubleProperty precio;
     private final StringProperty codigoBarra;
-
+//45
     // Este es el puente estático que guardará el producto temporalmente en memoria
     public static Producto productoSeleccionadoParaEditar = null;
 
