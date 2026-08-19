@@ -4,32 +4,16 @@ public class clienteClase extends entidadClase {
 
     private int id;
 
-    // Constructor por defecto (Obligatorio para JavaFX y DAO)
     public clienteClase() {
-        super();
+
     }
 
-    // Constructor completo adaptado con los nuevos campos de la interfaz
-    public clienteClase(int idcliente, String nombre, String dni, String telefono, String email,
-                        String cuitcuil, String tipoIdentificacion,
-                        String condicionIva, String pais, String provincia, String ciudad) {
-        super();
-        this.setId(idcliente);
-        this.setNombreEntidad(nombre);
-        this.setDniEntidad(dni);
-        this.setTelefonoEntidad(telefono);
-        this.setEmailEntidad(email);
-        this.setCuitcuilEntidad(cuitcuil);
+    public clienteClase(String s, String number, String number1, String eqrq, String number2, String number3) {
 
-        // CORRECCIÓN: Se asignan usando los setters heredados de entidadClase
-        this.setTipoIdentificacion(tipoIdentificacion);
-        this.setCondicionIva(condicionIva);
-        this.setPais(pais);
-        this.setProvincia(provincia);
-        this.setCiudad(ciudad);
     }
+    // Constructor por defecto
 
-    // EL ÚNICO GETTER Y SETTER PROPIO QUE DEBE QUEDAR ES EL DEL ID
+
     public int getId() {
         return id;
     }
@@ -37,4 +21,21 @@ public class clienteClase extends entidadClase {
     public void setId(int id) {
         this.id = id;
     }
+
+    // Constructor completo adaptado a los métodos de eliseoClase
+    public clienteClase(int idcliente, String nombre, String dni, String telefono, String email, String direccion, String cuitcuil) {
+        super();
+        this.setId(idcliente);
+        this.setNombreEntidad(nombre);
+        this.setDniEntidad(dni);
+        this.setTelefonoEntidad((telefono));
+        this.setEmailEntidad(email);
+        this.setDireccionEntidad(direccion);
+        this.setCuitcuilEntidad(cuitcuil);
+
+    }
+
+
+
 }
+

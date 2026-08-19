@@ -1,6 +1,13 @@
+````
 .root {
     -fx-background-color: #FAFAFA;
+    -fx-font-family: "Segoe UI";
 }
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
 
 .sidebar {
     -fx-background-color: #324A5F;
@@ -16,18 +23,29 @@
 .sidebar-button {
     -fx-background-color: transparent;
     -fx-text-fill: white;
+
     -fx-font-size: 15px;
     -fx-font-weight: bold;
+
     -fx-alignment: CENTER_LEFT;
+
     -fx-background-radius: 12;
+
     -fx-padding: 12 18 12 18;
+
     -fx-cursor: hand;
+
     -fx-pref-width: 180px;
 }
 
 .sidebar-button:hover {
     -fx-background-color: #6F8FAF;
 }
+
+
+/* =========================================================
+   MENU PRINCIPAL
+   ========================================================= */
 
 .header {
     -fx-background-color: white;
@@ -55,11 +73,26 @@
     -fx-font-weight: bold;
     -fx-text-fill: #324A5F;
 }
+
+
+/* =========================================================
+   CARDS MENU PRINCIPAL
+   ========================================================= */
+
 .card {
     -fx-background-radius: 18;
     -fx-border-radius: 18;
+
     -fx-border-width: 1.5;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 4);
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.10),
+        12,
+        0,
+        0,
+        4
+    );
 }
 
 .card-title {
@@ -79,35 +112,6 @@
     -fx-text-fill: #6C757D;
 }
 
-.panel {
-    -fx-background-color: white;
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-    -fx-border-color: #E8EDF2;
-}
-
-.panel-title {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #263238;
-}
-.eye-button{
-
-    -fx-background-color: transparent;
-    -fx-font-size: 18px;
-    -fx-cursor: hand;
-
-    -fx-background-radius: 50;
-
-    -fx-padding: 6;
-
-}
-
-.eye-button:hover{
-
-    -fx-background-color: rgba(50,74,95,0.12);
-
-}
 .card-caja {
     -fx-background-color: #E8F1FF;
     -fx-border-color: #BFD7FF;
@@ -129,22 +133,81 @@
 }
 
 .card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.16),
+        14,
+        0,
+        0,
+        5
+    );
 }
 
-/* PANTALLA VENTAS */
+
+/* =========================================================
+   PANEL GENERAL
+   ========================================================= */
+
+.panel {
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: #E8EDF2;
+}
+
+.panel-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+
+/* =========================================================
+   BOTON OJO CAJA
+   ========================================================= */
+
+.eye-button {
+    -fx-background-color: transparent;
+
+    -fx-font-size: 18px;
+
+    -fx-cursor: hand;
+
+    -fx-background-radius: 50;
+
+    -fx-padding: 6;
+}
+
+.eye-button:hover {
+    -fx-background-color: rgba(50,74,95,0.12);
+}
+
+
+/* =========================================================
+   =========================================================
+   VENTAS
+   =========================================================
+   ========================================================= */
 
 .root-ventas {
     -fx-background-color: #FAFAFA;
 }
 
-/* HEADER */
+
+/* =========================================================
+   HEADER VENTAS
+   ========================================================= */
 
 .header-simple {
     -fx-background-color: white;
+
     -fx-background-radius: 18;
     -fx-border-radius: 18;
+
     -fx-border-color: #E8EDF2;
+
     -fx-padding: 14 18;
 }
 
@@ -174,30 +237,51 @@
     -fx-text-fill: #6C757D;
 }
 
-/* CARDS */
+
+/* =========================================================
+   CARDS VENTAS
+   ========================================================= */
 
 .card-venta,
 .resumen-card {
     -fx-background-color: white;
+
     -fx-background-radius: 18;
     -fx-border-radius: 18;
+
     -fx-border-color: #E8EDF2;
+
     -fx-padding: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.08),
+        12,
+        0,
+        0,
+        4
+    );
 }
 
 .resumen-card {
-    -fx-pref-width: 310px;
-    -fx-min-width: 310px;
+    -fx-min-width: 150px;
+    -fx-pref-width: 165px;
+    -fx-max-width: 175px;
 }
 
-/* SECCIONES CLIENTE / PRODUCTO */
+
+/* =========================================================
+   SECCIONES CLIENTE / PRODUCTO
+   ========================================================= */
 
 .barra-acciones {
     -fx-background-color: #F8FAFC;
+
     -fx-background-radius: 14;
     -fx-border-radius: 14;
+
     -fx-border-color: #E8EDF2;
+
     -fx-padding: 10 12;
 }
 
@@ -207,20 +291,29 @@
     -fx-text-fill: #324A5F;
 }
 
-/* INPUTS */
+
+/* =========================================================
+   INPUTS VENTAS
+   ========================================================= */
 
 .input,
 .input-buscador,
 .combo {
     -fx-background-color: #FAFAFA;
+
     -fx-background-radius: 11;
     -fx-border-radius: 11;
+
     -fx-border-color: #E8EDF2;
     -fx-border-width: 1.2;
+
     -fx-font-size: 13px;
+
     -fx-text-fill: #263238;
     -fx-prompt-text-fill: #8A96A3;
+
     -fx-padding: 8 12;
+
     -fx-pref-height: 36;
 }
 
@@ -231,77 +324,62 @@
     -fx-background-color: white;
 }
 
-/* BOTONES */
 
-.btn-agregar {
-    -fx-background-color: #324A5F;
-    -fx-text-fill: white;
+/* =========================================================
+   BOTONES VENTAS
+   ========================================================= */
+
+.btn-cliente,
+.btn-eliminar-cliente,
+.btn-agregar,
+.btn-toolbar {
+    -fx-min-width: 120px;
+    -fx-pref-width: 120px;
+    -fx-max-width: 120px;
+
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-padding: 0;
+
+    -fx-alignment: CENTER;
+
     -fx-font-size: 13px;
     -fx-font-weight: bold;
+
     -fx-background-radius: 11;
     -fx-border-radius: 11;
-    -fx-padding: 8 12;
-    -fx-min-width: 135px;
-    -fx-pref-height: 36;
+
     -fx-cursor: hand;
 }
 
-.btn-agregar:hover {
-    -fx-background-color: #6F8FAF;
-}
+
+/* AGREGAR CLIENTE */
 
 .btn-cliente {
     -fx-background-color: #E8F1FF;
+
     -fx-text-fill: #324A5F;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 11;
-    -fx-border-radius: 11;
+
     -fx-border-color: #BFD7FF;
     -fx-border-width: 1;
-    -fx-padding: 8 12;
-    -fx-min-width: 105px;
-    -fx-pref-height: 36;
-    -fx-cursor: hand;
 }
 
 .btn-cliente:hover {
     -fx-background-color: #BFD7FF;
 }
 
-.btn-toolbar {
-    -fx-background-color: white;
-    -fx-text-fill: #324A5F;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 11;
-    -fx-border-radius: 11;
-    -fx-border-color: #E8EDF2;
-    -fx-border-width: 1;
-    -fx-padding: 8 12;
-    -fx-min-width: 105px;
-    -fx-pref-height: 36;
-    -fx-cursor: hand;
-}
 
-.btn-toolbar:hover {
-    -fx-background-color: #F5F7FA;
-    -fx-border-color: #324A5F;
-}
+/* ELIMINAR CLIENTE */
 
 .btn-eliminar-cliente {
     -fx-background-color: #FFF5F5;
+
     -fx-text-fill: #C55252;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 11;
-    -fx-border-radius: 11;
+
     -fx-border-color: #F5B5B5;
     -fx-border-width: 1;
-    -fx-padding: 8 12;
-    -fx-min-width: 105px;
-    -fx-pref-height: 36;
-    -fx-cursor: hand;
 }
 
 .btn-eliminar-cliente:hover {
@@ -309,19 +387,62 @@
     -fx-border-color: #D97B7B;
 }
 
-/* CANCELAR */
+
+/* AGREGAR PRODUCTO */
+
+.btn-agregar {
+    -fx-background-color: #324A5F;
+
+    -fx-text-fill: white;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+}
+
+.btn-agregar:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* QUITAR PRODUCTO */
+
+.btn-toolbar {
+    -fx-background-color: white;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+}
+
+.btn-toolbar:hover {
+    -fx-background-color: #F5F7FA;
+    -fx-border-color: #324A5F;
+}
+
+
+/* =========================================================
+   CANCELAR VENTA
+   ========================================================= */
 
 .btn-cancelar {
     -fx-background-color: #FDECEC;
+
     -fx-text-fill: #C55252;
+
     -fx-font-size: 13px;
     -fx-font-weight: bold;
+
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+
     -fx-border-color: #F5B5B5;
     -fx-border-width: 1;
+
     -fx-padding: 8 14;
-    -fx-pref-height: 36;
+
+    -fx-pref-height: 38;
+
     -fx-cursor: hand;
 }
 
@@ -329,6 +450,36 @@
     -fx-background-color: #F8DCDC;
     -fx-border-color: #D97B7B;
 }
+
+
+/* =========================================================
+   FINALIZAR VENTA
+   ========================================================= */
+
+.btn-finalizar {
+    -fx-background-color: #2E7D50;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+
+    -fx-pref-height: 38;
+
+    -fx-cursor: hand;
+}
+
+.btn-finalizar:hover {
+    -fx-background-color: #256B43;
+}
+
+
+/* =========================================================
+   PRESION BOTONES
+   ========================================================= */
 
 .btn-toolbar:pressed,
 .btn-cancelar:pressed,
@@ -340,62 +491,64 @@
     -fx-scale-y: 0.98;
 }
 
-/* FINALIZAR */
 
-.btn-finalizar {
-    -fx-background-color: #2E7D50;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 13;
-    -fx-pref-height: 46;
-    -fx-cursor: hand;
-}
-
-.btn-finalizar:hover {
-    -fx-background-color: #256B43;
-}
-
-/* TABLA */
-
-.tabla {
-    -fx-background-color: white;
-    -fx-background-radius: 14;
-    -fx-border-radius: 14;
-    -fx-border-color: #E8EDF2;
-    -fx-border-width: 1;
-    -fx-padding: 0;
-}
+/* =========================================================
+   TABLAS GENERALES
+   MISMA ESTETICA QUE VENTAS
+   ========================================================= */
 
 .table-view {
     -fx-background-color: white;
+
     -fx-background-radius: 14;
     -fx-border-radius: 14;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+
     -fx-table-cell-border-color: transparent;
+
+    -fx-padding: 0;
 }
 
 .table-view .column-header-background {
     -fx-background-color: #F8FAFC;
+
     -fx-background-radius: 14 14 0 0;
 }
 
 .table-view .column-header {
     -fx-background-color: transparent;
+
     -fx-padding: 8 6;
-    -fx-border-color: transparent transparent #E8EDF2 transparent;
+
+    -fx-border-color:
+        transparent
+        transparent
+        #E8EDF2
+        transparent;
 }
 
 .table-view .column-header .label {
     -fx-font-size: 12px;
+
     -fx-font-weight: bold;
+
     -fx-text-fill: #324A5F;
+
     -fx-alignment: CENTER_LEFT;
 }
 
 .table-row-cell {
     -fx-cell-size: 38;
+
     -fx-background-color: white;
-    -fx-border-color: transparent transparent #F1F3F5 transparent;
+
+    -fx-border-color:
+        transparent
+        transparent
+        #F1F3F5
+        transparent;
 }
 
 .table-row-cell:odd {
@@ -416,17 +569,31 @@
 
 .table-cell {
     -fx-border-color: transparent;
+
     -fx-padding: 0 8;
+
     -fx-alignment: CENTER_LEFT;
+
     -fx-text-fill: #263238;
+
     -fx-font-size: 12px;
 }
 
-/* RESUMEN */
+.table-view .placeholder .label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8A96A3;
+}
+
+
+/* =========================================================
+   RESUMEN VENTA
+   ========================================================= */
 
 .resumen-titulo {
     -fx-font-size: 17px;
+
     -fx-font-weight: bold;
+
     -fx-text-fill: #263238;
 }
 
@@ -436,18 +603,860 @@
 
 .label-resumen {
     -fx-font-size: 12px;
+
     -fx-font-weight: bold;
+
     -fx-text-fill: #6C757D;
 }
 
 .total-grande {
     -fx-font-size: 30px;
+
     -fx-font-weight: bold;
+
     -fx-text-fill: #324A5F;
 }
 
 .vuelto {
     -fx-font-size: 20px;
+
     -fx-font-weight: bold;
+
     -fx-text-fill: #2E7D50;
+}
+
+
+/* =========================================================
+   =========================================================
+   PRODUCTOS
+   =========================================================
+   ========================================================= */
+
+.root-productos {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================================================
+   TARJETAS PRODUCTOS
+   ========================================================= */
+
+.buscador-card,
+.panel-precio {
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: #E8EDF2;
+
+    -fx-padding: 16;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.08),
+        12,
+        0,
+        0,
+        4
+    );
+}
+
+
+/* =========================================================
+   TITULOS PRODUCTOS
+   ========================================================= */
+
+.titulo-seccion {
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #324A5F;
+}
+
+
+/* =========================================================
+   BUSCADOR PRODUCTOS
+   ========================================================= */
+
+.input-busqueda {
+    -fx-background-color: #FAFAFA;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1.2;
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #263238;
+    -fx-prompt-text-fill: #8A96A3;
+
+    -fx-pref-height: 36;
+
+    -fx-padding: 8 12;
+}
+
+.input-busqueda:focused {
+    -fx-background-color: white;
+    -fx-border-color: #324A5F;
+}
+
+
+/* =========================================================
+   TABLA PRODUCTOS
+   ========================================================= */
+
+.tabla-productos {
+    -fx-background-color: white;
+
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+}
+
+
+/* =========================================================
+   PRECIO FINAL PRODUCTOS
+   ========================================================= */
+
+.precio-final-card {
+    -fx-background-color: #F8FAFC;
+
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+
+    -fx-border-color: #E8EDF2;
+
+    -fx-padding: 16;
+
+    -fx-alignment: CENTER;
+}
+
+.precio-final-texto {
+    -fx-font-size: 12px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #6C757D;
+}
+
+.precio-final {
+    -fx-font-size: 30px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #324A5F;
+}
+
+
+/* =========================================================
+   BOTON BUSCAR PRODUCTOS
+   ========================================================= */
+
+.btn-buscar {
+    -fx-background-color: #324A5F;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-pref-width: 48;
+    -fx-pref-height: 38;
+
+    -fx-cursor: hand;
+}
+
+.btn-buscar:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* =========================================================
+   BOTONES PRODUCTOS
+   ========================================================= */
+
+.btn-agregar-producto,
+.btn-modificar,
+.btn-eliminar,
+.btn-salir {
+    -fx-min-height: 38;
+    -fx-pref-height: 38;
+    -fx-max-height: 38;
+
+    -fx-font-size: 13px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-cursor: hand;
+}
+
+
+/* AGREGAR */
+
+.btn-agregar-producto {
+    -fx-background-color: #324A5F;
+    -fx-text-fill: white;
+}
+
+.btn-agregar-producto:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* MODIFICAR */
+
+.btn-modificar {
+    -fx-background-color: #E8F1FF;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #BFD7FF;
+    -fx-border-width: 1;
+}
+
+.btn-modificar:hover {
+    -fx-background-color: #D8E8FF;
+}
+
+
+/* ELIMINAR */
+
+.btn-eliminar {
+    -fx-background-color: #FFF5F5;
+
+    -fx-text-fill: #C55252;
+
+    -fx-border-color: #F5B5B5;
+    -fx-border-width: 1;
+}
+
+.btn-eliminar:hover {
+    -fx-background-color: #FDECEC;
+}
+
+
+/* SALIR */
+
+.btn-salir {
+    -fx-background-color: white;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+}
+
+.btn-salir:hover {
+    -fx-background-color: #F5F7FA;
+    -fx-border-color: #324A5F;
+}
+
+
+/* =========================================================
+   SUBTITULO FORMULARIO PRODUCTOS
+   ========================================================= */
+
+.subtitulo-formulario {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6C757D;
+}
+
+
+/* =========================================================
+   =========================================================
+   PROVEEDORES
+   =========================================================
+   ========================================================= */
+
+.root-proveedores {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================================================
+   HEADER PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .header {
+    -fx-background-color: white;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 0 0 1 0;
+}
+
+.root-proveedores .titulo {
+    -fx-font-size: 26px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #263238;
+}
+
+.root-proveedores .subtitulo {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6C757D;
+}
+
+
+/* =========================================================
+   CONTENIDO PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .content {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================================================
+   PANEL PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .panel {
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.08),
+        12,
+        0,
+        0,
+        4
+    );
+}
+
+.root-proveedores .panel-title {
+    -fx-font-size: 17px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #263238;
+}
+
+
+/* =========================================================
+   LABELS PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .form-label {
+    -fx-font-size: 13px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #324A5F;
+}
+
+
+/* =========================================================
+   CAMPOS PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .form-field {
+    -fx-background-color: #FAFAFA;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1.2;
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #263238;
+
+    -fx-prompt-text-fill: #8A96A3;
+
+    -fx-padding: 8 12;
+
+    -fx-pref-height: 36;
+}
+
+.root-proveedores .form-field:focused {
+    -fx-background-color: white;
+
+    -fx-border-color: #324A5F;
+}
+
+
+/* =========================================================
+   COMBOBOX PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .combo-box.form-field {
+    -fx-padding: 0;
+}
+
+.root-proveedores .combo-box.form-field .list-cell {
+    -fx-padding: 8 12;
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #263238;
+}
+
+.root-proveedores .combo-box.form-field .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.root-proveedores .combo-box.form-field .arrow {
+    -fx-background-color: #324A5F;
+}
+
+
+/* =========================================================
+   BOTONES PROVEEDORES
+   ========================================================= */
+
+.root-proveedores .btn-primary,
+.root-proveedores .btn-warning,
+.root-proveedores .btn-danger {
+    -fx-min-height: 38;
+    -fx-pref-height: 38;
+    -fx-max-height: 38;
+
+    -fx-font-size: 13px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-cursor: hand;
+}
+
+
+/* AGREGAR / BUSCAR */
+
+.root-proveedores .btn-primary {
+    -fx-background-color: #324A5F;
+
+    -fx-text-fill: white;
+
+    -fx-border-color: transparent;
+}
+
+.root-proveedores .btn-primary:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* MODIFICAR */
+
+.root-proveedores .btn-warning {
+    -fx-background-color: #E8F1FF;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #BFD7FF;
+
+    -fx-border-width: 1;
+}
+
+.root-proveedores .btn-warning:hover {
+    -fx-background-color: #D8E8FF;
+}
+
+
+/* ELIMINAR */
+
+.root-proveedores .btn-danger {
+    -fx-background-color: #FFF5F5;
+
+    -fx-text-fill: #C55252;
+
+    -fx-border-color: #F5B5B5;
+
+    -fx-border-width: 1;
+}
+
+.root-proveedores .btn-danger:hover {
+    -fx-background-color: #FDECEC;
+}
+
+.root-proveedores .btn-primary:pressed,
+.root-proveedores .btn-warning:pressed,
+.root-proveedores .btn-danger:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* =========================================================
+   STOCK
+   ========================================================= */
+
+.root-stock {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================================================
+   BOTONES STOCK
+   TODOS EXACTAMENTE IGUALES
+   ========================================================= */
+
+.btn-stock-modificar,
+.btn-stock-eliminar,
+.btn-stock-buscar {
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-cursor: hand;
+
+    -fx-alignment: CENTER;
+}
+
+
+/* =========================================================
+   MODIFICAR
+   ========================================================= */
+
+.btn-stock-modificar {
+
+    -fx-background-color: #E8F1FF;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #BFD7FF;
+
+    -fx-border-width: 1;
+}
+
+.btn-stock-modificar:hover {
+    -fx-background-color: #D8E8FF;
+}
+
+
+/* =========================================================
+   ELIMINAR
+   ========================================================= */
+
+.btn-stock-eliminar {
+
+    -fx-background-color: #FFF5F5;
+
+    -fx-text-fill: #C55252;
+
+    -fx-border-color: #F5B5B5;
+
+    -fx-border-width: 1;
+}
+
+.btn-stock-eliminar:hover {
+    -fx-background-color: #FDECEC;
+}
+
+
+/* =========================================================
+   BUSCAR
+   ========================================================= */
+
+.btn-stock-buscar {
+
+    -fx-background-color: #324A5F;
+
+    -fx-text-fill: white;
+
+    -fx-border-color: transparent;
+}
+
+.btn-stock-buscar:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* =========================================================
+   PRESION
+   ========================================================= */
+
+.btn-stock-modificar:pressed,
+.btn-stock-eliminar:pressed,
+.btn-stock-buscar:pressed {
+
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+
+/* =========================================================
+   DATE PICKER
+   ========================================================= */
+
+.date-stock {
+
+    -fx-background-color: #FAFAFA;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-border-color: #E8EDF2;
+
+    -fx-border-width: 1.2;
+
+    -fx-font-size: 13px;
+}
+
+.date-stock .text-field {
+
+    -fx-background-color: transparent;
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #263238;
+}
+
+.date-stock:focused {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #324A5F;
+}
+/* =========================================================
+   PROVEEDORES - BOTONES ESPECIFICOS
+   ========================================================= */
+
+.btn-proveedor-modificar,
+.btn-proveedor-eliminar {
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+
+    -fx-cursor: hand;
+
+    -fx-alignment: CENTER;
+
+    -fx-min-height: 38;
+    -fx-pref-height: 38;
+    -fx-max-height: 38;
+}
+
+
+/* MODIFICAR */
+
+.btn-proveedor-modificar {
+
+    -fx-background-color: #E8F1FF;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-border-color: #BFD7FF;
+
+    -fx-border-width: 1;
+}
+
+.btn-proveedor-modificar:hover {
+    -fx-background-color: #D8E8FF;
+}
+
+
+/* ELIMINAR */
+
+.btn-proveedor-eliminar {
+
+    -fx-background-color: #FFF5F5;
+
+    -fx-text-fill: #C55252;
+
+    -fx-border-color: #F5B5B5;
+
+    -fx-border-width: 1;
+}
+
+.btn-proveedor-eliminar:hover {
+    -fx-background-color: #FDECEC;
+}
+
+
+/* PRESION */
+
+.btn-proveedor-modificar:pressed,
+.btn-proveedor-eliminar:pressed {
+
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+/* =========================================================
+   CLIENTES
+   ========================================================= */
+
+.root-clientes .btn-cliente {
+    -fx-background-color: #324A5F;
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+
+    -fx-padding: 8px 14px;
+
+    -fx-min-width: 260px;
+    -fx-pref-width: 260px;
+    -fx-max-width: 260px;
+
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+}
+```
+
+/* =========================================================
+   STOCK - AJUSTES VISUALES
+   ========================================================= */
+
+.root-stock .card-venta {
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+
+    -fx-padding: 16;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0,0,0,0.06),
+        10,
+        0,
+        0,
+        3
+    );
+}
+
+.root-stock .btn-stock-modificar,
+.root-stock .btn-stock-eliminar,
+.root-stock .btn-stock-buscar {
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.root-stock .date-stock {
+    -fx-background-color: #FAFAFA;
+
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1.2px;
+
+    -fx-font-size: 13px;
+}
+
+.root-stock .date-stock:focused {
+    -fx-background-color: white;
+    -fx-border-color: #324A5F;
+}
+
+.root-stock .table-view {
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+}
+
+````
+
+/* =========================================================
+   PRODUCTOS - TAMAÑO DE BOTONES
+   ========================================================= */
+
+.root-productos .btn-agregar-producto,
+.root-productos .btn-modificar,
+.root-productos .btn-eliminar {
+    -fx-min-width: 145px;
+    -fx-pref-width: 145px;
+    -fx-max-width: 145px;
+
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-alignment: CENTER;
+}
+
+/* Botón Calcular precio de venta */
+.root-productos .btn-calcular-precio {
+    -fx-min-width: 190px;
+    -fx-pref-width: 190px;
+    -fx-max-width: 190px;
+
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-background-color: #324A5F;
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+}
+
+.root-productos .btn-calcular-precio:hover {
+    -fx-background-color: #6F8FAF;
+
+}
+.root-productos .btn-calcular-precio {
+    -fx-min-width: 190px;
+    -fx-pref-width: 190px;
+    -fx-max-width: 190px;
+
+    -fx-min-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-max-height: 38px;
+
+    -fx-background-color: #324A5F;
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
+
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
 }
