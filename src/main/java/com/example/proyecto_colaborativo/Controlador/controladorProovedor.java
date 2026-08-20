@@ -1,458 +1,636 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Clases.proovedorClase;
-import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.example.proyecto_colaborativo.bd.ProveedorDAO;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
-
-import static com.example.proyecto_colaborativo.Utilits.NavegacionUtils.abrirPantalla;
 
 public class controladorProovedor {
 
-
-    private final ObservableList<proovedorClase> listaProveedoresObs = FXCollections.observableArrayList();
-    private final ObservableList<proovedorClase> listaProductosProveedorObs = FXCollections.observableArrayList();
-
-    public TextField nombre;
-    public TextField cuit;
-    public TextField email;
-    public TextField telefono;
-    public TextField pais;
-    public TextField provincia;
-    public TextField localidad;
-
-    public TableView<proovedorClase> tablaProovedores;
-    public TableColumn<proovedorClase, String> nombreTabla;
-    public TableColumn<proovedorClase, String> telefonoTabla;
-    public TableColumn<proovedorClase, String> colEmail;
-
-    public ComboBox<String> condicionIVA;
-
-    public TextField buscadorProovedores;
-    public Button botonAgregar;
-    public Button botonProducto;
-
-    proovedorClase proveedorSelec;
-
-    private final HttpClient httpClient = HttpClient.newHttpClient();
-    private final String API_URL = "http://localhost:8080/tienda/api/v1/proveedores";
-
-    public void initialize() {
-        condicionIVA.getItems().addAll(
-                "Responsable Inscripto",
-                "Monotributista"
-
-        );
-        if (tablaProovedores != null) {
-            tablaProovedores.setPlaceholder(new Label("No hay proveedores cargados"));
-
-            nombreTabla.setCellValueFactory(new PropertyValueFactory<>("nombreEntidad"));
-            telefonoTabla.setCellValueFactory(new PropertyValueFactory<>("telefonoEntidad"));
-
-
-            obtenerProveedoresApi();
-
-            tablaProovedores.setItems(listaProveedoresObs);
-
-
-            tablaProovedores.getSelectionModel().selectedItemProperty().addListener((_, _, newValue) -> {
-                if (newValue == null) {
-                    listaProductosProveedorObs.clear();
-                    limpiarCampos();
-                } else {
-                    nombre.setText(newValue.getNombreEntidad());
-                    telefono.setText(newValue.getTelefonoEntidad());
-                    email.setText(newValue.getEmailEntidad());
-                    cuit.setText(newValue.getCuitcuilEntidad());
-                    pais.setText(newValue.getPais());
-                    provincia.setText(newValue.getProvincia());
-                    localidad.setText(newValue.getCiudad());
-                    condicionIVA.setValue(newValue.getCondicionIva());
-                    cargarProductosDelProveedor(newValue);
-                    this.proveedorSelec = newValue;
-                    botonProducto.getStyleClass().remove("btn-warning");
-                    botonProducto.getStyleClass().add("btn-danger");
-                }
-            });
-        }
-    }
+    /* =========================================================
+       CAMPOS DEL FORMULARIO
+       ========================================================= */
 
     @FXML
-    public void cambiarIva(ActionEvent event) {
-        MenuItem item = (MenuItem) event.getSource();
-        String nuevoIva = item.getText();
-        condicionIVA.setValue(nuevoIva);
+    private TextField nombre;
 
+    @FXML
+    private TextField cuit;
+
+    @FXML
+    private TextField email;
+
+    @FXML
+    private TextField telefono;
+
+    @FXML
+    private ComboBox<String> condicionIVA;
+
+    @FXML
+    private TextField pais;
+
+    @FXML
+    private TextField provincia;
+
+    @FXML
+    private TextField localidad;
+
+
+    /* =========================================================
+       BUSCADOR
+       ========================================================= */
+
+    @FXML
+    private TextField txtBuscar;
+
+
+    /* =========================================================
+       TABLA
+       ========================================================= */
+
+    @FXML
+    private TableView<proovedorClase> tablaProveedores;
+
+    @FXML
+    private TableColumn<proovedorClase, String> colNombre;
+
+    @FXML
+    private TableColumn<proovedorClase, String> colTelefono;
+
+    @FXML
+    private TableColumn<proovedorClase, String> colEmail;
+
+
+    /* =========================================================
+       BOTONES
+       ========================================================= */
+
+    @FXML
+    private Button botonAgregar;
+
+    @FXML
+    private Button botonModificar;
+
+    @FXML
+    private Button botonEliminar;
+
+    @FXML
+    private Button botonBuscar;
+
+
+    /* =========================================================
+       FECHA Y HORA
+       ========================================================= */
+
+    @FXML
+    private Label fechaLabel;
+
+    @FXML
+    private Label horaLabel;
+
+
+    /* =========================================================
+       LISTA
+       ========================================================= */
+
+    private final ObservableList<proovedorClase> listaProveedores =
+            FXCollections.observableArrayList();
+
+
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
+
+    @FXML
+    public void initialize() {
+
+        configurarTabla();
+
+        cargarProveedores();
+
+        configurarComboIVA();
+
+        configurarSeleccionTabla();
+
+        iniciarReloj();
     }
 
-    private void cargarProductosDelProveedor(Object proveedor) {
-        // Lógica para filtrar o cargar productos del proveedor seleccionado
-    }
 
+    /* =========================================================
+       CONFIGURAR TABLA
+       ========================================================= */
 
-    private void limpiarCampos() {
-        nombre.clear();
-        telefono.clear();
-        email.clear();
-        cuit.clear();
-        pais.clear();
-        provincia.clear();
-        localidad.clear();
-    }
+    private void configurarTabla() {
 
-    public void buscarProveedor(ActionEvent actionEvent) {
-
-        BuscadorUtils.configuradorBuscador(
-                buscadorProovedores,
-                tablaProovedores,
-                listaProveedoresObs,
-                (proveedor, texto) -> {
-                    // Validación segura contra valores nulos
-                    boolean coincideNombre = proveedor.getNombreEntidad() != null &&
-                            proveedor.getNombreEntidad().toLowerCase().contains(texto);
-
-                    return coincideNombre;
-
-                });
-    }
-
-    public void botonEliminar(ActionEvent actionEvent) {
-        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
-        if (proveedorSeleccionado != null) {
-            eliminarProveedorApi(proveedorSeleccionado);
-            listaProveedoresObs.remove(proveedorSeleccionado);
-            limpiarCampos();
-
-        }
-    }
-
-    public void botonAgrega(ActionEvent actionEvent) {
-        String txtNombre = nombre.getText();
-        String txtTelefono = telefono.getText();
-        String txtEmail = email.getText();
-        String txtCuil = cuit.getText();
-        String txtPais = pais.getText();
-        String txtProvincia = provincia.getText();
-        String txtCiudad = localidad.getText();
-        String txtIva = condicionIVA.getValue();
-
-        if (txtNombre.isEmpty() || txtCuil.isEmpty() || txtEmail.isEmpty() || txtTelefono.isEmpty()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos.", Alert.AlertType.INFORMATION);
-            return;
-        }
-        if (txtIva == null || txtIva.isEmpty() || txtIva.equals("--")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Menú sin seleccionar.", "Por favor, elige la Condición de IVA.", Alert.AlertType.INFORMATION);
-            return;
-        }
-
-        if (txtCuil.contains("-") || !txtEmail.contains("@") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "Formatos inválidos.", "Por favor revisa los formatos de CUIT, Email o Nombre.", Alert.AlertType.INFORMATION);
-            return;
-        }
-
-        try {
-            Long.parseLong(txtCuil);
-        } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("Datos inválidos", "CUIT / CUIL", "Por favor, corrija el número de identificación sin puntos ni letras.", Alert.AlertType.INFORMATION);
-            return;
-        }
-        String mensaje = String.format(
-                "¿Confirmas los datos del proveedor?\n\nNombre: %s\nCUIT: %s\nTeléfono: %s\nEmail: %s\nIVA: %s\nUbicación: %s, %s",
-                txtNombre, txtCuil, txtTelefono, txtEmail, txtIva, txtProvincia, txtPais
+        colNombre.setCellValueFactory(
+                new PropertyValueFactory<>("nombreEntidad")
         );
 
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Confirmación de Proveedor");
-        alerta.setHeaderText("Revisa los datos antes de guardar");
+        colTelefono.setCellValueFactory(
+                new PropertyValueFactory<>("telefonoEntidad")
+        );
+
+        colEmail.setCellValueFactory(
+                new PropertyValueFactory<>("emailEntidad")
+        );
+
+        tablaProveedores.setPlaceholder(
+                new Label("No hay proveedores cargados")
+        );
+
+        tablaProveedores.setItems(listaProveedores);
+    }
+
+
+    /* =========================================================
+       CARGAR PROVEEDORES
+       ========================================================= */
+
+    private void cargarProveedores() {
+
+        listaProveedores.clear();
+
+        listaProveedores.addAll(
+                ProveedorDAO.listar()
+        );
+    }
+
+
+    /* =========================================================
+       COMBO CONDICION IVA
+       ========================================================= */
+
+    private void configurarComboIVA() {
+
+        condicionIVA.setItems(
+                FXCollections.observableArrayList(
+                        "Responsable Inscripto",
+                        "Monotributista",
+                        "Consumidor Final",
+                        "Exento"
+                )
+        );
+    }
+
+
+    /* =========================================================
+       SELECCION DE TABLA
+       ========================================================= */
+
+    private void configurarSeleccionTabla() {
+
+        tablaProveedores
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (observable, anterior, seleccionado) -> {
+
+                            if (seleccionado != null) {
+
+                                nombre.setText(
+                                        seleccionado.getNombreEntidad()
+                                );
+
+                                telefono.setText(
+                                        seleccionado.getTelefonoEntidad()
+                                );
+
+                                email.setText(
+                                        seleccionado.getEmailEntidad()
+                                );
+
+                                cuit.setText(
+                                        seleccionado.getCuitcuilEntidad()
+                                );
+                            }
+                        }
+                );
+    }
+
+
+    /* =========================================================
+       AGREGAR
+       ========================================================= */
+
+    @FXML
+    private void botonAgregar(ActionEvent event)
+            throws IOException {
+
+        String txtNombre = nombre.getText().trim();
+        String txtTelefono = telefono.getText().trim();
+        String txtEmail = email.getText().trim();
+        String txtCuit = cuit.getText().trim();
+
+
+        if (txtNombre.isEmpty()
+                || txtTelefono.isEmpty()
+                || txtEmail.isEmpty()
+                || txtCuit.isEmpty()) {
+
+            AlertasUtils.mostrarInformacion(
+                    "Campos vacíos",
+                    "Complete Nombre, CUIT, Correo y Teléfono."
+            );
+
+            return;
+        }
+
+
+        String mensaje =
+                "¿Confirmás los datos del proveedor?\n\n"
+                        + "Nombre: " + txtNombre + "\n"
+                        + "Teléfono: " + txtTelefono + "\n"
+                        + "Email: " + txtEmail + "\n"
+                        + "CUIT: " + txtCuit;
+
+
+        Alert alerta =
+                new Alert(Alert.AlertType.CONFIRMATION);
+
+        alerta.setTitle(
+                "Confirmación de proveedor"
+        );
+
+        alerta.setHeaderText(
+                "Revisá los datos antes de guardar"
+        );
+
         alerta.setContentText(mensaje);
 
-        ButtonType botonConfirmar = new ButtonType("Confirmar");
-        ButtonType botonModificar = new ButtonType("Modificar / Cancelar");
-        alerta.getButtonTypes().setAll(botonConfirmar, botonModificar);
 
-        Optional<ButtonType> resultado = alerta.showAndWait();
+        ButtonType confirmar =
+                new ButtonType("Confirmar");
 
-        if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-            try {
-                proovedorClase nuevoProveedor = new proovedorClase();
+        ButtonType cancelar =
+                new ButtonType("Cancelar");
 
-                nuevoProveedor.setNombreEntidad(txtNombre);
-                nuevoProveedor.setTelefonoEntidad(txtTelefono);
-                nuevoProveedor.setEmailEntidad(txtEmail);
-                nuevoProveedor.setCuitcuilEntidad(txtCuil);
-                nuevoProveedor.setCondicionIva(txtIva);
-                nuevoProveedor.setPais(txtPais);
-                nuevoProveedor.setProvincia(txtProvincia);
-                nuevoProveedor.setCiudad(txtCiudad);
 
-                agregarProveeodorApi(nuevoProveedor);
+        alerta.getButtonTypes().setAll(
+                confirmar,
+                cancelar
+        );
 
-                // Limpieza de interfaz y actualización
-                limpiarCampos();
-                System.out.println("Proveedor agregado con éxito.");
 
-            } catch (Exception e) {
-                System.out.println("Error al intentar procesar e insertar el proveedor.");
-                e.printStackTrace();
-            }
+        Optional<ButtonType> resultado =
+                alerta.showAndWait();
+
+
+        if (resultado.isPresent()
+                && resultado.get() == confirmar) {
+
+            proovedorClase proveedor =
+                    new proovedorClase(
+                            1,
+                            txtNombre,
+                            txtTelefono,
+                            txtEmail,
+                            txtCuit
+                    );
+
+
+            ProveedorDAO.insertar(proveedor);
+
+
+            cargarProveedores();
+
+            limpiarCampos();
         }
     }
 
-    public void botonModifica(ActionEvent actionEvent) {
-        proovedorClase proveedorSeleccionado = tablaProovedores.getSelectionModel().getSelectedItem();
+
+    /* =========================================================
+       MODIFICAR
+       ========================================================= */
+
+    @FXML
+    private void botonModificar(ActionEvent event) {
+
+        proovedorClase proveedorSeleccionado =
+                tablaProveedores
+                        .getSelectionModel()
+                        .getSelectedItem();
+
 
         if (proveedorSeleccionado == null) {
-            System.out.println("Error: Debes seleccionar un proveedor de la tabla.");
+
+            AlertasUtils.mostrarInformacion(
+                    "Proveedor",
+                    "Seleccione un proveedor de la tabla."
+            );
+
             return;
         }
 
-        String nuevonombre = nombre.getText();
-        String nuevotelefono = telefono.getText();
-        String nuevoemail = email.getText();
-        String nuevocuil = cuit.getText();
-        String nuevopais = pais.getText();
-        String nuevaprov = provincia.getText();
-        String nuevaciudad = localidad.getText();
 
-        // 4. Validar que no dejen ningún campo vacío
-        if (nuevonombre.isEmpty() || nuevocuil.isEmpty() ||
-                nuevoemail.isEmpty() || nuevotelefono.isEmpty() || nuevaciudad.isEmpty() || nuevopais.isEmpty() || nuevaprov.isEmpty()) {
-            System.out.println("Error: No puedes dejar campos vacíos.");
+        String nuevoNombre =
+                nombre.getText().trim();
+
+        String nuevoTelefono =
+                telefono.getText().trim();
+
+        String nuevoEmail =
+                email.getText().trim();
+
+        String nuevoCuit =
+                cuit.getText().trim();
+
+
+        if (nuevoNombre.isEmpty()
+                || nuevoTelefono.isEmpty()
+                || nuevoEmail.isEmpty()
+                || nuevoCuit.isEmpty()) {
+
+            AlertasUtils.mostrarInformacion(
+                    "Campos vacíos",
+                    "No puede dejar campos vacíos."
+            );
+
             return;
         }
 
-        proveedorSeleccionado.setNombreEntidad(nuevonombre);
-        proveedorSeleccionado.setTelefonoEntidad((nuevotelefono));
-        proveedorSeleccionado.setEmailEntidad(nuevoemail);
-        proveedorSeleccionado.setCuitcuilEntidad(nuevocuil);
-        proveedorSeleccionado.setCiudad(nuevaciudad);
-        proveedorSeleccionado.setPais(nuevopais);
-        proveedorSeleccionado.setProvincia(nuevaprov);
 
-        modificarProveedorApi(proveedorSeleccionado);
+        proveedorSeleccionado.setNombreEntidad(
+                nuevoNombre
+        );
 
-        tablaProovedores.refresh();
+        proveedorSeleccionado.setTelefonoEntidad(
+                nuevoTelefono
+        );
 
-        // 7. Limpiar la selección de la tabla y los campos de texto
-        tablaProovedores.getSelectionModel().clearSelection();
+        proveedorSeleccionado.setEmailEntidad(
+                nuevoEmail
+        );
+
+        proveedorSeleccionado.setCuitcuilEntidad(
+                nuevoCuit
+        );
+
+
+        tablaProveedores.refresh();
+
+        tablaProveedores
+                .getSelectionModel()
+                .clearSelection();
+
         limpiarCampos();
-        System.out.println("¡Proveedor modificado con éxito!");
     }
 
 
-    public void buscarProductos(ActionEvent actionEvent) {
-        abrirPantalla("proveedorSeleccionado.fxml", "Proveedor Seleccionado", false);
-        controladorProveedorSelec.setProveedorSelec(proveedorSelec);
+    /* =========================================================
+       ELIMINAR
+       ========================================================= */
+
+    @FXML
+    private void botonEliminar(ActionEvent event) {
+
+        proovedorClase proveedorSeleccionado =
+                tablaProveedores
+                        .getSelectionModel()
+                        .getSelectedItem();
 
 
-    }
+        if (proveedorSeleccionado == null) {
 
-    /*
+            AlertasUtils.mostrarInformacion(
+                    "Proveedor",
+                    "Seleccione un proveedor para eliminar."
+            );
 
-            API
-
-
-     */
-    private void obtenerProveedoresApi() {
-        Thread apiThread = new Thread(() -> {
-            try {
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(API_URL))
-                        .GET()
-                        .build();
-
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-                if (response.statusCode() == 200) {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    String json = response.body();
-
-                    // Transformamos el JSON directo a tu clase Cliente con Lombok
-                    proovedorClase[] proveedorArray = objectMapper.readValue(json, proovedorClase[].class);
-
-                    // Refrescamos de manera segura la interfaz de JavaFX
-                    javafx.application.Platform.runLater(() -> {
-                        listaProveedoresObs.clear();
-                        listaProveedoresObs.addAll(proveedorArray);
-                        System.out.println("[INFO] ¡Tabla JavaFX actualizada con " + proveedorArray.length + " clientes reales!");
-                    });
-
-                    System.out.println("JSON Puro Recibido: " + json);
-
-                } else {
-                    System.out.println("[ERROR] La API respondió con código: " + response.statusCode());
-                }
-
-            } catch (Exception e) {
-                System.out.println("[ERROR] No se pudo conectar o parsear la data de la API.");
-                e.printStackTrace();
-            }
-
-        });
-        apiThread.setDaemon(true);
-
-        // 6. Iniciamos la ejecución del hilo
-        apiThread.start();
-
-    }
+            return;
+        }
 
 
-    private void eliminarProveedorApi(proovedorClase proveedorAeliminar) {
-        if (proveedorAeliminar == null) return;
+        Alert alerta =
+                new Alert(Alert.AlertType.CONFIRMATION);
 
-        Thread deleteThread = new Thread(() -> {
+        alerta.setTitle("Eliminar proveedor");
+
+        alerta.setHeaderText(
+                "¿Desea eliminar este proveedor?"
+        );
+
+        alerta.setContentText(
+                proveedorSeleccionado.getNombreEntidad()
+        );
+
+
+        Optional<ButtonType> resultado =
+                alerta.showAndWait();
+
+
+        if (resultado.isPresent()
+                && resultado.get() == ButtonType.OK) {
+
             try {
 
+                ProveedorDAO.eliminar(
+                        proveedorSeleccionado
+                                .getNombreEntidad()
+                );
 
-                Long idProveedor = proveedorAeliminar.getId();
+                listaProveedores.remove(
+                        proveedorSeleccionado
+                );
 
-                String urlEliminar = API_URL + "/" + idProveedor;
+                limpiarCampos();
 
-                System.out.println("[DEBUG] Intentando eliminar en: " + urlEliminar);
+            } catch (SQLException e) {
 
-
-                // 2. Construir la petición DELETE
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(urlEliminar))
-                        .DELETE()
-                        .build();
-
-                // 3. Enviar la solicitud
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-                // 4. Tu API de Spring Boot responde con 24 (No Content) al eliminar con éxito
-                if (response.statusCode() == 204 || response.statusCode() == 200) {
-                    System.out.println("[INFO] Proveedor eliminado de la API con éxito.");
-
-                    // 5. Remover el cliente visualmente de la tabla en el hilo de JavaFX
-                    javafx.application.Platform.runLater(() -> {
-                        listaProveedoresObs.remove(proveedorAeliminar);
-                        tablaProovedores.getSelectionModel().clearSelection();
-                    });
-                } else {
-                    System.out.println("[ERROR] No se pudo eliminar. Código API: " + response.statusCode());
-                }
-
-            } catch (Exception e) {
-                System.out.println("[ERROR] Error crítico en el hilo de eliminación.");
                 e.printStackTrace();
-            }
-        });
 
-        deleteThread.setDaemon(true);
-        deleteThread.start();
+                AlertasUtils.mostrarInformacion(
+                        "Error",
+                        "No se pudo eliminar el proveedor."
+                );
+            }
+        }
     }
 
-    private void modificarProveedorApi(proovedorClase proveedorModificado) {
-        if (proveedorModificado == null) return;
 
-        Thread putThread = new Thread(() -> {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
+    /* =========================================================
+       BUSCAR
+       ========================================================= */
 
-                // 1. Convertir el objeto Java actualizado a un texto JSON String
-                String jsonRequestBody = objectMapper.writeValueAsString(proveedorModificado);
+    @FXML
+    private void buscarProveedor(ActionEvent event) {
 
-                // 2. Construir la petición PUT incluyendo el JSON en el cuerpo
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(API_URL))
-                        .header("Content-Type", "application/json") // Obligatorio para indicarle a Spring Boot que mandas un JSON
-                        .PUT(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo PUT con su Body
-                        .build();
+        String texto =
+                txtBuscar
+                        .getText()
+                        .trim()
+                        .toLowerCase();
 
-                // 3. Enviar la solicitud
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-                // 4. Tu API responde con 200 OK y devuelve el cliente modificado
-                if (response.statusCode() == 200) {
-                    String jsonRespuesta = response.body();
-                    proovedorClase proveedorActualizadoApi = objectMapper.readValue(jsonRespuesta, proovedorClase[].class != null ? proovedorClase.class : proovedorClase.class);
+        if (texto.isEmpty()) {
 
-                    System.out.println("[INFO] Cliente modificado en la API con éxito.");
+            tablaProveedores.setItems(
+                    listaProveedores
+            );
 
-                    // 5. Refrescar la interfaz visual de JavaFX de forma segura
-                    javafx.application.Platform.runLater(() -> {
-                        // Buscamos el índice actual en la lista y lo reemplazamos por el actualizado de la API
-                        int index = listaProveedoresObs.indexOf(proveedorModificado);
-                        if (index >= 0) {
-                            listaProveedoresObs.set(index, proveedorActualizadoApi);
-                        }
-                        // Fuerza el redibujado de las celdas
-                    });
-                } else {
-                    System.out.println("[ERROR] No se pudo modificar. Código API: " + response.statusCode());
-                }
+            return;
+        }
 
-            } catch (Exception e) {
-                System.out.println("[ERROR] Error crítico en el hilo de modificación.");
-                e.printStackTrace();
+
+        ObservableList<proovedorClase> filtrados =
+                FXCollections.observableArrayList();
+
+
+        for (proovedorClase proveedor
+                : listaProveedores) {
+
+            boolean coincideNombre =
+                    proveedor.getNombreEntidad() != null
+                            && proveedor
+                            .getNombreEntidad()
+                            .toLowerCase()
+                            .contains(texto);
+
+
+            boolean coincideTelefono =
+                    proveedor.getTelefonoEntidad() != null
+                            && proveedor
+                            .getTelefonoEntidad()
+                            .toLowerCase()
+                            .contains(texto);
+
+
+            boolean coincideEmail =
+                    proveedor.getEmailEntidad() != null
+                            && proveedor
+                            .getEmailEntidad()
+                            .toLowerCase()
+                            .contains(texto);
+
+
+            if (coincideNombre
+                    || coincideTelefono
+                    || coincideEmail) {
+
+                filtrados.add(proveedor);
             }
-        });
+        }
 
-        putThread.setDaemon(true);
-        putThread.start();
+
+        tablaProveedores.setItems(
+                filtrados
+        );
     }
-    private void agregarProveeodorApi(proovedorClase nuevoProveedor) {
-        if (nuevoProveedor == null) return;
 
-        // 1. Crear el hilo para no congelar la pantalla
-        Thread postThread = new Thread(() -> {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
 
-                // 2. Convertir tu objeto Java a texto JSON String
-                String jsonRequestBody = objectMapper.writeValueAsString(nuevoProveedor);
+    /* =========================================================
+       LIMPIAR CAMPOS
+       ========================================================= */
 
-                // 3. Construir la petición POST
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(API_URL))
-                        .header("Content-Type", "application/json") // Avisamos a Spring Boot que va un JSON
-                        .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo POST con el body
-                        .build();
+    private void limpiarCampos() {
 
-                // 4. Enviar los datos a la API
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        nombre.clear();
 
-                // 5. Tu API responde con 201 (Created) si el alta fue exitosa
-                if (response.statusCode() == 201 || response.statusCode() == 200) {
-                    String jsonRespuesta = response.body();
+        cuit.clear();
 
-                    // Parseamos el cliente definitivo devuelto por la API
-                    proovedorClase proveedorCreadoApi = objectMapper.readValue(jsonRespuesta, proovedorClase.class);
+        telefono.clear();
 
-                    System.out.println("[INFO] Cliente agregado a la API con éxito.");
+        email.clear();
 
-                    // 6. Impactar el cambio de forma segura en la interfaz visual de JavaFX
-                    javafx.application.Platform.runLater(() -> {
-                        listaProveedoresObs.add(proveedorCreadoApi); // Se dibuja solo en la TableView
-                    });
+        pais.clear();
 
-                } else {
-                    System.out.println("[ERROR] No se pudo agregar. Código API: " + response.statusCode());
-                }
+        provincia.clear();
 
-            } catch (Exception e) {
-                System.out.println("[ERROR] Error crítico en el hilo de alta.");
-                e.printStackTrace();
-            }
-        });
+        localidad.clear();
 
-        postThread.setDaemon(true);
-        postThread.start();
+        condicionIVA.getSelectionModel()
+                .clearSelection();
+    }
+
+
+    /* =========================================================
+       RELOJ
+       ========================================================= */
+
+    private void iniciarReloj() {
+
+        Locale locale =
+                new Locale("es", "AR");
+
+
+        DateTimeFormatter formatoFecha =
+                DateTimeFormatter.ofPattern(
+                        "EEEE dd 'de' MMMM 'de' yyyy",
+                        locale
+                );
+
+
+        DateTimeFormatter formatoHora =
+                DateTimeFormatter.ofPattern(
+                        "HH:mm:ss"
+                );
+
+
+        Timeline reloj =
+                new Timeline(
+
+                        new KeyFrame(
+                                Duration.ZERO,
+
+                                event -> {
+
+                                    LocalDateTime ahora =
+                                            LocalDateTime.now();
+
+
+                                    String fecha =
+                                            ahora.format(
+                                                    formatoFecha
+                                            );
+
+
+                                    if (!fecha.isEmpty()) {
+
+                                        fecha =
+                                                fecha.substring(0, 1)
+                                                        .toUpperCase()
+                                                        + fecha.substring(1);
+                                    }
+
+
+                                    fechaLabel.setText(
+                                            fecha
+                                    );
+
+
+                                    horaLabel.setText(
+                                            ahora.format(
+                                                    formatoHora
+                                            )
+                                    );
+                                }
+                        ),
+
+                        new KeyFrame(
+                                Duration.seconds(1)
+                        )
+                );
+
+
+        reloj.setCycleCount(
+                Timeline.INDEFINITE
+        );
+
+        reloj.play();
     }
 }
-
-
-
