@@ -3,15 +3,14 @@ package com.example.proyecto_colaborativo.Clases;
 public class clienteClase extends entidadClase {
 
     private int id;
+    private String direccion;
 
     public clienteClase() {
 
     }
 
     public clienteClase(String s, String number, String number1, String eqrq, String number2, String number3) {
-
     }
-    // Constructor por defecto
 
 
     public int getId() {
@@ -30,11 +29,13 @@ public class clienteClase extends entidadClase {
         this.setDniEntidad(dni);
         this.setTelefonoEntidad((telefono));
         this.setEmailEntidad(email);
-        this.setDireccionEntidad(direccion);
         this.setCuitcuilEntidad(cuitcuil);
+        this.setDireccion(direccion);
 
     }
 
+    public void setDireccion(String direccion) {
+    }
 
 
 }

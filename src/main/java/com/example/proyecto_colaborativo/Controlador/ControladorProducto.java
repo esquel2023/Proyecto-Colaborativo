@@ -1,9 +1,11 @@
 package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.Clases.proovedorClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,15 +14,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.SQLException;
 
 public class ControladorProducto {
 
-
-    // 1. Inyectamos la TableView apuntando a la clase Producto
     @FXML
     public TableView<Producto> tablaProductos;
-    // 2. Inyectamos las columnas existentes de tu FXML
+
     @FXML
     private TableColumn<Producto, Integer> colCodigo;
     @FXML
@@ -29,25 +33,18 @@ public class ControladorProducto {
     private TableColumn<Producto, Integer> colCantidad;
     @FXML
     private TableColumn<Producto, Double> colPrecio;
-    //@FXML
-    //private TextField codigoBarras;
+
     @FXML
     private TextField codigo;
-    //@FXML
-    //private TextField nombre;
-    // @FXML
-    //private TextField cantidad;
-    // @FXML
-    //private TextField precioFinal;
+
     @FXML
     private TextField txtbuscadorProductos;
     @FXML
     private Button botonSalir;
-    // @FXML
-    // private TextField porcentaje;
-    // @FXML
-    // private TextField precioCosto;
 
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String API_URL = "http://localhost:8080/tienda/api/v1/productos";
 
     // Lista observable que contendrá los productos reales
     // Lista observable única para toda la clase
@@ -255,4 +252,14 @@ public class ControladorProducto {
         // Cierra la ventana actual
         stage.close();
     }
+
+
+    /*
+    /////
+    API
+
+    /////
+     */
+
+
 }
