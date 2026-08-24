@@ -11,6 +11,8 @@
             fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorProductoAgregar"
             stylesheets="@style.css"
             styleClass="root-productos">
+    <!-- SE SUBIO? -->
+
 
     <children>
 
