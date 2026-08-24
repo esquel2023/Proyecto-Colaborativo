@@ -1460,3 +1460,242 @@
     -fx-alignment: CENTER;
     -fx-cursor: hand;
 }
+/* =========================================================
+   CONFIGURACION - AXYRA
+   ========================================================= */
+
+.root-configuracion {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.config-header {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: transparent transparent #E8EDF2 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.config-titulo {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.config-subtitulo {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6C757D;
+}
+
+
+/* =========================
+   SCROLL
+   ========================= */
+
+.config-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.config-scroll > .viewport {
+    -fx-background-color: #FAFAFA;
+}
+
+.config-content {
+    -fx-background-color: #FAFAFA;
+}
+
+
+/* =========================
+   TARJETAS
+   ========================= */
+
+.config-card {
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1;
+
+    -fx-padding: 22;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.04),
+        10,
+        0,
+        0,
+        3
+    );
+}
+
+
+/* =========================
+   TITULOS
+   ========================= */
+
+.config-icon {
+    -fx-font-size: 24px;
+}
+
+.config-card-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263238;
+}
+
+.config-card-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6C757D;
+}
+
+
+/* =========================
+   OPCIONES
+   ========================= */
+
+.config-option-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #324A5F;
+}
+
+.config-option-description {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8A949C;
+}
+
+.config-user {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6C757D;
+}
+
+.config-value {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6C757D;
+}
+
+
+/* =========================
+   SEPARADORES
+   ========================= */
+
+.config-card .separator .line {
+    -fx-border-color: #E8EDF2;
+    -fx-border-width: 1 0 0 0;
+}
+
+
+/* =========================
+   COMBO BOX
+   ========================= */
+
+.config-combo {
+    -fx-background-color: #F7F9FA;
+
+    -fx-border-color: #DCE3E8;
+    -fx-border-radius: 10;
+
+    -fx-background-radius: 10;
+
+    -fx-pref-height: 38;
+
+    -fx-font-size: 13px;
+}
+
+.config-combo:hover {
+    -fx-border-color: #6F8FAF;
+}
+
+.config-combo:focused {
+    -fx-border-color: #324A5F;
+}
+
+
+/* =========================
+   BOTÓN PRINCIPAL
+   ========================= */
+
+.config-button-primary {
+    -fx-background-color: #324A5F;
+    -fx-text-fill: white;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 10;
+
+    -fx-pref-width: 135;
+    -fx-pref-height: 38;
+
+    -fx-cursor: hand;
+}
+
+.config-button-primary:hover {
+    -fx-background-color: #6F8FAF;
+}
+
+
+/* =========================
+   BOTÓN SECUNDARIO
+   ========================= */
+
+.config-button-secondary {
+    -fx-background-color: white;
+
+    -fx-text-fill: #324A5F;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-border-color: #324A5F;
+    -fx-border-width: 1;
+
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+    -fx-pref-width: 135;
+    -fx-pref-height: 38;
+
+    -fx-cursor: hand;
+}
+
+.config-button-secondary:hover {
+    -fx-background-color: #F0F4F7;
+}
+
+
+/* =========================
+   CERRAR SESIÓN
+   ========================= */
+
+.config-button-danger {
+    -fx-background-color: #FFF4F4;
+
+    -fx-text-fill: #C74B50;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-border-color: #F1C9CB;
+    -fx-border-width: 1;
+
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+    -fx-pref-width: 135;
+    -fx-pref-height: 38;
+
+    -fx-cursor: hand;
+}
+
+.config-button-danger:hover {
+    -fx-background-color: #FCE5E6;
+}
