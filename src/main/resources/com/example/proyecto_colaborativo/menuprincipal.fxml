@@ -110,7 +110,9 @@
             <Region VBox.vgrow="ALWAYS"/>
 
 
-            <Button text="⚙  Configuración"
+            <Button fx:id="configuracion"
+                    text="⚙  Configuración"
+                    onAction="#abrirConfiguracion"
                     maxWidth="Infinity"
                     styleClass="sidebar-button"/>
 

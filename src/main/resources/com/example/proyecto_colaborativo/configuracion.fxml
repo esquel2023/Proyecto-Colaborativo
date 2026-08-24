@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.proyecto_colaborativo.Controlador.controladorConfiguracion"
+            stylesheets="@style.css"
+            styleClass="root-configuracion">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
+    <top>
+        <VBox spacing="5"
+              styleClass="config-header">
+
+            <padding>
+                <Insets top="24"
+                        right="30"
+                        bottom="20"
+                        left="30"/>
+            </padding>
+
+            <Label text="⚙ Configuración"
+                   styleClass="config-titulo"/>
+
+            <Label text="Personalizá y administrá las preferencias del sistema"
+                   styleClass="config-subtitulo"/>
+
+        </VBox>
+    </top>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    styleClass="config-scroll">
+
+            <content>
+
+                <VBox spacing="20"
+                      fillWidth="true"
+                      styleClass="config-content">
+
+                    <padding>
+                        <Insets top="10"
+                                right="30"
+                                bottom="30"
+                                left="30"/>
+                    </padding>
+
+
+                    <!-- =====================================================
+                         APARIENCIA
+                         ===================================================== -->
+
+                    <VBox spacing="18"
+                          styleClass="config-card">
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="15">
+
+                            <Label text="🎨"
+                                   styleClass="config-icon"/>
+
+                            <VBox spacing="3">
+
+                                <Label text="🎨 Apariencia"
+                                       styleClass="config-card-title"/>
+
+                                <Label text="Personalizá la apariencia del sistema"
+                                       styleClass="config-card-description"/>
+
+                            </VBox>
+
+                        </HBox>
+
+
+                        <Separator/>
+
+
+                        <!-- TEMA -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="20">
+
+                            <VBox spacing="3"
+                                  HBox.hgrow="ALWAYS">
+
+                                <Label text="Tema"
+                                       styleClass="config-option-title"/>
+
+                                <Label text="Elegí cómo querés visualizar"
+                                       styleClass="config-option-description"/>
+
+                            </VBox>
+
+
+                            <ComboBox fx:id="comboTema"
+                                      prefWidth="180"
+                                      promptText="Modo claro"
+                                      styleClass="config-combo"/>
+
+                        </HBox>
+
+
+                        <!-- COLOR PRINCIPAL -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="20">
+
+                            <VBox spacing="3"
+                                  HBox.hgrow="ALWAYS">
+
+                                <Label text="Color principal"
+                                       styleClass="config-option-title"/>
+
+                                <Label text="Color utilizado en botones y elementos principales"
+                                       styleClass="config-option-description"/>
+
+                            </VBox>
+
+
+                            <ComboBox fx:id="comboColor"
+                                      prefWidth="180"
+                                      promptText="Azul"
+                                      styleClass="config-combo"/>
+
+                        </HBox>
+
+                    </VBox>
+
+
+                    <!-- =====================================================
+                         COPIAS DE SEGURIDAD
+                         ===================================================== -->
+
+                    <VBox spacing="18"
+                          styleClass="config-card">
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="15">
+
+                            <Label text="💾"
+                                   styleClass="config-icon"/>
+
+                            <VBox spacing="3">
+
+                                <Label text="💾 Copias de seguridad"
+                                       styleClass="config-card-title"/>
+
+                                <Label text="Protegé la información almacenada en el sistema"
+                                       styleClass="config-card-description"/>
+
+                            </VBox>
+
+                        </HBox>
+
+
+                        <Separator/>
+
+
+                        <!-- CREAR COPIA -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="20">
+
+                            <VBox spacing="3"
+                                  HBox.hgrow="ALWAYS">
+
+                                <Label text="Crear copia de seguridad"
+                                       styleClass="config-option-title"/>
+
+                                <Label text="Generá una copia de los datos actuales del sistema"
+                                       styleClass="config-option-description"/>
+
+                            </VBox>
+
+
+                            <Button fx:id="botonCrearBackup"
+                                    text="Crear copia"
+                                    onAction="#crearBackup"
+                                    styleClass="config-button-primary"/>
+
+                        </HBox>
+
+
+                        <!-- RESTAURAR COPIA -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="20">
+
+                            <VBox spacing="3"
+                                  HBox.hgrow="ALWAYS">
+
+                                <Label text="Restaurar copia"
+                                       styleClass="config-option-title"/>
+
+                                <Label text="Recuperá los datos desde una copia guardada anteriormente"
+                                       styleClass="config-option-description"/>
+
+                            </VBox>
+
+
+                            <Button fx:id="botonRestaurarBackup"
+                                    text="Restaurar"
+                                    onAction="#restaurarBackup"
+                                    styleClass="config-button-secondary"/>
+
+                        </HBox>
+
+                    </VBox>
+
+
+                    <!-- =====================================================
+                         CUENTA
+                         ===================================================== -->
+
+                    <VBox spacing="18"
+                          styleClass="config-card">
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="15">
+
+                            <Label text="👤"
+                                   styleClass="config-icon"/>
+
+                            <VBox spacing="3">
+
+                                <Label text="👤 Cuenta"
+                                       styleClass="config-card-title"/>
+
+                                <Label text="Información de la sesión actual"
+                                       styleClass="config-card-description"/>
+
+                            </VBox>
+
+                        </HBox>
+
+
+                        <Separator/>
+
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="20">
+
+                            <VBox spacing="4"
+                                  HBox.hgrow="ALWAYS">
+
+                                <Label text="Usuario actual"
+                                       styleClass="config-option-title"/>
+
+                                <Label fx:id="labelUsuario"
+                                       text="Administrador"
+                                       styleClass="config-user"/>
+
+                            </VBox>
+
+
+                            <Button fx:id="botonCerrarSesion"
+                                    text="Cerrar sesión"
+                                    onAction="#cerrarSesion"
+                                    styleClass="config-button-danger"/>
+
+                        </HBox>
+
+                    </VBox>
+
+
+                    <!-- =====================================================
+                         INFORMACIÓN DEL SISTEMA
+                         ===================================================== -->
+
+                    <VBox spacing="18"
+                          styleClass="config-card">
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="15">
+
+                            <Label text="ⓘ"
+                                   styleClass="config-icon"/>
+
+                            <VBox spacing="3">
+
+                                <Label text="ⓘ Información del sistema"
+                                       styleClass="config-card-title"/>
+
+                                <Label text="Detalles de la aplicación"
+                                       styleClass="config-card-description"/>
+
+                            </VBox>
+
+                        </HBox>
+
+
+
+                        <Separator/>
+
+
+                        <!-- SISTEMA -->
+
+                        <HBox alignment="CENTER_LEFT">
+
+                            <Label text="Sistema"
+                                   styleClass="config-option-title"/>
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+                            <Label text=":)"
+                                   styleClass="config-value"/>
+
+                        </HBox>
+
+
+                        <!-- VERSIÓN -->
+
+                        <HBox alignment="CENTER_LEFT">
+
+                            <Label text="Versión"
+                                   styleClass="config-option-title"/>
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+                            <Label text="1.0"
+                                   styleClass="config-value"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </VBox>
+
+            </content>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>
