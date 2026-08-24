@@ -1,10 +1,9 @@
 package com.example.proyecto_colaborativo.Controlador;
 
-import com.example.proyecto_colaborativo.Clases.proovedorClase;
+
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
-import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +23,7 @@ public class ControladorProducto {
 
     @FXML
     public TableView<Producto> tablaProductos;
+    public Label labelPrecioVenta;
 
     @FXML
     private TableColumn<Producto, Integer> colCodigo;
@@ -65,19 +65,17 @@ public class ControladorProducto {
 
     @FXML
     public void initialize() {
+
+        obtenerProductosApi();
         // 3. Vinculamos cada columna con el nombre exacto de la propiedad en la clase Producto
 
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idProducto"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        //listaProductos.setAll(ProductoDAO.listar());
-
-        // MEJORA: Cargamos los datos reales desde la base de datos en vez de datos fijos
-        cargarDatosDesdeBD();
 
 
-        // ==========================================
+        // ========================================
         // LLAMADA A LA CLASE REUTILIZABLE
         // ==========================================
 
@@ -96,14 +94,11 @@ public class ControladorProducto {
                     return coincideNombre || coincideCodigo;
 
 
-                    // Acá definís la lógica específica para la clase Producto
-                    // return producto.getNombre().toLowerCase().contains(texto) ||
-                    //         producto.getCodigoBarra().toLowerCase().contains(texto);
 
                 }
         );
 
-        // Escuchar cuando el usuario selecciona una fila de la tabla
+
         tablaProductos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // ASIGNACIÓN: Guardamos la referencia del producto seleccionado
@@ -140,73 +135,105 @@ public class ControladorProducto {
 
     }
 
-    // MÉTODO NUEVO: Se ejecuta al presionar el botón Modificar
     @FXML
     private void clickModificar(ActionEvent event) {
-        // 1. Validar que el usuario haya seleccionado una fila previamente
-        if (this.productoseleccionado == null) {
-            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
-                    "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
-            return;
-        }
-        // 2. Mandar el producto al "puente" estático para que la otra pantalla lo pueda ver
+
+        if (this.productoseleccionado == null) {AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto", "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);return;}
+
+
         Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
 
-        // 3. Abrir la pantalla. IMPORTANTE: Poné 'true' (Modal) para que el código se pause
-        // hasta que el usuario termine de editar en la otra ventana.
-        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
-
-        // 4. Al regresar (cuando se cierra la ventana de edición), refrescamos la tabla y limpiamos
-        tablaProductos.refresh();
-        tablaProductos.getSelectionModel().clearSelection();
-        this.productoseleccionado = null;
-
-        // 2. Cargar la pantalla obteniendo su controlador (pasamos 'true' para que sea Modal)
-        //ControladorProductoAgregar controller = NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
 
 
-        // 3. Mandar el registro seleccionado a la nueva pantalla
-//        if (controller != null) {
-        //          controller.cargarProducto(this.productoseleccionado);
-        //    }
 
-        // 4. Al regresar (cuando se cierra la modal), refrescar cambios visuales
-        //  tablaProductos.refresh();
-        //  tablaProductos.getSelectionModel().clearSelection();
-        //  this.productoseleccionado = null;
+
 
     }
 
 
     @FXML
     private void clickAgregar(ActionEvent event) {
+        String txtNombre = colNombre.getText(); // Cambiar por tu TextField de nombre, ej: nombreField.getText()
+        String txtCodigo = codigo.getText();    // Usa el TextField 'codigo' que ya tienes declarado
+        String txtCantidad = colCantidad.getText(); // Cambiar por tu TextField de cantidad
+        String txtPrecio = labelPrecioVenta.getText(); // Cambiar por tu TextField de precio
 
-        // Solo pasás: ruta del FXML, título de la ventana y si es modal (true/false)
-        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Agregar Nuevo Producto", true);
-
-        // 2. Al regresar (cuando el usuario le da a Guardar y la ventana se cierra),
-        // volvemos a consultar la base de datos para traer el nuevo producto con su ID real.
-        cargarDatosDesdeBD();
-    }
-
-    private void cargarDatosDesdeBD() {
-
-        try {
-            listaProductos.clear();
-            //listaProductos.addAll(ProductoDAO.listar());
-       //     listaProductos.setAll(ProductoDAO.listar());
-            //tablaProductos.setItems(listaProductos);
-        } catch (Exception e) {
-            AlertasUtils.mostrarAlerta("Error de BD", "Error de lectura",
-                    "No se pudieron recuperar los productos de la base de datos.", Alert.AlertType.ERROR);
-            e.printStackTrace();
+        // 2. Validación de campos vacíos
+        if (txtNombre.isBlank() || txtCodigo.isBlank() || txtCantidad.isBlank() || txtPrecio.isBlank()) {
+            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos obligatorios.", Alert.AlertType.INFORMATION);
+            return;
         }
+
+        // 3. Validación de formatos básicos en las cadenas
+        if (txtCodigo.contains("-") || txtNombre.contains("-")) {
+            AlertasUtils.mostrarAlerta("FORMATO INVÁLIDO", "Formatos incorrectos.", "Por favor revisa que el nombre o código no contengan guiones.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        // Variables para almacenar los valores numéricos ya parseados
+        int cantidadParseada;
+        double precioParseado;
+
+        // 4. Validación numérica de los datos de entrada
+        try {
+            cantidadParseada = Integer.parseInt(txtCantidad);
+            precioParseado = Double.parseDouble(txtPrecio);
+
+            if (cantidadParseada < 0 || precioParseado < 0) {
+                throw new NumberFormatException("Valores negativos");
+            }
+        } catch (NumberFormatException e) {
+            AlertasUtils.mostrarAlerta("DATOS INVÁLIDOS", "Formato numérico erróneo", "La cantidad debe ser entera y el precio decimal. No uses letras, signos negativos ni puntos como miles.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        // 5. Construcción del mensaje de confirmación en pantalla
+        String mensaje = String.format(
+                "¿Confirmas los datos del nuevo producto?\n\nCódigo: %s\nNombre: %s\nCantidad: %s\nPrecio: $%s",
+                txtCodigo, txtNombre, txtCantidad, txtPrecio
+        );
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmación de Producto");
+        alerta.setHeaderText("Revisa los datos antes de registrar en el inventario");
+        alerta.setContentText(mensaje);
+
+        ButtonType botonConfirmar = new ButtonType("Confirmar");
+        ButtonType botonModificar = new ButtonType("Modificar / Cancelar");
+        alerta.getButtonTypes().setAll(botonConfirmar, botonModificar);
+
+        java.util.Optional<ButtonType> resultado = alerta.showAndWait();
+
+        // 6. Procesamiento de la inserción si el usuario confirma
+        if (resultado.isPresent() && resultado.get() == botonConfirmar) {
+            try {
+                // Instanciar tu clase entidad Producto
+                Producto nuevoProducto = new Producto();
+                nuevoProducto.setNombre(txtNombre);
+                nuevoProducto.setCodigoBarra(txtCodigo);
+                nuevoProducto.setCantidad(cantidadParseada);
+                nuevoProducto.setPrecio(precioParseado);
+
+                // Llamada al método que envía el producto a tu backend API
+                agregarProductoApi(nuevoProducto);
+
+                // Actualizar la tabla local de forma inmediata agregando el objeto
+                listaProductos.add(nuevoProducto);
+
+                // Limpieza de la interfaz de usuario
+                limpiarCamposProducto();
+
+                System.out.println("Producto agregado con éxito a la API y la lista observable.");
+            } catch (Exception e) {
+                System.out.println("Error al intentar procesar e insertar el producto.");
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
 
-    //----------------------------------------------------------------------------------------
-    //FUNCIONES
-    //----------------------------------------------------------------------------------------
     public void clickEliminar(ActionEvent event) throws SQLException {
         // 1. Validar que el usuario haya seleccionado un producto de la tabla
         if (productoseleccionado == null) {
@@ -253,13 +280,203 @@ public class ControladorProducto {
         stage.close();
     }
 
-
-    /*
+/*
     /////
     API
-
     /////
-     */
 
 
+ */
+
+    private void obtenerProductosApi() {
+        Thread apiThread = new Thread(() -> {
+            try {
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String json = response.body();
+
+                    // Transformamos el JSON directo a tu clase Cliente con Lombok
+                    Producto[] ProductoArray = objectMapper.readValue(json, Producto[].class);
+
+                    // Refrescamos de manera segura la interfaz de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaProductos.clear();
+                        listaProductos.addAll(ProductoArray);
+                        System.out.println("[INFO] ¡Tabla JavaFX actualizada con " + ProductoArray.length + " clientes reales!");
+                    });
+
+                    System.out.println("JSON Puro Recibido: " + json);
+
+                } else {
+                    System.out.println("[ERROR] La API respondió con código: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] No se pudo conectar o parsear la data de la API.");
+                e.printStackTrace();
+            }
+
+        });
+        apiThread.setDaemon(true);
+
+        // 6. Iniciamos la ejecución del hilo
+        apiThread.start();
+
+    }
+
+
+
+private void eliminarClienteApi(Producto productoAEliminar) {
+    if (productoAEliminar == null) return;
+
+    Thread deleteThread = new Thread(() -> {
+        try {
+            // 1. Armar la URL dinámica con el identificador del cliente (su nombre)
+            // Se codifica por si el nombre tiene espacios (ej: "Juan Perez")
+
+            String urlEliminar = "http://localhost:8080/tienda/api/v1/clientes/" + productoAEliminar.getidProducto();
+
+
+            // 2. Construir la petición DELETE
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(urlEliminar))
+                    .DELETE()
+                    .build();
+
+            // 3. Enviar la solicitud
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // 4. Tu API de Spring Boot responde con 24 (No Content) al eliminar con éxito
+            if (response.statusCode() == 204 || response.statusCode() == 200) {
+                System.out.println("[INFO] Cliente eliminado de la API con éxito.");
+
+                // 5. Remover el cliente visualmente de la tabla en el hilo de JavaFX
+                javafx.application.Platform.runLater(() -> {
+                    listaProductos.remove(productoAEliminar);
+                    tablaProductos.getSelectionModel().clearSelection();
+                });
+            } else {
+                System.out.println("[ERROR] No se pudo eliminar. Código API: " + response.statusCode());
+            }
+
+        } catch (Exception e) {
+            System.out.println("[ERROR] Error crítico en el hilo de eliminación.");
+            e.printStackTrace();
+        }
+    });
+
+    deleteThread.setDaemon(true);
+    deleteThread.start();
+}
+
+
+
+    private void agregarProductoApi(Producto nuevoProducto) {
+        if (nuevoProducto == null) return;
+
+        // 1. Crear el hilo para no congelar la pantalla
+        Thread postThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 2. Convertir tu objeto Java a texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(nuevoProducto);
+
+                // 3. Construir la petición POST
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Avisamos a Spring Boot que va un JSON
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo POST con el body
+                        .build();
+
+                // 4. Enviar los datos a la API
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 5. Tu API responde con 201 (Created) si el alta fue exitosa
+                if (response.statusCode() == 201 || response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+
+                    // Parseamos el cliente definitivo devuelto por la API
+                    Producto producto = objectMapper.readValue(jsonRespuesta, Producto.class);
+
+                    System.out.println("[INFO] Cliente agregado a la API con éxito.");
+
+                    // 6. Impactar el cambio de forma segura en la interfaz visual de JavaFX
+                    javafx.application.Platform.runLater(() -> {
+                        listaProductos.add(producto); // Se dibuja solo en la TableView
+                    });
+
+                } else {
+                    System.out.println("[ERROR] No se pudo agregar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de alta.");
+                e.printStackTrace();
+            }
+        });
+
+        postThread.setDaemon(true);
+        postThread.start();
+    }
+
+    private void modificarProductoApi(Producto productoModificado) {
+        if (productoModificado == null) return;
+
+        Thread putThread = new Thread(() -> {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // 1. Convertir el objeto Java actualizado a un texto JSON String
+                String jsonRequestBody = objectMapper.writeValueAsString(productoModificado);
+
+                // 2. Construir la petición PUT incluyendo el JSON en el cuerpo
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL))
+                        .header("Content-Type", "application/json") // Obligatorio para indicarle a Spring Boot que mandas un JSON
+                        .PUT(HttpRequest.BodyPublishers.ofString(jsonRequestBody)) // Verbo PUT con su Body
+                        .build();
+
+                // 3. Enviar la solicitud
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // 4. Tu API responde con 200 OK y devuelve el cliente modificado
+                if (response.statusCode() == 200) {
+                    String jsonRespuesta = response.body();
+                    Producto clienteActualizadoApi = objectMapper.readValue(jsonRespuesta, Producto.class);
+
+                    System.out.println("[INFO] Cliente modificado en la API con éxito.");
+
+                    // 5. Refrescar la interfaz visual de JavaFX de forma segura
+                    javafx.application.Platform.runLater(() -> {
+                        // Buscamos el índice actual en la lista y lo reemplazamos por el actualizado de la API
+                        int index = listaProductos.indexOf(productoModificado);
+                        if (index >= 0) {
+                            listaProductos.set(index, clienteActualizadoApi);
+                        }
+                        // Fuerza el redibujado de las celdas
+                    });
+                } else {
+                    System.out.println("[ERROR] No se pudo modificar. Código API: " + response.statusCode());
+                }
+
+            } catch (Exception e) {
+                System.out.println("[ERROR] Error crítico en el hilo de modificación.");
+                e.printStackTrace();
+            }
+        });
+
+        putThread.setDaemon(true);
+        putThread.start();
+    }
+
+    public void calcularPrecio(ActionEvent actionEvent) {
+    }
 }

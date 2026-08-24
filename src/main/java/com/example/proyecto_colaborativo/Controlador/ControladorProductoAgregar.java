@@ -1,11 +1,18 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Clases.clienteClase;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class ControladorProductoAgregar {
     @FXML
@@ -18,6 +25,10 @@ public class ControladorProductoAgregar {
     public TextField nombre;
 
     private Producto productoLocal = null;
+
+
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String API_URL = "http://localhost:8080/tienda/api/v1/productos";
 
 
     // === 3. MÉTODO INITIALIZE ===
@@ -57,7 +68,6 @@ public class ControladorProductoAgregar {
 
     }
 
-    // === 4. TU BOTÓN GUARDAR ===
     @FXML
     private void Clickguardar(ActionEvent event) {
 
@@ -69,13 +79,13 @@ public class ControladorProductoAgregar {
 
 
         // 2. VALIDACIÓN: Validar campos vacíos o números negativos
-        if (textoNombre.isEmpty() || textoCantidad.isEmpty() || textoPrecio.isEmpty() ) {
+        if (textoNombre.isEmpty() || textoCantidad.isEmpty() || textoPrecio.isEmpty()) {
             AlertasUtils.mostrarAdvertencia("Campos vacíos", "Nombre requerido. Por favor, ingresá el nombre del producto.");
 
             return;
         }
 
-        try{
+        try {
 
             Integer nuevacantidad = Integer.valueOf(textoCantidad);
             Double nuevoPrecio = Double.parseDouble(textoPrecio);
@@ -84,7 +94,7 @@ public class ControladorProductoAgregar {
 
 
             if (nuevacantidad < 0 || nuevoPrecio < 0) {
-                AlertasUtils.mostrarError("Valores inválidos","Números negativos detectados.  cantidad y el precio final no pueden ser números negativos.");
+                AlertasUtils.mostrarError("Valores inválidos", "Números negativos detectados.  cantidad y el precio final no pueden ser números negativos.");
 
                 return;
             }
@@ -103,27 +113,21 @@ public class ControladorProductoAgregar {
                 productoLocal.setPrecio(nuevoPrecio);
 
                 if (codigoBarras != null) {
-                    // Si usás propiedades para el código, descomentá la que corresponda:
-                    // productoLocal.codigoBarraProperty().set(nuevocodigo);
+
                     productoLocal.setCodigoBarra(nuevocodigo);
                 }
 
-                // Persistir el cambio en la Base de Datos
-               // ProductoDAO.actualizar(productoLocal);
-                AlertasUtils.mostrarInformacion("Éxito","Producto modificado. El producto se modificó correctamente.");
+                AlertasUtils.mostrarInformacion("Éxito", "Producto modificado. El producto se modificó correctamente.");
 
             } else {
-                // === LÓGICA DE AGREGAR (NUEVO PRODUCTO) ===
-                // Creamos una nueva instancia con los datos del formulario
+
                 Producto nuevoProducto = new Producto(textoNombre, nuevacantidad, nuevoPrecio, nuevocodigo);
 
-                // Guardar el nuevo producto en la Base de Datos
-         //       ProductoDAO.insertar(nuevoProducto);
 
                 // Opcional: Si manejás una lista observable global para la tabla, podrías agregar aquí:
                 // listadoProductosGlobal.add(nuevoProducto);
 
-                AlertasUtils.mostrarInformacion("Éxito","Producto agregado. El nuevo producto se registró correctamente.");
+                AlertasUtils.mostrarInformacion("Éxito", "Producto agregado. El nuevo producto se registró correctamente.");
 
             }
 
@@ -131,7 +135,7 @@ public class ControladorProductoAgregar {
             cerrarVentana();
 
         } catch (NumberFormatException e) {
-            AlertasUtils.mostrarError("Error de formato","Datos numéricos inválidos. Por favor, verifica los campos:\\n\" +\n" +
+            AlertasUtils.mostrarError("Error de formato", "Datos numéricos inválidos. Por favor, verifica los campos:\\n\" +\n" +
                     "                            \"- Cantidad: Debe ser un número entero (ej: 10, 50).\\n\" +\n" +
                     "                            \"- Precio: Debe ser un número decimal válido (ej: 1200.50). Usa el punto para los decimales. ");
 
@@ -143,6 +147,7 @@ public class ControladorProductoAgregar {
         Stage stage = (Stage) nombre.getScene().getWindow();
         stage.close();
     }
-
-
 }
+
+
+
