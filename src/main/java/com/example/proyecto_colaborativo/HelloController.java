@@ -123,9 +123,7 @@ public class HelloController implements Initializable {
 
     @FXML
     public void botonProveedores(ActionEvent actionEvent) throws IOException {
-        NavegacionUtils.abrirPantalla("proveedores.fxml", "Proveeddor", false);
-
-    }
+        NavegacionUtils.abrirPantalla("proveedores.fxml", "Nuevo Proveedor", false);    }
 
     @FXML
     public void botonStock(ActionEvent actionEvent) {
@@ -134,7 +132,7 @@ public class HelloController implements Initializable {
 
     @FXML
     public void botonClientes(ActionEvent actionEvent) throws IOException {
-        NavegacionUtils.abrirPantalla("clienteGeneral.fxml", "Cliente", false);
+        NavegacionUtils.abrirPantalla("BifurcacionCliente.fxml", "Cliente", false);
     }
 
     @FXML
@@ -182,9 +180,6 @@ public class HelloController implements Initializable {
         } else {
             System.err.println("No se encontró el archivo: " + rutaRecurso);
         }
-    }
-
-    public void botonInicio(ActionEvent actionEvent) {
     }
 }
 
