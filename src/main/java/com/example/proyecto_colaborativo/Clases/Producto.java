@@ -1,79 +1,112 @@
 package com.example.proyecto_colaborativo.Clases;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.beans.property.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Producto {
 
     public static Integer idProveedorParaAsociar = null;
     public static boolean debeAsociarProveedor = false;
+    public static Producto productoSeleccionadoParaEditar = null;
 
     private final IntegerProperty idProducto;
     private final StringProperty nombre;
-    private final IntegerProperty cantidad; // Si la cantidad lleva letras (ej: "10 kg"), usá String. Si es entera, podés usar SimpleIntegerProperty.
+    private final IntegerProperty cantidad;
     private final DoubleProperty precio;
     private final StringProperty codigoBarra;
-//45
-    // Este es el puente estático que guardará el producto temporalmente en memoria
-    public static Producto productoSeleccionadoParaEditar = null;
 
-    public Producto(IntegerProperty idProducto,IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre,StringProperty codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty();
-        this.cantidad = new SimpleIntegerProperty();
-        this.precio = new SimpleDoubleProperty();
-        this.nombre = new SimpleStringProperty();
-        this.codigoBarra = new SimpleStringProperty();
+    // =========================================================================
+    // 1. CONSTRUCTOR VACÍO - CORREGIDO CON @JsonCreator
+    // Fuerza a Jackson a usar este constructor e inicializar las Properties
+    // =========================================================================
+    @JsonCreator
+    public Producto() {
+        this.idProducto = new SimpleIntegerProperty(0);
+        this.nombre = new SimpleStringProperty("");
+        this.cantidad = new SimpleIntegerProperty(0);
+        this.precio = new SimpleDoubleProperty(0.0);
+        this.codigoBarra = new SimpleStringProperty("");
     }
 
-    // Constructor
+    // =========================================================================
+    // CONSTRUCTORES EXISTENTES
+    // =========================================================================
+
+    public Producto(IntegerProperty idProducto, IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre, StringProperty codigoBarra) {
+        this.idProducto = new SimpleIntegerProperty(idProducto != null ? idProducto.get() : 0);
+        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad.get() : 0);
+        this.precio = new SimpleDoubleProperty(precio != null ? precio.get() : 0.0);
+        this.nombre = new SimpleStringProperty(nombre != null ? nombre.get() : "");
+        this.codigoBarra = new SimpleStringProperty(codigoBarra != null ? codigoBarra.get() : "");
+    }
+
     public Producto(int idProducto, String nombre, Integer cantidad, double precio, String codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(idProducto);;
+        this.idProducto = new SimpleIntegerProperty(idProducto);
         this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad);
+        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad : 0);
         this.precio = new SimpleDoubleProperty(precio);
         this.codigoBarra = new SimpleStringProperty(codigoBarra);
     }
 
-    // Constructor
     public Producto(String nombre, Integer cantidad, double precio, String codigoBarra) {
-        //this.idProducto = new SimpleIntegerProperty(idProductoProperty().getValue());
         this.idProducto = new SimpleIntegerProperty(0);
         this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad);
+        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad : 0);
         this.precio = new SimpleDoubleProperty(precio);
         this.codigoBarra = new SimpleStringProperty(codigoBarra);
     }
 
     public Producto(String nuevonombre, Integer nuevacantidad, Double nuevoPrecio, IntegerProperty idProducto, StringProperty nombre, IntegerProperty cantidad, DoubleProperty precio, StringProperty codigoBarra) {
-        this.idProducto = idProducto;
-
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.codigoBarra = codigoBarra;
+        this.idProducto = idProducto != null ? idProducto : new SimpleIntegerProperty(0);
+        this.nombre = nombre != null ? nombre : new SimpleStringProperty(nuevonombre);
+        this.cantidad = cantidad != null ? cantidad : new SimpleIntegerProperty(nuevacantidad != null ? nuevacantidad : 0);
+        this.precio = precio != null ? precio : new SimpleDoubleProperty(nuevoPrecio != null ? nuevoPrecio : 0.0);
+        this.codigoBarra = codigoBarra != null ? codigoBarra : new SimpleStringProperty("");
     }
 
-
-
-    // Getters de Propiedades (Requeridos por TableView)
+    // =========================================================================
+    // GETTERS DE PROPIEDADES (Requeridos por TableView de JavaFX)
+    // =========================================================================
     public IntegerProperty idProductoProperty() { return idProducto; }
     public StringProperty nombreProperty() { return nombre; }
     public IntegerProperty cantidadProperty() { return cantidad; }
     public DoubleProperty precioProperty() { return precio; }
     public StringProperty codigoBarraProperty() { return codigoBarra; }
 
-    // Getters ordinarios
+    // =========================================================================
+    // GETTERS Y SETTERS TRADICIONALES - CORREGIDOS CON "id"
+    // =========================================================================
+
+    @JsonProperty("id") // ◄ CORRECCIÓN: Cambiado de "idProducto" a "id" para sintonizar con Spring Boot
     public Integer getidProducto() { return idProducto.get(); }
+
+    @JsonProperty("id") // ◄ CORRECCIÓN: Cambiado de "idProducto" a "id" para sintonizar con Spring Boot
+    public void setidProducto(int idProducto) { this.idProducto.set(idProducto); }
+
+    @JsonProperty("nombre")
     public String getNombre() { return nombre.get(); }
+
+    @JsonProperty("nombre")
+    public void setNombre(String nombre) { this.nombre.set(nombre); }
+
+    @JsonProperty("cantidad")
     public Integer getCantidad() { return cantidad.get(); }
+
+    @JsonProperty("cantidad")
+    public void setCantidad(Integer cantidad) { this.cantidad.set(cantidad != null ? cantidad : 0); }
+
+    @JsonProperty("precio")
     public double getPrecio() { return precio.get(); }
+
+    @JsonProperty("precio")
+    public void setPrecio(double precio) { this.precio.set(precio); }
+
+    @JsonProperty("codigoBarra")
     public String getCodigoBarra() { return codigoBarra.get(); }
 
-    // Setters ordinarios
-    public void setidProducto(int idProducto) { this.idProducto.set(idProducto);}
-    public void setNombre(String nombre) { this.nombre.set(nombre); }
-    public void setCantidad(Integer cantidad) { this.cantidad.set(cantidad); }
-    public void setPrecio(double precio) { this.precio.set(precio); }
+    @JsonProperty("codigoBarra")
     public void setCodigoBarra(String codigoBarra) { this.codigoBarra.set(codigoBarra); }
-
 }
-
