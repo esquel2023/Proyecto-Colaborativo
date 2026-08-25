@@ -396,6 +396,7 @@ public class ControladorProducto {
                             listaProductos.set(index, clienteActualizadoApi);
                         }
                         // Fuerza el redibujado de las celdas
+                        //asd
                     });
                 } else {
                     System.out.println("[ERROR] No se pudo modificar. Código API: " + response.statusCode());
