@@ -1,7 +1,20 @@
 package com.example.proyecto_colaborativo.Controlador;
 
+import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
+import com.example.proyecto_colaborativo.bd.ProductoDAO; // Ajustá según tu paquete de DAO
+import com.example.proyecto_colaborativo.Utilits.AlertasUtils; // Ajustá tus clases útiles
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import java.sql.SQLException;
+import java.util.Optional;
+
 public class ControladorProductosInactivos {
-    /*
 
     @FXML private Button botonSalir;
     @FXML private TextField txtbuscadorProductos;
@@ -65,7 +78,7 @@ public class ControladorProductosInactivos {
 
         try {
             // 2. Modificamos el check internamente en el objeto pasándolo a true
-            //productoInactivoSeleccionado.setActivado(true);
+         //   productoInactivoSeleccionado.setActivado(true);
 
             // 3. Persistimos el cambio llamando al método oficial y seguro del DAO
             ProductoDAO.actualizar(productoInactivoSeleccionado);
@@ -121,24 +134,11 @@ public class ControladorProductosInactivos {
     }
 
     private void cargarDatosDesdeBD() {
-        try {
-            // 💡 CAMBIO: Llamamos directamente al nuevo método especializado del DAO
-            var productosInactivosBD = ProductoDAO.listarInactivos();
-
-            // setAll limpia la tabla e inyecta los registros frescos de la BD
-            listaProductos.setAll(productosInactivosBD);
-
-        } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de Base de Datos",
-                    "No se pudieron recuperar los productos inactivos de la base de datos.");
-            e.printStackTrace();
-        }
+        //
     }
 
     private void limpiarSeleccion() {
         tablaProductos.getSelectionModel().clearSelection();
         ControladorProductosInactivos.productoInactivoSeleccionado = null;
     }
-
-     */
 }

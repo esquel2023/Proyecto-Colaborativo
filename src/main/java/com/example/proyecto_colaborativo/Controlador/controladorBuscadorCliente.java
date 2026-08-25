@@ -76,5 +76,5 @@ public class controladorBuscadorCliente {
                     return coincideNombre;
                 });
 
-    } // Cierra initialize
-} // Cierra la clase de forma definitiva
+    }
+}

@@ -87,7 +87,6 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         Timeline reloj = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> actualizarFechaHora()),
                 new KeyFrame(Duration.seconds(1))
@@ -182,11 +181,13 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void botonInicio(ActionEvent actionEvent) {
+    public void cerrarSesion(ActionEvent actionEvent) {
+            javafx.stage.Stage ventana = (javafx.stage.Stage) ((javafx.scene.Node) actionEvent.getSource()).getScene().getWindow();
+
+            ventana.close();
+        }
+
     }
 
-    public void abrirConfiguracion(ActionEvent actionEvent) {
-    }
-}
 
 

@@ -8,8 +8,10 @@ module com.example.proyecto_colaborativo {
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
     requires java.sql;
-    requires java.net.http;
+    requires static lombok;
+    requires com.github.librepdf.openpdf;
     requires com.fasterxml.jackson.databind;
+    requires java.net.http;
 
     opens com.example.proyecto_colaborativo to javafx.fxml;
     opens com.example.proyecto_colaborativo.Controlador to javafx.fxml;

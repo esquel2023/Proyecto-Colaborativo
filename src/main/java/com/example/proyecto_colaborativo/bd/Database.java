@@ -6,7 +6,8 @@ import java.sql.DriverManager;
 public class Database {
 
     //url de su archivo de db
-    private static final String URL = "jdbc:sqlite:C:/Users/opcd08/IdeaProjectsP/Nueva carpeta/src/main/java/com/example/proyecto_colaborativo/bd/Sistemadeventas.db";
+    private static final String URL = "jdbc:sqlite:C:/Users/opcd10/IdeaProjects/Proyecto-Colaborativo/src/main/java/com/example/proyecto_colaborativo/bd/Sistemadeventas.db";
+
     public static Connection getConnection() {
         try {
             return DriverManager.getConnection(URL);

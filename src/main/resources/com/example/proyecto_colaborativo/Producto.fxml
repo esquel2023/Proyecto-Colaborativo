@@ -1,265 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="520.0"
-            prefWidth="900.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorProducto"
-            stylesheets="@style.css"
-            styleClass="root-productos">
-
-    <children>
-
-        <VBox spacing="14"
-              AnchorPane.topAnchor="16"
-              AnchorPane.rightAnchor="16"
-              AnchorPane.bottomAnchor="16"
-              AnchorPane.leftAnchor="16">
-
-            <!-- ================= ENCABEZADO ================= -->
-
-            <HBox alignment="CENTER_LEFT"
-                  spacing="14"
-                  styleClass="header-simple">
-
-                <Label text="📦"
-                       styleClass="icono-header"/>
-
-                <VBox spacing="2">
-
-                    <Label text="Productos"
-                           styleClass="titulo-oscuro"/>
-
-                    <Label text="Gestión de productos"
-                           styleClass="subtitulo-oscuro"/>
-
-                </VBox>
-
-                <Region HBox.hgrow="ALWAYS"/>
-
-                <!-- FECHA Y HORA -->
-
-                <VBox alignment="CENTER_RIGHT"
-                      spacing="2">
-
-                    <Label fx:id="fechaLabel"
-                           text="Fecha"
-                           styleClass="fecha-texto"/>
-
-                    <Label fx:id="horaLabel"
-                           text="Hora"
-                           styleClass="hora-texto"/>
-
-                </VBox>
-
-            </HBox>
-
-
-            <!-- ================= CONTENIDO PRINCIPAL ================= -->
-
-            <HBox spacing="14"
-                  VBox.vgrow="ALWAYS">
-
-
-                <!-- ================= PRODUCTOS REGISTRADOS ================= -->
-
-                <VBox spacing="12"
-                      styleClass="buscador-card"
-                      HBox.hgrow="ALWAYS">
-
-
-                    <!-- BUSCADOR -->
-
-                    <VBox spacing="8">
-
-                        <Label text="🔍 Buscar producto"
-                               styleClass="titulo-seccion"/>
-
-                        <HBox spacing="8"
-                              alignment="CENTER_LEFT">
-
-                            <TextField fx:id="txtbuscadorProductos"
-                                       promptText="Nombre, código o código de barras"
-                                       HBox.hgrow="ALWAYS"
-                                       styleClass="input-busqueda"/>
-
-                            <Button text="🔍"
-                                    styleClass="btn-buscar"/>
-
-                        </HBox>
-
-                    </VBox>
-
-
-                    <!-- ================= TABLA ================= -->
-
-                    <VBox spacing="8"
-                          VBox.vgrow="ALWAYS">
-
-                        <Label text="☰ Productos registrados"
-                               styleClass="titulo-seccion"/>
-
-                        <TableView fx:id="tablaProductos"
-                                   styleClass="tabla-productos"
-                                   VBox.vgrow="ALWAYS">
-
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                            </columnResizePolicy>
-
-                            <columns>
-
-                                <TableColumn fx:id="colCodigo"
-                                             text="Código"
-                                             prefWidth="90"/>
-
-                                <TableColumn fx:id="colNombre"
-                                             text="Nombre"
-                                             prefWidth="220"/>
-
-                                <TableColumn fx:id="colCantidad"
-                                             text="Cantidad"
-                                             prefWidth="100"/>
-
-                                <TableColumn fx:id="colPrecio"
-                                             text="Precio"
-                                             prefWidth="120"/>
-
-                            </columns>
-
-                        </TableView>
-
-                    </VBox>
-
-
-                    <!-- ================= BOTONES ================= -->
-
-                    <HBox spacing="10"
-                          alignment="CENTER">
-
-                        <Button fx:id="botonAgregar"
-                                text="+  Agregar"
-                                onAction="#clickAgregar"
-                                maxWidth="Infinity"
-                                HBox.hgrow="ALWAYS"
-                                styleClass="btn-agregar"/>
-
-                        <Button fx:id="botonModificar"
-                                text="✏  Modificar"
-                                onAction="#clickModificar"
-                                maxWidth="Infinity"
-                                HBox.hgrow="ALWAYS"
-                                styleClass="btn-modificar"/>
-
-                        <Button fx:id="botonEliminar"
-                                text="🗑  Eliminar"
-                                onAction="#clickEliminar"
-                                maxWidth="Infinity"
-                                HBox.hgrow="ALWAYS"
-                                styleClass="btn-eliminar"/>
-
-                    </HBox>
-
-                </VBox>
-
-
-                <!-- ================= CALCULADORA PRECIO ================= -->
-
-                <VBox spacing="16"
-                      prefWidth="300"
-                      styleClass="panel-precio">
-
-                    <HBox alignment="CENTER_LEFT"
-                          spacing="10">
-
-                        <Label text="🧮"
-                               styleClass="icono-resumen"/>
-
-                        <Label text="Calculadora de precio"
-                               styleClass="resumen-titulo"/>
-
-                    </HBox>
-
-                    <Separator/>
-
-
-                    <!-- PRECIO COSTO -->
-
-                    <VBox spacing="6">
-
-                        <Label text="Precio costo"
-                               styleClass="precio-final-texto"/>
-
-                        <TextField fx:id="precioCosto"
-                                   promptText="0.00"
-                                   styleClass="input-busqueda"/>
-
-                    </VBox>
-
-
-                    <!-- GANANCIA -->
-
-                    <VBox spacing="6">
-
-                        <Label text="Ganancia (%)"
-                               styleClass="precio-final-texto"/>
-
-                        <TextField fx:id="porcentaje"
-                                   promptText="0 %"
-                                   styleClass="input-busqueda"/>
-
-                    </VBox>
-
-
-                    <!-- PRECIO FIN9999AL -->
-
-                    <VBox spacing="8"
-                          alignment="CENTER"
-                          styleClass="precio-final-card">
-
-                        <Label text="Precio de venta"
-                               styleClass="precio-final-texto"/>
-
-                        <Label fx:id="labelPrecioVenta"
-                               text="0.00"
-                               styleClass="precio-final"/>
-
-                    </VBox>
-
-
-                    <!-- CALCULAR88 -->
-
-                    <HBox alignment="CENTER"
-                          maxWidth="Infinity">
-
-                        <Button text="Calcular precio de venta"
-                                onAction="#calcularPrecio"
-                                styleClass="btn-calcular-precio"/>
-
-                    </HBox>
-
-                    <Separator/>
-
-                    <Region VBox.vgrow="ALWAYS"/>
-
-
-                    <!-- SALIR -->
-
-                    <Button fx:id="botonSalir"
-                            text="↪  Salir"
-                            onAction="#clickSalir"
-                            maxWidth="Infinity"
-                            styleClass="btn-salir"/>
-
-                </VBox>
-
-            </HBox>
-
-        </VBox>
-
-    </children>
-
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="597.0" xmlns="http://javafx.com" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_colaborativo.Controlador.ControladorProducto">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="23.0" prefHeight="25.0" prefWidth="391.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Venta" />
+            <Menu mnemonicParsing="false" text="Producto" />
+          <Menu mnemonicParsing="false" text="Historial">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Registro">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Cliente" />
+            <Menu mnemonicParsing="false" text="Proveedor" />
+        </menus>
+      </MenuBar>
+      <Button layoutX="365.0" layoutY="203.0" mnemonicParsing="false" text="🔍" />
+       <Button fx:id="botonAgregar" layoutX="20.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickAgregar" text="Agregar"/>
+      <Button fx:id="botonModificar" layoutX="93.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickModificar" text="Modificar" />
+      <Button fx:id="botonEliminar" layoutX="178.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickEliminar" text="Eliminar" />
+      <TextField fx:id="txtbuscadorProductos" layoutX="12.0" layoutY="203.0" prefHeight="25.0" prefWidth="336.0" promptText="Buscador de productos" />
+      <TableView fx:id="tablaProductos" layoutX="12.0" layoutY="240.0" prefHeight="162.0" prefWidth="391.0">
+        <columns>
+            <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Codigo" />
+          <TableColumn fx:id="colNombre" prefWidth="109.0" text="Nombre" />
+          <TableColumn fx:id="colCantidad" prefWidth="84.0" text="Cantidad" />
+            <TableColumn fx:id="colPrecio" prefWidth="97.0" text="Precio" />
+        </columns>
+      </TableView>
+      <Button fx:id="botonSalir" layoutX="247.0" layoutY="79.0" mnemonicParsing="false" onAction="#clickSalir" text="Salir" />
+   </children>
 </AnchorPane>

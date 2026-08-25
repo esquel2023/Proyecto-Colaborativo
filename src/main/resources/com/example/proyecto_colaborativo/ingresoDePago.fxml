@@ -29,7 +29,7 @@
                 <Font size="13.0" />
             </font>
         </Text>
-        <TextField fx:id="DNI" layoutX="85.0" layoutY="186.0" prefHeight="25.0" prefWidth="95.0" />
+        <TextField fx:id="DNI" layoutX="94.0" layoutY="186.0" prefHeight="25.0" prefWidth="95.0" />
         <TextField fx:id="nombreYApellido" layoutX="85.0" layoutY="115.0" prefHeight="25.0" prefWidth="95.0" />
         <Button fx:id="Cancelar" layoutX="277.0" layoutY="405.0" mnemonicParsing="false" onAction="#Cancelar" prefHeight="32.0" prefWidth="95.0" text="Cancelar" />
         <Button fx:id="GuardarComprobante" layoutX="97.0" layoutY="364.0" mnemonicParsing="false" onAction="#GuardarComprobante" prefHeight="32.0" prefWidth="179.0" text="Guardar Comprobante/Imprimir">

@@ -33,5 +33,4 @@ public class HelloApplication extends Application {
 
         stage.show();
     }
-}
-    // Exito para el proyecto
+}// Exito para el proyecto

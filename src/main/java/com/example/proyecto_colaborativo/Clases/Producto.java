@@ -1,112 +1,95 @@
 package com.example.proyecto_colaborativo.Clases;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import javafx.beans.property.*;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Producto {
+
+    // Campos finales (Las propiedades de JavaFX se inicializan siempre)
+    private final IntegerProperty idProducto = new SimpleIntegerProperty(0);
+    private final StringProperty nombre = new SimpleStringProperty("");
+    private final IntegerProperty cantidad = new SimpleIntegerProperty(0);
+    private final DoubleProperty precio = new SimpleDoubleProperty(0.0);
+    private final StringProperty codigoBarra = new SimpleStringProperty("");
 
     public static Integer idProveedorParaAsociar = null;
     public static boolean debeAsociarProveedor = false;
     public static Producto productoSeleccionadoParaEditar = null;
 
-    private final IntegerProperty idProducto;
-    private final StringProperty nombre;
-    private final IntegerProperty cantidad;
-    private final DoubleProperty precio;
-    private final StringProperty codigoBarra;
-
-    // =========================================================================
-    // 1. CONSTRUCTOR VACÍO - CORREGIDO CON @JsonCreator
-    // Fuerza a Jackson a usar este constructor e inicializar las Properties
-    // =========================================================================
-    @JsonCreator
+    // Constructor vacío requerido por Jackson
     public Producto() {
-        this.idProducto = new SimpleIntegerProperty(0);
-        this.nombre = new SimpleStringProperty("");
-        this.cantidad = new SimpleIntegerProperty(0);
-        this.precio = new SimpleDoubleProperty(0.0);
-        this.codigoBarra = new SimpleStringProperty("");
+        // Al estar inicializados arriba, no hace falta repetir el 'new' acá
     }
 
-    // =========================================================================
-    // CONSTRUCTORES EXISTENTES
-    // =========================================================================
-
-    public Producto(IntegerProperty idProducto, IntegerProperty cantidad, DoubleProperty precio, StringProperty nombre, StringProperty codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(idProducto != null ? idProducto.get() : 0);
-        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad.get() : 0);
-        this.precio = new SimpleDoubleProperty(precio != null ? precio.get() : 0.0);
-        this.nombre = new SimpleStringProperty(nombre != null ? nombre.get() : "");
-        this.codigoBarra = new SimpleStringProperty(codigoBarra != null ? codigoBarra.get() : "");
+    // Constructor con ID
+    public Producto(Integer idProducto, String nombre, Integer cantidad, Double precio, String codigoBarra) {
+        setidProducto(idProducto);
+        setNombre(nombre);
+        setCantidad(cantidad);
+        setPrecio(precio);
+        setCodigoBarra(codigoBarra);
     }
 
-    public Producto(int idProducto, String nombre, Integer cantidad, double precio, String codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(idProducto);
-        this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad : 0);
-        this.precio = new SimpleDoubleProperty(precio);
-        this.codigoBarra = new SimpleStringProperty(codigoBarra);
+    // Constructor sin ID
+    public Producto(String nombre, Integer cantidad, Double precio, String codigoBarra) {
+        setidProducto(0);
+        setNombre(nombre);
+        setCantidad(cantidad);
+        setPrecio(precio);
+        setCodigoBarra(codigoBarra);
     }
 
-    public Producto(String nombre, Integer cantidad, double precio, String codigoBarra) {
-        this.idProducto = new SimpleIntegerProperty(0);
-        this.nombre = new SimpleStringProperty(nombre);
-        this.cantidad = new SimpleIntegerProperty(cantidad != null ? cantidad : 0);
-        this.precio = new SimpleDoubleProperty(precio);
-        this.codigoBarra = new SimpleStringProperty(codigoBarra);
-    }
-
+    // Constructor alternativo
     public Producto(String nuevonombre, Integer nuevacantidad, Double nuevoPrecio, IntegerProperty idProducto, StringProperty nombre, IntegerProperty cantidad, DoubleProperty precio, StringProperty codigoBarra) {
-        this.idProducto = idProducto != null ? idProducto : new SimpleIntegerProperty(0);
-        this.nombre = nombre != null ? nombre : new SimpleStringProperty(nuevonombre);
-        this.cantidad = cantidad != null ? cantidad : new SimpleIntegerProperty(nuevacantidad != null ? nuevacantidad : 0);
-        this.precio = precio != null ? precio : new SimpleDoubleProperty(nuevoPrecio != null ? nuevoPrecio : 0.0);
-        this.codigoBarra = codigoBarra != null ? codigoBarra : new SimpleStringProperty("");
+        setidProducto(idProducto != null ? idProducto.get() : 0);
+        setNombre(nuevonombre != null ? nuevonombre : (nombre != null ? nombre.get() : ""));
+        setCantidad(nuevacantidad != null ? nuevacantidad : (cantidad != null ? cantidad.get() : 0));
+        setPrecio(nuevoPrecio != null ? nuevoPrecio : (precio != null ? precio.get() : 0.0));
+        setCodigoBarra(codigoBarra != null ? codigoBarra.get() : "");
     }
 
-    // =========================================================================
-    // GETTERS DE PROPIEDADES (Requeridos por TableView de JavaFX)
-    // =========================================================================
+    // ==========================================
+    // GETTERS DE PROPIEDADES (Para TableView)
+    // ==========================================
     public IntegerProperty idProductoProperty() { return idProducto; }
     public StringProperty nombreProperty() { return nombre; }
     public IntegerProperty cantidadProperty() { return cantidad; }
     public DoubleProperty precioProperty() { return precio; }
     public StringProperty codigoBarraProperty() { return codigoBarra; }
 
-    // =========================================================================
-    // GETTERS Y SETTERS TRADICIONALES - CORREGIDOS CON "id"
-    // =========================================================================
-
-    @JsonProperty("id") // ◄ CORRECCIÓN: Cambiado de "idProducto" a "id" para sintonizar con Spring Boot
+    // ==========================================
+    // GETTERS ORDINARIOS
+    // ==========================================
     public Integer getidProducto() { return idProducto.get(); }
-
-    @JsonProperty("id") // ◄ CORRECCIÓN: Cambiado de "idProducto" a "id" para sintonizar con Spring Boot
-    public void setidProducto(int idProducto) { this.idProducto.set(idProducto); }
-
-    @JsonProperty("nombre")
     public String getNombre() { return nombre.get(); }
-
-    @JsonProperty("nombre")
-    public void setNombre(String nombre) { this.nombre.set(nombre); }
-
-    @JsonProperty("cantidad")
     public Integer getCantidad() { return cantidad.get(); }
-
-    @JsonProperty("cantidad")
-    public void setCantidad(Integer cantidad) { this.cantidad.set(cantidad != null ? cantidad : 0); }
-
-    @JsonProperty("precio")
     public double getPrecio() { return precio.get(); }
-
-    @JsonProperty("precio")
-    public void setPrecio(double precio) { this.precio.set(precio); }
-
-    @JsonProperty("codigoBarra")
     public String getCodigoBarra() { return codigoBarra.get(); }
 
-    @JsonProperty("codigoBarra")
-    public void setCodigoBarra(String codigoBarra) { this.codigoBarra.set(codigoBarra); }
+    // ==========================================
+    // SETTERS CON PROTECCIÓN CONTRA NULOS (Jackson usará estos)
+    // ==========================================
+    @JsonAlias({"id", "idProducto"})
+    public void setidProducto(Integer idProducto) {
+        this.idProducto.set(idProducto != null ? idProducto : 0);
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre.set(nombre != null ? nombre : "");
+    }
+
+    @JsonAlias({"stock", "cantidad"})
+    public void setCantidad(Integer cantidad) {
+        // ✅ Si la API manda null, se transforma en 0 de forma segura sin romper JavaFX
+        this.cantidad.set(cantidad != null ? cantidad : 0);
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio.set(precio != null ? precio : 0.0);
+    }
+
+    @JsonAlias({"codigoBarra", "codigoBarras"})
+    public void setCodigoBarra(String codigoBarra) {
+        this.codigoBarra.set(codigoBarra != null ? codigoBarra : "");
+    }
 }
