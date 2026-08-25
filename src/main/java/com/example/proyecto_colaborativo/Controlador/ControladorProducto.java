@@ -4,6 +4,7 @@ package com.example.proyecto_colaborativo.Controlador;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,8 @@ public class ControladorProducto {
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
 
+        tablaProductos.setItems(listaProductos);
+
         // ========================================
         // LLAMADA A LA CLASE REUTILIZABLE
         // ==========================================
@@ -141,9 +144,9 @@ public class ControladorProducto {
         if (this.productoseleccionado == null) {AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto", "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);return;}
 
 
-        Producto.productoSeleccionadoParaEditar = this.productoseleccionado;
+        Producto.productoSeleccionadoParaEditar = ControladorProducto.productoseleccionado;
 
-
+        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Agregar Producto", true);
 
 
 
@@ -153,82 +156,11 @@ public class ControladorProducto {
 
     @FXML
     private void clickAgregar(ActionEvent event) {
-        String txtNombre = colNombre.getText(); // Cambiar por tu TextField de nombre, ej: nombreField.getText()
-        String txtCodigo = codigo.getText();    // Usa el TextField 'codigo' que ya tienes declarado
-        String txtCantidad = colCantidad.getText(); // Cambiar por tu TextField de cantidad
-        String txtPrecio = labelPrecioVenta.getText(); // Cambiar por tu TextField de precio
 
-        // 2. Validación de campos vacíos
-        if (txtNombre.isBlank() || txtCodigo.isBlank() || txtCantidad.isBlank() || txtPrecio.isBlank()) {
-            AlertasUtils.mostrarAlerta("FALTAN DATOS", "No completaste todos los campos.", "Hay campos vacíos obligatorios.", Alert.AlertType.INFORMATION);
-            return;
-        }
 
-        // 3. Validación de formatos básicos en las cadenas
-        if (txtCodigo.contains("-") || txtNombre.contains("-")) {
-            AlertasUtils.mostrarAlerta("FORMATO INVÁLIDO", "Formatos incorrectos.", "Por favor revisa que el nombre o código no contengan guiones.", Alert.AlertType.INFORMATION);
-            return;
-        }
+        NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Agregar Producto", true);
 
-        // Variables para almacenar los valores numéricos ya parseados
-        int cantidadParseada;
-        double precioParseado;
 
-        // 4. Validación numérica de los datos de entrada
-        try {
-            cantidadParseada = Integer.parseInt(txtCantidad);
-            precioParseado = Double.parseDouble(txtPrecio);
-
-            if (cantidadParseada < 0 || precioParseado < 0) {
-                throw new NumberFormatException("Valores negativos");
-            }
-        } catch (NumberFormatException e) {
-            AlertasUtils.mostrarAlerta("DATOS INVÁLIDOS", "Formato numérico erróneo", "La cantidad debe ser entera y el precio decimal. No uses letras, signos negativos ni puntos como miles.", Alert.AlertType.INFORMATION);
-            return;
-        }
-
-        // 5. Construcción del mensaje de confirmación en pantalla
-        String mensaje = String.format(
-                "¿Confirmas los datos del nuevo producto?\n\nCódigo: %s\nNombre: %s\nCantidad: %s\nPrecio: $%s",
-                txtCodigo, txtNombre, txtCantidad, txtPrecio
-        );
-
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Confirmación de Producto");
-        alerta.setHeaderText("Revisa los datos antes de registrar en el inventario");
-        alerta.setContentText(mensaje);
-
-        ButtonType botonConfirmar = new ButtonType("Confirmar");
-        ButtonType botonModificar = new ButtonType("Modificar / Cancelar");
-        alerta.getButtonTypes().setAll(botonConfirmar, botonModificar);
-
-        java.util.Optional<ButtonType> resultado = alerta.showAndWait();
-
-        // 6. Procesamiento de la inserción si el usuario confirma
-        if (resultado.isPresent() && resultado.get() == botonConfirmar) {
-            try {
-                // Instanciar tu clase entidad Producto
-                Producto nuevoProducto = new Producto();
-                nuevoProducto.setNombre(txtNombre);
-                nuevoProducto.setCodigoBarra(txtCodigo);
-                nuevoProducto.setCantidad(cantidadParseada);
-                nuevoProducto.setPrecio(precioParseado);
-
-                // Llamada al método que envía el producto a tu backend API
-                agregarProductoApi(nuevoProducto);
-
-                // Actualizar la tabla local de forma inmediata agregando el objeto
-                listaProductos.add(nuevoProducto);
-
-                // Limpieza de la interfaz de usuario
-                limpiarCamposProducto();
-
-                System.out.println("Producto agregado con éxito a la API y la lista observable.");
-            } catch (Exception e) {
-                System.out.println("Error al intentar procesar e insertar el producto.");
-                e.printStackTrace();
-            }
-        }
 
 
     }
@@ -241,6 +173,7 @@ public class ControladorProducto {
 
             return;
         }
+
 
         // 2. Alerta de confirmación visual
         javafx.scene.control.Alert alerta = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
@@ -256,12 +189,14 @@ public class ControladorProducto {
 
       //      ProductoDAO.eliminar(productoseleccionado.getidProducto());
             // Elimina físicamente el ítem de la lista de datos
-            listaProductos.remove(productoseleccionado);
+
 
             // 3. Remover el producto de la lista observable global
+
+
+            eliminarProductoApi(productoseleccionado);
+            listaProductos.remove(productoseleccionado);
             tablaProductos.getSelectionModel().clearSelection();
-
-
             // 4. Resetear la variable de control
             this.productoseleccionado = null;
             System.out.println("¡Producto eliminado con éxito!");
@@ -333,20 +268,17 @@ public class ControladorProducto {
 
 
 
-private void eliminarClienteApi(Producto productoAEliminar) {
-    if (productoAEliminar == null) return;
+    private void eliminarProductoApi(Producto producto) {
 
-    Thread deleteThread = new Thread(() -> {
+        if (producto == null) return;
+        Thread putThread = new Thread(() -> {
         try {
-            // 1. Armar la URL dinámica con el identificador del cliente (su nombre)
-            // Se codifica por si el nombre tiene espacios (ej: "Juan Perez")
 
-            String urlEliminar = "http://localhost:8080/tienda/api/v1/clientes/" + productoAEliminar.getidProducto();
+            String urlDestino = API_URL + "/" + producto.getidProducto();
+            System.out.println("[DEBUG] Enviando petición DELETE a: " + urlDestino);
 
-
-            // 2. Construir la petición DELETE
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(urlEliminar))
+                    .uri(URI.create(urlDestino))
                     .DELETE()
                     .build();
 
@@ -359,7 +291,7 @@ private void eliminarClienteApi(Producto productoAEliminar) {
 
                 // 5. Remover el cliente visualmente de la tabla en el hilo de JavaFX
                 javafx.application.Platform.runLater(() -> {
-                    listaProductos.remove(productoAEliminar);
+                    listaProductos.remove(producto);
                     tablaProductos.getSelectionModel().clearSelection();
                 });
             } else {
@@ -372,9 +304,11 @@ private void eliminarClienteApi(Producto productoAEliminar) {
         }
     });
 
-    deleteThread.setDaemon(true);
-    deleteThread.start();
-}
+        putThread.setDaemon(true);
+        putThread.start();
+
+    }
+
 
 
 

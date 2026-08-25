@@ -181,6 +181,12 @@ public class HelloController implements Initializable {
             System.err.println("No se encontró el archivo: " + rutaRecurso);
         }
     }
+
+    public void botonInicio(ActionEvent actionEvent) {
+    }
+
+    public void abrirConfiguracion(ActionEvent actionEvent) {
+    }
 }
 
 
