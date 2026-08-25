@@ -107,7 +107,7 @@ public class ControladorProductoAgregar {
         // 1. Armamos un mapa limpio con las claves exactas que espera recibir tu backend de Spring Boot
         Map<String, Object> productoMap = new HashMap<>();
         productoMap.put("nombre", nombre);
-        productoMap.put("stock", stock); // Tu backend usa 'stock'
+        productoMap.put("cantidad", stock);
         productoMap.put("precio", precio);
         productoMap.put("codigoBarra", codigo);
 

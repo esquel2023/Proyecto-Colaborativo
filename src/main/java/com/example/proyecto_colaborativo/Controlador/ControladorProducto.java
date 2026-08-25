@@ -4,6 +4,7 @@ import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
@@ -32,7 +33,7 @@ public class ControladorProducto {
     @FXML private Button botonSalir;
     @FXML private TextField codigo;
 
-    private static final String API_URL = "http://localhost:8080/tienda/api/v1/productos/fake-productos";
+    private static final String API_URL = "http://localhost:8080/tienda/api/v1/productos";
     public static final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
     public static Producto productoseleccionado;
 
@@ -132,35 +133,81 @@ public class ControladorProducto {
         traerProductosDesdeBackend(); // Refresca la tabla al cerrar
     }
 
+
     @FXML
     private void clickModificar(ActionEvent event) {
+        // 1. Validamos que haya un producto seleccionado en la tabla
         if (ControladorProducto.productoseleccionado == null) {
             AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
                     "Debes seleccionar un producto de la tabla para poder modificarlo.", Alert.AlertType.WARNING);
             return;
         }
+
+        // 2. Pasamos el producto seleccionado a la variable estática de edición para que el formulario la lea
         Producto.productoSeleccionadoParaEditar = ControladorProducto.productoseleccionado;
+
+        // 3. ✅ ABRIMOS EL FORMULARIO DE EDICIÓN (Quitamos la Task HTTP incorrecta de acá)
         NavegacionUtils.abrirPantalla("ProductoAgregar.fxml", "Modificar Producto", true);
-        traerProductosDesdeBackend(); // Refresca la tabla al regresar
+
+        // 4. Cuando el usuario termine de guardar en la otra pantalla y esta ventana recupere el foco:
+        traerProductosDesdeBackend(); // Volvemos a pedir la lista al backend para mostrar los cambios reales
+        ControladorProducto.productoseleccionado = null;
+        tablaProductos.getSelectionModel().clearSelection();
     }
+
 
     @FXML
     private void clickEliminar(ActionEvent event) {
-        if (ControladorProducto.productoseleccionado == null) {
-            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto",
-                    "Seleccioná una fila para eliminar.", Alert.AlertType.WARNING);
+        Producto seleccionado = ControladorProducto.productoseleccionado;
+        if (seleccionado == null) {
+            AlertasUtils.mostrarAlerta("Sin selección", "No se seleccionó ningún producto", "Seleccioná una fila para eliminar.", Alert.AlertType.WARNING);
             return;
         }
-        System.out.println("Eliminar: " + ControladorProducto.productoseleccionado.getNombre());
+
+        // 1. Definimos la Task para ejecutar el DELETE en segundo plano
+        Task<Integer> taskEliminar = new Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL + "/" + seleccionado.getidProducto()))
+                        .DELETE()
+                        .build();
+                return client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
+            }
+        };
+
+            // 2. Qué pasa si la petición sale bien
+            taskEliminar.setOnSucceeded(e -> {
+                int codigo = taskEliminar.getValue();
+                if (codigo == 204 || codigo == 200) {
+                    listaProductos.remove(seleccionado); // Lo borra visualmente de la tabla al instante
+                    ControladorProducto.productoseleccionado = null;
+                    tablaProductos.getSelectionModel().clearSelection();
+                    AlertasUtils.mostrarAlerta("Éxito", "Eliminado", "El producto fue borrado correctamente.", Alert.AlertType.INFORMATION);
+                } else {
+                    AlertasUtils.mostrarAlerta("Error", "No se pudo borrar", "El servidor respondió con código: " + codigo, Alert.AlertType.ERROR);
+                }
+            });
+
+            // 3. Qué pasa si el servidor está apagado o falla la red
+            taskEliminar.setOnFailed(e -> AlertasUtils.mostrarAlerta("Error", "Falla de red", "No se pudo conectar con el servidor.", Alert.AlertType.ERROR));
+
+            // 4. Arrancamos el hilo secundario de forma segura
+            Thread thread = new Thread(taskEliminar);
+            thread.setDaemon(true);
+            thread.start();
+        }
+
+        @FXML
+        private void clickSalir (ActionEvent event){
+            Stage stage = (Stage) botonSalir.getScene().getWindow();
+            stage.close();
+        }
+
+        private void cargarDatosDesdeBD () {
+            // Tu método de respaldo local
+        }
     }
 
-    @FXML
-    private void clickSalir(ActionEvent event) {
-        Stage stage = (Stage) botonSalir.getScene().getWindow();
-        stage.close();
-    }
 
-    private void cargarDatosDesdeBD() {
-        // Tu método de respaldo local
-    }
-}

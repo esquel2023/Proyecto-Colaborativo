@@ -18,5 +18,4 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
-}
-    // Exito para el proyecto
+}// Exito para el proyecto

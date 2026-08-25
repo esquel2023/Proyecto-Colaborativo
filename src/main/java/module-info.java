@@ -10,6 +10,8 @@ module com.example.proyecto_colaborativo {
     requires java.sql;
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
+    requires com.github.librepdf.openpdf;
+    requires static lombok;
 
     opens com.example.proyecto_colaborativo to javafx.fxml;
     opens com.example.proyecto_colaborativo.Controlador to javafx.fxml;

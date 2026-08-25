@@ -131,7 +131,7 @@
 
                     <Region VBox.vgrow="ALWAYS" />
 
-                    <Button maxWidth="Infinity" styleClass="btn-finalizar" text="✓  Finalizar venta" />
+                    <Button fx:id="finalizarVenta" maxWidth="Infinity" onAction="#finalizarVenta" styleClass="btn-finalizar" text="✓  Finalizar venta" />
 
                     <Button fx:id="cancelarVenta" maxWidth="Infinity" onAction="#cancelarVenta" styleClass="btn-cancelar" text="✖ Cancelar venta" />
                 </VBox>

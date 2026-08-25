@@ -1,8 +1,8 @@
 package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.*;
-import com.example.proyecto_colaborativo.API.ApiService;
 import com.example.proyecto_colaborativo.Clases.Producto;
+import com.example.proyecto_colaborativo.Clases.claseFactura;
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils;
 import com.example.proyecto_colaborativo.bd.ClienteDAO;
 import com.example.proyecto_colaborativo.bd.ProductoDAO;
@@ -21,10 +21,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import com.example.proyecto_colaborativo.pdf.InformePDFGenerator;
+
 
 public class ControladorFactura implements Initializable {
 
@@ -43,6 +48,7 @@ public class ControladorFactura implements Initializable {
     public Button eliminarProducto;
     public SplitMenuButton codigo;
     public Label Vuelto;
+    public Button finalizarVenta;
 
     @FXML
     private Button buscarCliente;
@@ -189,6 +195,7 @@ public class ControladorFactura implements Initializable {
             AlertasUtils.mostrarAlerta("Información", "Sin producto", "No hay ningún producto seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
         }
     }
+
     public void buscarCliente(ActionEvent actionEvent) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("clienteGeneral.fxml"));
@@ -216,8 +223,8 @@ public class ControladorFactura implements Initializable {
         if (cliente != null && !cliente.getText().isEmpty() && AlertasUtils.mostrarConfirmacion("Confirmación", "¿Estás seguro?", "Vas a quitar al cliente de esta factura")) {
             cliente.setText("");
             if (nombreYApellido != null) nombreYApellido.clear();
-        }else if (nombreYApellido == null || cliente.getText().isEmpty()) {
-            AlertasUtils.mostrarAlerta("Información","Sin cliente", "No hay ningún cliente seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
+        } else if (nombreYApellido == null || cliente.getText().isEmpty()) {
+            AlertasUtils.mostrarAlerta("Información", "Sin cliente", "No hay ningún cliente seleccionado en esta factura para eliminar", Alert.AlertType.ERROR);
         }
     }
 
@@ -239,10 +246,17 @@ public class ControladorFactura implements Initializable {
         }
     }
 
-    public void ingresarPago(ActionEvent actionEvent) {}
-    public void selecEfectivo(ActionEvent actionEvent) {}
-    public void selecTarjeta(ActionEvent actionEvent) {}
-    public void elegirCodigo(ActionEvent actionEvent) {}
+    public void ingresarPago(ActionEvent actionEvent) {
+    }
+
+    public void selecEfectivo(ActionEvent actionEvent) {
+    }
+
+    public void selecTarjeta(ActionEvent actionEvent) {
+    }
+
+    public void elegirCodigo(ActionEvent actionEvent) {
+    }
 
     // >>> CORRECCIÓN ABSOLUTA: El método que faltaba para procesar el Doble Clic sin duplicar filas <<<
     public void recibirProducto(Producto producto) {
@@ -256,9 +270,8 @@ public class ControladorFactura implements Initializable {
             }
         }
 
-        // 2. Evaluamos el resultado de la búsqueda
         if (productoExistente != null) {
-            // CASO A: El producto ya estaba en la tabla, aumentamos su cantidad
+
             int nuevaCantidad = productoExistente.getCantidad() + 1;
             productoExistente.setCantidad(nuevaCantidad);
 
@@ -266,19 +279,15 @@ public class ControladorFactura implements Initializable {
                 productoExistente.cantidadProperty().set(nuevaCantidad);
             }
         } else {
-            // CASO B: Es un producto nuevo en la factura, lo agregamos por primera vez
             producto.setCantidad(1);
             if (producto.cantidadProperty() != null) {
                 producto.cantidadProperty().set(1);
             }
             listaUsuarios.add(producto);
         }
-
-        // 3. Refrescar los componentes visuales
         TablaProductos.refresh();
         Calcular();
     }
-
 
     public void botonA(ActionEvent actionEvent) {
         tipoFactura.setText("A");
@@ -305,18 +314,85 @@ public class ControladorFactura implements Initializable {
         Parent root = loader.load();
 
         //controladorIngresoDePago controller = loader.getController();
-
         Stage stage = new Stage();
         stage.setTitle("ingresoDePago");
         stage.setScene(new Scene(root, 440, 540));
 
         stage.showAndWait();
 
-
     }
 
     public void cancelarVenta(ActionEvent actionEvent) {
 
     }
-}
 
+    public void finalizarVenta(ActionEvent actionEvent) throws Exception {
+        // 1. Evitar transacciones vacías
+        if (listaUsuarios.isEmpty()) {
+            AlertasUtils.mostrarAlerta("Error", "Factura Vacía", "Cargue al menos un producto a la tabla antes de cobrar.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // 2. Extraer los datos textuales de la interfaz
+        String nombreCliente = (cliente != null && !cliente.getText().trim().isEmpty()) ? cliente.getText() : "Consumidor Final";
+        String dniCliente = (nombreYApellido != null && !nombreYApellido.getText().trim().isEmpty()) ? nombreYApellido.getText() : "00000000";
+
+        String nroFactura = "FAC-" + (int) (Math.random() * 90000 + 10000);
+        String fechaHoy = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String medioPago = (tipoFactura != null && tipoFactura.getText() != null) ? tipoFactura.getText() : "Efectivo";
+
+        // 3. Pasar los productos del TableView a una estructura compatible
+        List<Producto> listaProductosVenta = new ArrayList<>(listaUsuarios);
+
+        // 4. Calcular la sumatoria acumulada total
+        double totalGeneral = 0.0;
+        for (Producto p : listaProductosVenta) {
+            totalGeneral += (p.getPrecio() * p.getCantidad());
+        }
+
+        try {
+            // 5. Instanciar tu claseFactura con el orden exacto de variables de Lombok (@AllArgsConstructor)
+            claseFactura factura = new claseFactura(
+                    listaProductosVenta,    // private List<Producto> listaProductos;
+                    totalGeneral,           // private double precioTotalGeneral;
+                    medioPago,              // private String metodoDePago;
+                    nombreCliente,          // private String cliente;
+                    fechaHoy,               // private String fechaEmison;
+                    nroFactura,             // private String numeroDeFactura;
+                    dniCliente              // private String DNI;
+            );
+
+            // 6. Configurar destino en una carpeta raíz para evitar fallos de permisos en IntelliJ
+            String carpetaDestino = "./Facturas_Comprobantes";
+            File archivoPdf = InformePDFGenerator.generarFactura(factura, carpetaDestino);
+
+            // 7. [OPCIONAL] Si necesitás persistir la venta o restar stock en tu Base de Datos:
+            // for (Producto p : listaProductosVenta) {
+            //     usuarioDAO.actualizarStock(p.getId(), p.getCantidad()); // Ajustá según tus métodos de DAO
+            // }
+
+            // 8. Mensaje en pantalla avisando que el documento está listo
+            AlertasUtils.mostrarAlerta("Éxito", "Venta Completada", "La factura se creó correctamente.", Alert.AlertType.INFORMATION);
+
+            // 9. Abrir el PDF de manera directa e independiente del hilo principal de JavaFX
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                new ProcessBuilder("cmd", "/c", "start", archivoPdf.getAbsolutePath()).start();
+            } else if (os.contains("mac")) {
+                new ProcessBuilder("open", archivoPdf.getAbsolutePath()).start();
+            } else {
+                new ProcessBuilder("xdg-open", archivoPdf.getAbsolutePath()).start();
+            }
+
+            // 10. Limpiar la tabla y resetear labels para la próxima venta
+            listaUsuarios.clear();
+            if (cliente != null) cliente.setText("");
+            if (nombreYApellido != null) nombreYApellido.clear();
+            Calcular(); // Recalcula el total de la pantalla para dejarlo en $ 0.00
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertasUtils.mostrarAlerta("Error Crítico", "No se pudo generar el archivo", "Causa: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+}
