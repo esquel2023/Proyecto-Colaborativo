@@ -86,7 +86,7 @@ public class controladorProveedorSelec {
         if (provinciaProveedor != null) provinciaProveedor.setText(proveedor.getProvincia());
         if (localidadProveedor != null) localidadProveedor.setText(proveedor.getCiudad());
 
-        // Cargar los productos de este proveedor directo desde la Base de Datos
+
         actualizarTabla(Math.toIntExact(proveedor.getId()));
     }
 

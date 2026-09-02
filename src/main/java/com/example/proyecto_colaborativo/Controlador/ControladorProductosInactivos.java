@@ -2,7 +2,6 @@ package com.example.proyecto_colaborativo.Controlador;
 
 import com.example.proyecto_colaborativo.Clases.Producto;
 import com.example.proyecto_colaborativo.Utilits.BuscadorUtils;
-import com.example.proyecto_colaborativo.bd.ProductoDAO; // Ajustá según tu paquete de DAO
 import com.example.proyecto_colaborativo.Utilits.AlertasUtils; // Ajustá tus clases útiles
 import com.example.proyecto_colaborativo.Utilits.NavegacionUtils;
 import javafx.collections.FXCollections;
@@ -81,7 +80,6 @@ public class ControladorProductosInactivos {
          //   productoInactivoSeleccionado.setActivado(true);
 
             // 3. Persistimos el cambio llamando al método oficial y seguro del DAO
-            ProductoDAO.actualizar(productoInactivoSeleccionado);
 
             // 4. Avisamos al usuario del éxito de la operación
             AlertasUtils.mostrarInformacion("Éxito", "El producto '" + productoInactivoSeleccionado.getNombre() + "' se ha reactivado correctamente.");
@@ -89,9 +87,6 @@ public class ControladorProductosInactivos {
             // 5. Volvemos a leer de la BD (como ahora es 'true', desaparecerá automáticamente de esta tabla)
             cargarDatosDesdeBD();
 
-        } catch (SQLException e) {
-            AlertasUtils.mostrarError("Error de BD", "No se pudo reactivar el producto en la base de datos.");
-            e.printStackTrace();
         } finally {
             // 6. Limpiamos la selección de la tabla por seguridad
             limpiarSeleccion();
@@ -114,12 +109,8 @@ public class ControladorProductosInactivos {
         Optional<ButtonType> resultado = alerta.showAndWait();
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             try {
-                ProductoDAO.eliminar(productoInactivoSeleccionado.getidProducto());
                 listaProductos.remove(productoInactivoSeleccionado);
                 AlertasUtils.mostrarInformacion("Éxito", "El producto se eliminó de forma permanente.");
-            } catch (SQLException e) {
-                AlertasUtils.mostrarError("Error de BD", "No se pudo eliminar de la base de datos.");
-                e.printStackTrace();
             } finally {
                 limpiarSeleccion();
             }
